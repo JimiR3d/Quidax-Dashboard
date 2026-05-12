@@ -36,7 +36,7 @@ function KpiCard({
           className="pointer-events-none absolute inset-0 -z-10 opacity-60"
           style={{
             background:
-              "radial-gradient(ellipse at top left, oklch(0.65 0.22 295 / 0.18), transparent 60%)",
+              "radial-gradient(ellipse at top left, oklch(0.62 0.27 305 / 0.22), transparent 60%)",
           }}
           aria-hidden="true"
         />

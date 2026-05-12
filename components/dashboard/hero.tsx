@@ -17,7 +17,7 @@ export function Hero({ fetchedAt }: { fetchedAt: string }) {
         className="pointer-events-none absolute -top-40 left-1/2 -z-10 h-[520px] w-[1100px] -translate-x-1/2 rounded-full opacity-70 blur-3xl"
         style={{
           background:
-            "radial-gradient(ellipse at center, oklch(0.65 0.22 295 / 0.45), oklch(0.78 0.12 320 / 0.18) 50%, transparent 70%)",
+            "radial-gradient(ellipse at center, oklch(0.62 0.27 305 / 0.45), oklch(0.70 0.24 320 / 0.18) 50%, transparent 70%)",
         }}
         aria-hidden="true"
       />

@@ -105,10 +105,13 @@ function normalize(raw: unknown): MarketTicker[] {
 }
 
 export async function getMarketSnapshot(opts?: { noCache?: boolean }): Promise<MarketSnapshot> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 5000)
   try {
     const res = await fetch(QUIDAX_TICKERS_URL, {
       ...(opts?.noCache ? { cache: "no-store" as const } : { next: { revalidate: 15 } }),
       headers: { Accept: "application/json" },
+      signal: controller.signal,
     })
     if (!res.ok) throw new Error(`Upstream ${res.status}`)
     const json = await res.json()
@@ -117,6 +120,8 @@ export async function getMarketSnapshot(opts?: { noCache?: boolean }): Promise<M
     return { source: "live", fetchedAt: new Date().toISOString(), tickers }
   } catch {
     return { source: "simulated", fetchedAt: new Date().toISOString(), tickers: SIMULATED }
+  } finally {
+    clearTimeout(timer)
   }
 }
 
@@ -125,10 +130,13 @@ export async function getMarketSnapshot(opts?: { noCache?: boolean }): Promise<M
  * Common values: 1, 5, 15, 60, 240 (4h), 1440 (1d).
  */
 export async function getCandles(market: string, periodMinutes = 1440, limit = 30): Promise<Candle[]> {
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), 5000)
   try {
     const res = await fetch(QUIDAX_KLINE(market, periodMinutes, limit), {
       next: { revalidate: 300 },
       headers: { Accept: "application/json" },
+      signal: controller.signal,
     })
     if (!res.ok) throw new Error(`Upstream ${res.status}`)
     const json = (await res.json()) as { data: unknown[] }
@@ -148,6 +156,8 @@ export async function getCandles(market: string, periodMinutes = 1440, limit = 3
       .filter((c): c is Candle => c !== null && c.close > 0)
   } catch {
     return []
+  } finally {
+    clearTimeout(timer)
   }
 }
 

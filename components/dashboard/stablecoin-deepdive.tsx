@@ -65,7 +65,7 @@ export function StablecoinDeepDive({
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground text-pretty">
           USDT trades at a persistent premium to the official CBN window, and roughly{" "}
-          <span className="text-foreground">~88% of NGN crypto volume</span> is stablecoin-denominated. That is not a trading narrative — it is a treasury and settlements narrative, and it maps directly to a B2B API SKU.
+          <span className="text-foreground">~93% of NGN crypto volume</span> is stablecoin-denominated. That is not a trading narrative — it is a treasury and settlements narrative, and it maps directly to a B2B API SKU.
         </p>
       </div>
 

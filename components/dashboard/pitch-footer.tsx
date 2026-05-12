@@ -7,7 +7,7 @@ export function PitchFooter() {
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-80"
         style={{
           background:
-            "radial-gradient(ellipse at top, oklch(0.65 0.22 295 / 0.22), transparent 65%)",
+            "radial-gradient(ellipse at top, oklch(0.62 0.27 305 / 0.26), transparent 65%)",
         }}
         aria-hidden="true"
       />
