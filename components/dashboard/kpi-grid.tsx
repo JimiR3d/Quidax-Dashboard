@@ -101,8 +101,9 @@ export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
         />
       </div>
       <p className="mt-3 text-[11px] text-muted-foreground">
-        Live numbers from{" "}
-        <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">app.quidax.io/api/v1/markets/tickers</code>.
+        Source:{" "}
+        <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">app.quidax.io/api/v1/markets/tickers</code>{" "}
+        (live or simulated fallback &mdash; see the badge in the header).
         The B2B figure is an analyst estimate &mdash; assumptions detailed in the B2B Opportunity section below.
       </p>
     </section>

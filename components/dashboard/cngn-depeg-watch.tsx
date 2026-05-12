@@ -70,9 +70,9 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
             className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${
               Math.abs(peg.deviationBps) < 25
                 ? "text-positive"
-                : peg.deviationBps < 0
-                  ? "text-destructive"
-                  : "text-warning"
+                : Math.abs(peg.deviationBps) < 100
+                  ? "text-warning"
+                  : "text-destructive"
             }`}
           >
             {peg.deviationBps >= 0 ? "+" : ""}
@@ -120,7 +120,13 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
               </defs>
               <line x1="0" y1="50" x2="600" y2="50" stroke="oklch(0.55 0.03 290 / 0.4)" strokeDasharray="3 3" />
               <path d={path.fill} fill="url(#cngn-fill)" />
-              <path d={path.line} fill="none" stroke="oklch(0.62 0.27 305)" strokeWidth="2" />
+              <path
+                d={path.line}
+                fill="none"
+                stroke="oklch(0.62 0.27 305)"
+                strokeWidth="2"
+                vectorEffect="non-scaling-stroke"
+              />
             </svg>
           ) : (
             <p className="flex h-full items-center justify-center text-xs text-muted-foreground">

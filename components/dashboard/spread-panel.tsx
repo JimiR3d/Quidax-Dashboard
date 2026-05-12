@@ -33,7 +33,7 @@ export function SpreadPanel({ usdtNgn }: Props) {
         <ReferenceCard
           label="Quidax USDT/NGN"
           value={spread.quidaxUsdtNgn}
-          subtitle="Live · /markets/tickers/usdtngn"
+          subtitle="Quidax · /markets/tickers"
           tone="primary"
         />
         <ReferenceCard
