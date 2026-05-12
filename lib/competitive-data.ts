@@ -24,11 +24,11 @@ export const COMPETITORS: Competitor[] = [
     name: "Quidax",
     positioning: "NGN-native exchange + API for African fintechs",
     b2bApi: "yes",
-    ngnPairs: 30,
+    ngnPairs: 9,
     ngnFocus: "core",
     africaCountries: 4,
     stablecoinFocus: "high",
-    notableEdge: "Deepest NGN liquidity book among local players; first SEC-licensed exchange in Nigeria",
+    notableEdge: "Only local exchange listing cNGN (regulated naira stablecoin); deepest USDT/NGN order book among Nigerian players",
   },
   {
     name: "Yellow Card",
@@ -194,10 +194,11 @@ export const RECOMMENDATIONS: Recommendation[] = [
  * Used in the stablecoin deep-dive chart.
  */
 export const STABLECOIN_MIX = [
-  { name: "USDT", share: 71, color: "var(--chart-1)" },
-  { name: "USDC", share: 17, color: "var(--chart-2)" },
-  { name: "BUSD/Other", share: 5, color: "var(--chart-3)" },
-  { name: "BTC (as quasi-savings)", share: 7, color: "var(--chart-4)" },
+  { name: "USDT", share: 68, color: "var(--chart-1)" },
+  { name: "cNGN (regulated)", share: 9, color: "var(--chart-4)" },
+  { name: "USDC", share: 12, color: "var(--chart-2)" },
+  { name: "Other stables", share: 4, color: "var(--chart-3)" },
+  { name: "BTC (as quasi-savings)", share: 7, color: "var(--chart-5)" },
 ]
 
 /**

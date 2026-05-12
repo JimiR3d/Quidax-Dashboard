@@ -1,6 +1,7 @@
 import { getMarketSnapshot } from "@/lib/quidax"
 import { SiteHeader } from "@/components/dashboard/site-header"
 import { Hero } from "@/components/dashboard/hero"
+import { ExecSummary } from "@/components/dashboard/exec-summary"
 import { KpiGrid } from "@/components/dashboard/kpi-grid"
 import { MarketTape } from "@/components/dashboard/market-tape"
 import { StablecoinDeepDive } from "@/components/dashboard/stablecoin-deepdive"
@@ -18,6 +19,7 @@ export default async function Page() {
     <main className="min-h-screen bg-background">
       <SiteHeader source={snapshot.source} />
       <Hero fetchedAt={snapshot.fetchedAt} />
+      <ExecSummary />
       <KpiGrid tickers={snapshot.tickers} />
       <MarketTape tickers={snapshot.tickers} />
       <StablecoinDeepDive />

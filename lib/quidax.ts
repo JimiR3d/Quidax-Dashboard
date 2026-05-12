@@ -5,7 +5,8 @@
  * (with ISR-style revalidation). Falls back to a high-fidelity simulated
  * snapshot if the upstream is unavailable, so the dashboard always renders.
  *
- * Public docs reference: https://docs.quidax.com/
+ * Public docs reference: https://docs.quidax.io/
+ * Verified live endpoint: https://app.quidax.io/api/v1/markets/tickers
  */
 
 export type MarketTicker = {
@@ -27,11 +28,11 @@ export type MarketSnapshot = {
   tickers: MarketTicker[]
 }
 
-const QUIDAX_TICKERS_URL = "https://app.quidax.com/api/v1/markets/tickers"
+const QUIDAX_TICKERS_URL = "https://app.quidax.io/api/v1/markets/tickers"
 
-// Plausible snapshot used when the upstream is unreachable. Numbers are
-// directionally accurate for early-2026 Nigerian conditions and exist purely
-// so the dashboard always renders something readable.
+// Plausible snapshot used when the upstream is unreachable. Numbers reflect
+// late-2025 Nigerian market conditions and exist purely so the dashboard
+// always renders something readable.
 const SIMULATED: MarketTicker[] = [
   {
     market: "usdtngn",
@@ -46,75 +47,51 @@ const SIMULATED: MarketTicker[] = [
     timestamp: Date.now(),
   },
   {
-    market: "usdcngn",
-    base: "USDC",
+    market: "cngnngn",
+    base: "cNGN",
     quote: "NGN",
-    last: 1684.2,
-    open: 1670.5,
-    high: 1690.0,
-    low: 1666.0,
-    volume: 1_140_000,
-    changePct: 0.82,
+    last: 1.0,
+    open: 1.0,
+    high: 1.0,
+    low: 1.0,
+    volume: 9_400_000,
+    changePct: 0.0,
     timestamp: Date.now(),
   },
   {
     market: "btcngn",
     base: "BTC",
     quote: "NGN",
-    last: 168_450_000,
-    open: 165_900_000,
-    high: 169_800_000,
-    low: 165_100_000,
-    volume: 38.4,
-    changePct: 1.54,
+    last: 111_166_267,
+    open: 112_797_906,
+    high: 113_466_135,
+    low: 109_978_144,
+    volume: 0.57,
+    changePct: -1.45,
     timestamp: Date.now(),
   },
   {
     market: "ethngn",
     base: "ETH",
     quote: "NGN",
-    last: 6_240_000,
-    open: 6_180_000,
-    high: 6_295_000,
-    low: 6_152_000,
-    volume: 412,
-    changePct: 0.97,
-    timestamp: Date.now(),
-  },
-  {
-    market: "bnbngn",
-    base: "BNB",
-    quote: "NGN",
-    last: 1_185_000,
-    open: 1_172_000,
-    high: 1_194_000,
-    low: 1_168_000,
-    volume: 980,
-    changePct: 1.11,
-    timestamp: Date.now(),
-  },
-  {
-    market: "solngn",
-    base: "SOL",
-    quote: "NGN",
-    last: 312_500,
-    open: 305_800,
-    high: 316_400,
-    low: 304_100,
-    volume: 3_840,
-    changePct: 2.19,
+    last: 3_186_147,
+    open: 3_216_536,
+    high: 3_236_060,
+    low: 3_116_234,
+    volume: 4.2,
+    changePct: -0.94,
     timestamp: Date.now(),
   },
   {
     market: "xrpngn",
     base: "XRP",
     quote: "NGN",
-    last: 4_120,
-    open: 4_080,
-    high: 4_155,
-    low: 4_062,
-    volume: 1_240_000,
-    changePct: 0.98,
+    last: 3_240,
+    open: 3_210,
+    high: 3_280,
+    low: 3_180,
+    volume: 184_000,
+    changePct: 0.93,
     timestamp: Date.now(),
   },
   {
@@ -125,14 +102,38 @@ const SIMULATED: MarketTicker[] = [
     open: 408,
     high: 415,
     low: 406,
-    volume: 6_800_000,
+    volume: 1_240_000,
     changePct: 0.98,
+    timestamp: Date.now(),
+  },
+  {
+    market: "ltcngn",
+    base: "LTC",
+    quote: "NGN",
+    last: 165_400,
+    open: 168_200,
+    high: 170_100,
+    low: 163_900,
+    volume: 28,
+    changePct: -1.66,
+    timestamp: Date.now(),
+  },
+  {
+    market: "dashngn",
+    base: "DASH",
+    quote: "NGN",
+    last: 38_200,
+    open: 38_400,
+    high: 38_900,
+    low: 37_950,
+    volume: 84,
+    changePct: -0.52,
     timestamp: Date.now(),
   },
 ]
 
 function normalize(raw: unknown): MarketTicker[] {
-  // Quidax shape: { data: { btcngn: { ticker: { last, open, high, low, vol, ... }, market: "btcngn", at: ... } } }
+  // Quidax shape: { data: { btcngn: { ticker: { last, open, high, low, vol, ... }, at: ... } } }
   if (!raw || typeof raw !== "object") return []
   const obj = raw as Record<string, unknown>
   const data = (obj.data ?? obj) as Record<string, unknown>
@@ -148,11 +149,23 @@ function normalize(raw: unknown): MarketTicker[] {
     const high = num(ticker.high)
     const low = num(ticker.low)
     const volume = num(ticker.vol ?? ticker.volume)
-    if (!last || !open) continue
+    // Filter dead / disabled markets that report all-zero ticks.
+    if (last <= 0 || open <= 0) continue
 
     const m = market.toLowerCase()
-    const quote = m.endsWith("ngn") ? "NGN" : m.endsWith("usdt") ? "USDT" : m.slice(-3).toUpperCase()
-    const base = m.replace(quote.toLowerCase(), "").toUpperCase()
+    // quote inference
+    let quote = "USD"
+    let base = m.toUpperCase()
+    if (m.endsWith("ngn")) {
+      quote = "NGN"
+      base = m.slice(0, -3).toUpperCase()
+    } else if (m.endsWith("usdt")) {
+      quote = "USDT"
+      base = m.slice(0, -4).toUpperCase()
+    } else if (m.endsWith("usd")) {
+      quote = "USD"
+      base = m.slice(0, -3).toUpperCase()
+    }
 
     out.push({
       market: m,
