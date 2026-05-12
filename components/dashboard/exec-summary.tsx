@@ -11,7 +11,7 @@ const POINTS = [
     icon: TrendingUp,
     title: "The wedge",
     body:
-      "USDT trades at a persistent premium to CBN's official window, and ~93% of NGN crypto turnover is stablecoin-denominated. cNGN listing gives Quidax a regulated rail no other local player has.",
+      "USDT/NGN now tracks the NFEM official rate within 100 bps — after years of >20% premium. Stablecoins didn't lose; they became the rail. cNGN listing gives Quidax a regulated wedge no other local player has.",
   },
   {
     icon: Layers,
