@@ -21,7 +21,7 @@ export function Recommendations() {
     <section id="thesis" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          06 · Five things I would ship next
+          10 · Five things I would ship next
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
           From thesis to roadmap

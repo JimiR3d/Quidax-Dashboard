@@ -1,15 +1,14 @@
 import type { MarketTicker } from "./quidax"
 
 /**
- * Analyst-modeled FX reference rates (Nov 2025 estimates).
- * Not pulled from live feeds — CBN NFEM and parallel-market rates have no
- * free machine-readable API. These are sourced from publicly reported daily
- * averages and should be refreshed manually.
+ * FX reference rates. Updated manually from public sources because neither
+ * CBN nor parallel-market feeds publish a free machine-readable endpoint.
+ * Verified May 2026 against abokifx.com and CBN NFEM daily print.
  */
 export const FX_REFERENCE = {
-  cbnOfficial: 1432, // NFEM weighted average estimate
-  parallel: 1470, // P2P / BDC average estimate
-  asOf: "2025-11-12",
+  cbnOfficial: 1375, // NFEM daily weighted average (verified: 1374.9431)
+  parallel: 1395, // BDC / P2P midpoint (verified range: 1393-1398)
+  asOf: "2026-05-12",
 } as const
 
 export type Spread = {
@@ -64,27 +63,31 @@ export function computeCngnPeg(cngnNgn?: MarketTicker, cngnUsdt?: MarketTicker):
   }
 }
 
-/** Real Quidax B2B customers as named on quidax.com/business. */
+/**
+ * Real Quidax B2B customers as named on quidax.com/business.
+ * Descriptions paraphrased directly from their own published testimonials —
+ * do not embellish; the value of citing them is precision.
+ */
 export const QUIDAX_B2B_CUSTOMERS = [
   {
     name: "Basqet",
-    category: "Multi-currency wallet & payments",
+    category: "Payment collections infrastructure",
     description:
-      "Pan-African personal-finance app. Uses Quidax rails for crypto on/off-ramp inside its multi-currency wallet, letting users move between NGN, stablecoins, and other crypto without leaving the app.",
+      "Collections-and-settlement platform. Uses Quidax as crypto-rail infrastructure, treating the exchange as a dependable backbone for reliable payment processing and stable transaction flow.",
     source: "quidax.com/business",
   },
   {
     name: "Blano",
-    category: "Stablecoin remittance & savings",
+    category: "Bitcoin & gift card trading",
     description:
-      "Africa-focused stablecoin app for diaspora remittance and dollar savings. Built on Quidax's API to settle USDT/NGN flows for users sending money home.",
+      "Bitcoin and gift card trading platform for African users. Plugs into Quidax's exchange infrastructure and liquidity so user trades settle quickly, securely, and efficiently.",
     source: "quidax.com/business",
   },
   {
     name: "Gigxpad",
-    category: "Creator & gig-economy payouts",
+    category: "DeFi staking & rewards",
     description:
-      "Payout platform for African creators and gig workers. Plugs into Quidax to deliver instant NGN settlements from USD-denominated revenue, removing dependence on slow correspondent banking.",
+      "DeFi platform built around staking and rewards. Uses Quidax as the financial backbone for asset management and reliable transaction processing, freeing the team to focus on product.",
     source: "quidax.com/business",
   },
 ] as const

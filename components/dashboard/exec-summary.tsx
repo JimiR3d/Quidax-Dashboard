@@ -11,7 +11,7 @@ const POINTS = [
     icon: TrendingUp,
     title: "The wedge",
     body:
-      "USDT trades at a persistent premium to CBN's official window, and ~68% of NGN crypto turnover is stablecoin-denominated. cNGN listing gives Quidax a regulated rail no other local player has.",
+      "USDT/NGN now tracks the NFEM official rate within 100 bps — after years of >20% premium. Stablecoins didn't lose; they became the rail. cNGN listing gives Quidax a regulated wedge no other local player has.",
   },
   {
     icon: Layers,
@@ -33,7 +33,7 @@ export function ExecSummary() {
       <div className="rounded-2xl card-elev p-6 md:p-8">
         <div className="flex flex-col gap-1">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            TL;DR for the busy operator
+            01 · Executive summary
           </span>
           <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
             Four moves, one moat, one number.

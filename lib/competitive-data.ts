@@ -32,23 +32,23 @@ export const COMPETITORS: Competitor[] = [
   },
   {
     name: "Yellow Card",
-    positioning: "Pan-African retail + Yellow Card Pay (B2B)",
+    positioning: "B2B-only stablecoin payments infrastructure",
     b2bApi: "yes",
     ngnPairs: 6,
     ngnFocus: "secondary",
-    africaCountries: 20,
+    africaCountries: 35,
     stablecoinFocus: "high",
-    notableEdge: "Largest pan-African footprint; strong stablecoin payments rails",
+    notableEdge: "35+ countries; pivoted away from retail to B2B API + treasury portal",
   },
   {
     name: "Busha",
-    positioning: "Retail-first Nigerian exchange",
+    positioning: "Retail-first SEC-licensed exchange",
     b2bApi: "limited",
     ngnPairs: 18,
     ngnFocus: "core",
     africaCountries: 1,
     stablecoinFocus: "medium",
-    notableEdge: "Clean retail UX; growing recurring-buy product",
+    notableEdge: "1M+ users; 70+ assets; recurring-buy + USD card; weak public B2B API",
   },
   {
     name: "Luno",
@@ -95,9 +95,9 @@ export const B2B_SEGMENTS: B2BSegment[] = [
     capturePctHigh: 1.2,
     takeRateBps: 35,
     signals: [
-      "Naira's persistent FX gap drives stablecoin substitution",
-      "Banking corridors to CN/AE remain slow and expensive",
-      "Yellow Card and Conduit already monetizing this flow",
+      "FX has unified but banking corridors to CN/AE remain 4-5 day clears",
+      "Stablecoin settlement is now cheaper AND faster — the case stopped depending on arbitrage",
+      "Yellow Card pivoted to B2B-only in 2025; Conduit, Bitnob already monetizing this flow",
     ],
   },
   {
@@ -123,9 +123,9 @@ export const B2B_SEGMENTS: B2BSegment[] = [
     capturePctHigh: 3.0,
     takeRateBps: 18,
     signals: [
-      "Naira volatility >35% YoY",
-      "Lack of formal USD hedging instruments for SMEs",
-      "Treasury-as-a-service is greenfield in the region",
+      "Naira realised volatility still 18-25% annualised post-unification",
+      "No formal USD hedging instruments available to most Nigerian SMEs",
+      "Treasury-as-a-service is greenfield in the region — cNGN gives Quidax a regulated lever",
     ],
   },
   {
@@ -201,28 +201,3 @@ export const STABLECOIN_MIX = [
   { name: "BTC (as quasi-savings)", share: 7, color: "var(--chart-5)" },
 ]
 
-/**
- * Stablecoin premium vs. official CBN FX, last 12 weeks — analyst estimate.
- * Demonstrates the structural FX gap that drives B2B substitution demand.
- */
-export const NGN_USDT_PREMIUM = (() => {
-  // deterministic synthetic series
-  const out: { week: string; premiumPct: number; officialFx: number; usdtFx: number }[] = []
-  const officialBase = 1545
-  const usdtBase = 1685
-  for (let i = 11; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i * 7)
-    const w = d.toISOString().slice(5, 10)
-    const drift = Math.sin(i / 2.4) * 18
-    const official = officialBase + (11 - i) * 3 + drift * 0.4
-    const usdt = usdtBase + (11 - i) * 4 + drift
-    out.push({
-      week: w,
-      officialFx: Math.round(official),
-      usdtFx: Math.round(usdt),
-      premiumPct: Number((((usdt - official) / official) * 100).toFixed(2)),
-    })
-  }
-  return out
-})()

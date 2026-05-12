@@ -43,19 +43,22 @@ export function CompetitiveMatrix() {
     <section id="competition" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          04 · Competitive positioning
+          06 · Competitive positioning
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
           Only Quidax owns the &quot;NGN-native + API-first&quot; quadrant
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          Yellow Card wins on pan-African breadth. Busha wins on retail UX. Luno wins on brand. Nobody else competes with Quidax on{" "}
-          <span className="text-foreground">deep NGN liquidity exposed as a production-grade API</span>. That is the moat — and it is currently under-monetized.
+          Yellow Card pivoted to B2B-only across 35+ countries — but light on NGN-native depth. Busha owns retail UX and 1M+ Nigerian users — but no public B2B API. Luno is a trusted brand without an API surface. Nobody else competes with Quidax on{" "}
+          <span className="text-foreground">deep NGN liquidity exposed as a production-grade, SEC-licensed API with cNGN inside it</span>. That is the moat — and it is currently under-monetized.
         </p>
       </div>
 
       <div className="overflow-hidden rounded-lg border border-border/60 bg-card">
         <div className="overflow-x-auto">
+          <p className="border-b border-border/60 bg-secondary/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+            Quidax row verified live · others are analyst estimates from public sources
+          </p>
           <table className="w-full text-sm">
             <thead className="border-b border-border/60 bg-secondary/40 text-left font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               <tr>

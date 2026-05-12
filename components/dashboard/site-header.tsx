@@ -42,25 +42,14 @@ export function SiteHeader({ source }: { source: "live" | "simulated" }) {
           </div>
         </div>
 
-        <nav className="hidden items-center gap-6 text-sm text-muted-foreground md:flex">
-          <a href="#kpis" className="hover:text-foreground transition-colors">
-            Snapshot
-          </a>
-          <a href="#market" className="hover:text-foreground transition-colors">
-            Market
-          </a>
-          <a href="#stablecoins" className="hover:text-foreground transition-colors">
-            Stablecoins
-          </a>
-          <a href="#competition" className="hover:text-foreground transition-colors">
-            Competition
-          </a>
-          <a href="#b2b" className="hover:text-foreground transition-colors">
-            B2B
-          </a>
-          <a href="#thesis" className="hover:text-foreground transition-colors">
-            Thesis
-          </a>
+        <nav className="hidden items-center gap-5 text-sm text-muted-foreground md:flex">
+          <a href="#fx" className="hover:text-foreground transition-colors">FX</a>
+          <a href="#cngn" className="hover:text-foreground transition-colors">cNGN</a>
+          <a href="#stablecoins" className="hover:text-foreground transition-colors">Stablecoins</a>
+          <a href="#competition" className="hover:text-foreground transition-colors">Competition</a>
+          <a href="#b2b" className="hover:text-foreground transition-colors">B2B</a>
+          <a href="#corridors" className="hover:text-foreground transition-colors">Corridors</a>
+          <a href="#thesis" className="hover:text-foreground transition-colors">Thesis</a>
         </nav>
 
         <div className="flex items-center gap-2">

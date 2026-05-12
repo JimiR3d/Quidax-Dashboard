@@ -10,16 +10,16 @@ export function SpreadPanel({ usdtNgn }: Props) {
   const spread = computeSpread(usdtNgn)
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="spread-title">
+    <section id="fx" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="spread-title">
       <header className="mb-6">
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">02 · Live insight · FX</h2>
+        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">03 · Live insight · FX</h2>
         <p id="spread-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance">
-          USDT/NGN vs the official rate
+          USDT/NGN vs NFEM official vs parallel
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-          The single most actionable number for any Nigerian B2B treasurer: where does Quidax&apos;s stablecoin book
-          price USD/NGN relative to CBN&apos;s NFEM official and the parallel market? Live Quidax data,
-          analyst-modelled FX references.
+          The single most actionable number for any Nigerian B2B treasurer: where does Quidax&apos;s stablecoin
+          book price USD/NGN relative to CBN&apos;s NFEM official and the parallel street rate? Live Quidax data,
+          NFEM and parallel references verified manually against public daily prints.
         </p>
       </header>
 
@@ -49,11 +49,11 @@ export function SpreadPanel({ usdtNgn }: Props) {
           <h3 className="text-sm font-medium">Spread map</h3>
           <SpreadBar spread={spread} />
           <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-            Quidax USDT/NGN is currently{" "}
-            <span className="text-foreground tabular-nums">{spread.vsCbnPct.toFixed(2)}%</span> of CBN official and{" "}
-            <span className="text-foreground tabular-nums">{spread.vsParallelPct.toFixed(2)}%</span> of parallel. A
-            stablecoin trading below official is unusual and signals tight NGN liquidity on-exchange &mdash; a
-            tailwind for B2B inflow products and a headwind for outflow ones.
+            Quidax USDT/NGN prints at{" "}
+            <span className="text-foreground tabular-nums">{spread.vsCbnPct.toFixed(2)}%</span> of NFEM official and{" "}
+            <span className="text-foreground tabular-nums">{spread.vsParallelPct.toFixed(2)}%</span> of parallel.
+            Post-unification, the three lines are converging &mdash; which is precisely the precondition that
+            makes stablecoin rails commercially viable for B2B settlement: predictable pricing, not arbitrage.
           </p>
         </article>
 

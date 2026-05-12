@@ -64,7 +64,7 @@ export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
     <section id="kpis" className="mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-16">
       <div className="mb-8">
         <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          01 · Executive snapshot
+          02 · Live market snapshot
         </h2>
         <p className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
           Where the money <span className="text-gradient-primary">actually</span> moves
