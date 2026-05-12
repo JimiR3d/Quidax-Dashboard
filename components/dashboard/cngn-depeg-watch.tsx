@@ -23,8 +23,11 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
 
   const series = candles.slice(-30).map((c) => c.close)
   const path = buildPegPath(series)
-  const min = series.length ? Math.min(...series, 1) : 0.99
-  const max = series.length ? Math.max(...series, 1) : 1.01
+  // Display min/max use the raw observed range. The chart itself uses a
+  // fixed visual band so a perfectly stable peg renders as a flat line
+  // through the center rather than collapsing to the bottom edge.
+  const min = series.length ? Math.min(...series) : 1
+  const max = series.length ? Math.max(...series) : 1
 
   return (
     <section id="cngn" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="cngn-title">
@@ -141,9 +144,16 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
 
 function buildPegPath(values: number[]) {
   if (values.length < 2) return null
-  const min = Math.min(...values, 1)
-  const max = Math.max(...values, 1)
-  const range = max - min || 1
+  // Visual band is anchored at 1.0000 with a minimum ±100 bps half-width
+  // (the depeg threshold). This makes a perfectly stable series render as
+  // a flat line through the centre instead of collapsing to the bottom.
+  const observed = Math.max(
+    Math.abs(Math.max(...values) - 1),
+    Math.abs(1 - Math.min(...values)),
+  )
+  const half = Math.max(0.01, observed * 1.5)
+  const min = 1 - half
+  const range = half * 2
   const stepX = 600 / (values.length - 1)
   const points = values.map((v, i) => {
     const x = i * stepX

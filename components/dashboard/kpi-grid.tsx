@@ -49,10 +49,17 @@ function KpiCard({
 export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
   const ngn = tickers.filter((t) => t.quote === "NGN")
   const turnover = ngn.reduce((s, t) => s + t.last * t.volume, 0)
-  const stables = ngn.filter((t) => ["USDT", "CNGN", "USDC"].includes(t.base.toUpperCase()))
+  const STABLE_BASES = ["USDT", "CNGN", "USDC", "DAI", "TUSD"]
+  const stables = ngn.filter((t) => STABLE_BASES.includes(t.base.toUpperCase()))
   const stableTurn = stables.reduce((s, t) => s + t.last * t.volume, 0)
   const stableShare = turnover > 0 ? (stableTurn / turnover) * 100 : 0
-  const hasCngn = ngn.some((t) => t.base.toUpperCase() === "CNGN")
+  // Only count constituents that actually carry NGN turnover — avoids
+  // claiming pairs that aren't listed on Quidax.
+  const stableLabel =
+    stables
+      .filter((t) => t.last * t.volume > 0)
+      .map((t) => t.base.toUpperCase())
+      .join(" + ") || "USDT-only proxy"
 
   // Midpoint of modelled B2B annual revenue.
   const midCaptureRev = B2B_SEGMENTS.reduce((acc, s) => {
@@ -79,12 +86,12 @@ export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
         <KpiCard
           label="Stablecoin share of NGN volume"
           value={`${stableShare.toFixed(1)}%`}
-          sub={hasCngn ? "USDT + cNGN + USDC" : "USDT-only proxy"}
+          sub={stableLabel}
         />
         <KpiCard
           label="Active NGN markets"
           value={String(ngn.length)}
-          sub={hasCngn ? "Includes regulated cNGN" : "Spot pairs"}
+          sub={stables.some((t) => t.base.toUpperCase() === "CNGN") ? "Includes regulated cNGN" : "Spot pairs"}
         />
         <KpiCard
           label="B2B revenue opportunity"

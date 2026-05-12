@@ -143,7 +143,7 @@ export function StablecoinDeepDive({
                 <Area
                   type="monotone"
                   dataKey="usdtFx"
-                  name="USDT/NGN (Quidax, live)"
+                  name={`USDT/NGN (Quidax, ${source})`}
                   stroke="var(--chart-1)"
                   strokeWidth={2.2}
                   fill="url(#usdtGrad)"

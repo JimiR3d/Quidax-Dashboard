@@ -123,18 +123,22 @@ function SpreadBar({ spread }: { spread: ReturnType<typeof computeSpread> }) {
   const min = Math.min(...points.map((p) => p.value)) - 30
   const max = Math.max(...points.map((p) => p.value)) + 30
   const range = max - min
+  // Render muted markers first so the primary Quidax dot stays visually on top
+  // when it overlaps the CBN reference (which happens whenever the live USDT
+  // price tracks the official rate exactly).
+  const draw = [...points].sort((a) => (a.tone === "primary" ? 1 : -1))
 
   return (
     <div className="mt-4">
       <div className="relative h-2 w-full rounded-full bg-muted/30">
         <div className="absolute inset-y-0 left-0 right-0 rounded-full bg-gradient-to-r from-primary/40 via-accent/40 to-primary/40" />
-        {points.map((p) => {
+        {draw.map((p) => {
           const pct = ((p.value - min) / range) * 100
           return (
             <div
               key={p.label}
               className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${pct}%` }}
+              style={{ left: `${pct}%`, zIndex: p.tone === "primary" ? 2 : 1 }}
             >
               <div
                 className={`size-3 rounded-full ring-2 ring-background ${
