@@ -8,6 +8,7 @@ import { CngnDepegWatch } from "@/components/dashboard/cngn-depeg-watch"
 import { StablecoinDeepDive } from "@/components/dashboard/stablecoin-deepdive"
 import { CompetitiveMatrix } from "@/components/dashboard/competitive-matrix"
 import { B2BOpportunity } from "@/components/dashboard/b2b-opportunity"
+import { CorridorView } from "@/components/dashboard/corridor-view"
 import { CustomerProof } from "@/components/dashboard/customer-proof"
 import { Recommendations } from "@/components/dashboard/recommendations"
 import { ApiProofStrip } from "@/components/dashboard/api-proof-strip"
@@ -43,6 +44,7 @@ export default async function Page() {
       <StablecoinDeepDive usdtCandles={usdtSeries} source={usdtSource} />
       <CompetitiveMatrix />
       <B2BOpportunity />
+      <CorridorView />
       <CustomerProof />
       <Recommendations />
       <ApiProofStrip initial={snapshot} />
