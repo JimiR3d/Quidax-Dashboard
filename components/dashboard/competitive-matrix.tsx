@@ -43,7 +43,7 @@ export function CompetitiveMatrix() {
     <section id="competition" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          04 · Competitive positioning
+          06 · Competitive positioning
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
           Only Quidax owns the &quot;NGN-native + API-first&quot; quadrant

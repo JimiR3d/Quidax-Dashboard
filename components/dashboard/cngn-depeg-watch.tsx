@@ -27,11 +27,11 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
   const max = series.length ? Math.max(...series, 1) : 1.01
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="cngn-title">
+    <section id="cngn" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="cngn-title">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            03 · Live insight · Exclusive
+            04 · Live insight · Exclusive
           </h2>
           <p id="cngn-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance">
             cNGN Peg Watch

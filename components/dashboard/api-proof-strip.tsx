@@ -46,11 +46,11 @@ export function ApiProofStrip({ initial }: Props) {
   }, [tickers])
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="api-proof-title">
+    <section id="api" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="api-proof-title">
       <header className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            09 · API integration · Proof
+            11 · API integration · Proof
           </h2>
           <p id="api-proof-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
             All {tickers.length} NGN pairs · live

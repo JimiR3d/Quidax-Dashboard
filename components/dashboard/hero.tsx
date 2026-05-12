@@ -58,7 +58,7 @@ export function Hero({ fetchedAt }: { fetchedAt: string }) {
                 Quidax public markets API
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                app.quidax.io · 60s ISR · analyst model overlays
+                app.quidax.io · refreshes every 60s · analyst model overlays
               </p>
             </div>
             <div className="card-elev rounded-lg p-4">

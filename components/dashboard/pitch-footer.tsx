@@ -103,7 +103,7 @@ export function PitchFooter() {
             © {new Date().getFullYear()} Oluwafolajinmi David Aboderin · Independent analysis, no Quidax affiliation.
           </span>
           <span className="font-mono uppercase tracking-[0.2em]">
-            v0.2 · NGN Liquidity Intelligence
+            v1.0 · NGN Liquidity Intelligence
           </span>
         </div>
       </div>

@@ -201,28 +201,4 @@ export const STABLECOIN_MIX = [
   { name: "BTC (as quasi-savings)", share: 7, color: "var(--chart-5)" },
 ]
 
-/**
- * Stablecoin premium vs. official CBN FX, last 12 weeks — analyst estimate.
- * Demonstrates the structural FX gap that drives B2B substitution demand.
- */
-export const NGN_USDT_PREMIUM = (() => {
-  // deterministic synthetic series
-  const out: { week: string; premiumPct: number; officialFx: number; usdtFx: number }[] = []
-  const officialBase = 1545
-  const usdtBase = 1685
-  for (let i = 11; i >= 0; i--) {
-    const d = new Date()
-    d.setDate(d.getDate() - i * 7)
-    const w = d.toISOString().slice(5, 10)
-    const drift = Math.sin(i / 2.4) * 18
-    const official = officialBase + (11 - i) * 3 + drift * 0.4
-    const usdt = usdtBase + (11 - i) * 4 + drift
-    out.push({
-      week: w,
-      officialFx: Math.round(official),
-      usdtFx: Math.round(usdt),
-      premiumPct: Number((((usdt - official) / official) * 100).toFixed(2)),
-    })
-  }
-  return out
-})()
+

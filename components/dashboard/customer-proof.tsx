@@ -2,10 +2,10 @@ import { QUIDAX_B2B_CUSTOMERS } from "@/lib/insights"
 
 export function CustomerProof() {
   return (
-    <section className="container mx-auto px-4 lg:px-8 mt-12" aria-labelledby="customers-title">
+    <section id="customers" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="customers-title">
       <header className="mb-6">
-        <p className="text-xs font-medium uppercase tracking-[0.18em] text-primary">B2B Validation</p>
-        <h2 id="customers-title" className="mt-2 text-3xl font-semibold tracking-tight text-balance">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-primary">09 · B2B validation</p>
+        <h2 id="customers-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance">
           The B2B thesis is already shipping
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">

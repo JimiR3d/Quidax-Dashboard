@@ -10,9 +10,9 @@ export function SpreadPanel({ usdtNgn }: Props) {
   const spread = computeSpread(usdtNgn)
 
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="spread-title">
+    <section id="fx" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="spread-title">
       <header className="mb-6">
-        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">02 · Live insight · FX</h2>
+        <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">03 · Live insight · FX</h2>
         <p id="spread-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance">
           USDT/NGN vs the official rate
         </p>

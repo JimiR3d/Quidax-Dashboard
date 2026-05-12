@@ -88,7 +88,7 @@ export function CorridorView() {
     <section id="corridors" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          06 · Corridor map
+          08 · Corridor map
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
           Where the dollars actually flow —{" "}
