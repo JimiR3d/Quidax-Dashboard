@@ -236,7 +236,7 @@ export function StablecoinDeepDive({
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <ul className="mt-2 space-y-2">
+          <ul className="mt-2 flex flex-col gap-2">
             {STABLECOIN_MIX.map((s) => (
               <li key={s.name} className="flex items-center justify-between text-xs">
                 <span className="flex items-center gap-2">

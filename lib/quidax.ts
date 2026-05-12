@@ -35,16 +35,17 @@ const QUIDAX_KLINE = (market: string, period: number, limit: number) =>
   `https://app.quidax.io/api/v1/markets/${market}/k?period=${period}&limit=${limit}`
 
 // Plausible fallback if the upstream is unreachable. Numbers calibrated to
-// real Quidax data observed Nov 2025 so the dashboard always renders sanely.
+// real Quidax tickers observed May 2026 so the dashboard always renders sanely.
 const SIMULATED: MarketTicker[] = [
-  { market: "usdtngn", base: "USDT", quote: "NGN", last: 1380.41, open: 1382.29, high: 1399.17, low: 1372.79, volume: 42_643, changePct: -0.14, timestamp: Date.now() },
-  { market: "cngnngn", base: "CNGN", quote: "NGN", last: 1.0, open: 1.0, high: 1.0, low: 1.0, volume: 9_400_000, changePct: 0.0, timestamp: Date.now() },
-  { market: "btcngn", base: "BTC", quote: "NGN", last: 111_061_754, open: 112_850_740, high: 113_174_097, low: 109_978_144, volume: 0.57, changePct: -1.58, timestamp: Date.now() },
-  { market: "ethngn", base: "ETH", quote: "NGN", last: 3_156_589, open: 3_220_870, high: 3_236_060, low: 3_116_234, volume: 36.7, changePct: -2.00, timestamp: Date.now() },
-  { market: "xrpngn", base: "XRP", quote: "NGN", last: 1_983.91, open: 2_028.97, high: 2_044.89, low: 1_958.81, volume: 13_491, changePct: -2.22, timestamp: Date.now() },
-  { market: "trxngn", base: "TRX", quote: "NGN", last: 412, open: 408, high: 415, low: 406, volume: 1_240_000, changePct: 0.98, timestamp: Date.now() },
-  { market: "ltcngn", base: "LTC", quote: "NGN", last: 79_619, open: 81_120, high: 81_368, low: 78_820, volume: 34.6, changePct: -1.85, timestamp: Date.now() },
-  { market: "dashngn", base: "DASH", quote: "NGN", last: 63_562, open: 64_706, high: 65_264, low: 62_142, volume: 7.57, changePct: -1.77, timestamp: Date.now() },
+  { market: "usdtngn", base: "USDT", quote: "NGN", last: 1375.03, open: 1381.29, high: 1387.73, low: 1373.03, volume: 50_826, changePct: -0.45, timestamp: Date.now() },
+  { market: "cngnngn", base: "CNGN", quote: "NGN", last: 0.9998, open: 1.0002, high: 1.0002, low: 0.9998, volume: 3_875, changePct: -0.04, timestamp: Date.now() },
+  { market: "btcngn", base: "BTC", quote: "NGN", last: 110_893_620, open: 112_466_078, high: 113_017_321, low: 109_978_144, volume: 0.58, changePct: -1.40, timestamp: Date.now() },
+  { market: "ethngn", base: "ETH", quote: "NGN", last: 3_142_453, open: 3_220_557, high: 3_232_599, low: 3_116_234, volume: 36.34, changePct: -2.42, timestamp: Date.now() },
+  { market: "xrpngn", base: "XRP", quote: "NGN", last: 1_981.89, open: 2_032.41, high: 2_044.89, low: 1_958.81, volume: 13_488, changePct: -2.49, timestamp: Date.now() },
+  { market: "trxngn", base: "TRX", quote: "NGN", last: 482.31, open: 484.12, high: 485.44, low: 479.06, volume: 8_117, changePct: -0.37, timestamp: Date.now() },
+  { market: "ltcngn", base: "LTC", quote: "NGN", last: 79_845, open: 80_825, high: 80_936, low: 78_820, volume: 33.09, changePct: -1.21, timestamp: Date.now() },
+  { market: "dashngn", base: "DASH", quote: "NGN", last: 64_442, open: 64_526, high: 65_116, low: 62_142, volume: 7.50, changePct: -0.13, timestamp: Date.now() },
+  { market: "qdxngn", base: "QDX", quote: "NGN", last: 180.72, open: 180.72, high: 180.72, low: 180.72, volume: 0, changePct: 0.0, timestamp: Date.now() },
 ]
 
 function num(x: unknown): number {
@@ -109,7 +110,7 @@ export async function getMarketSnapshot(opts?: { noCache?: boolean }): Promise<M
   const timer = setTimeout(() => controller.abort(), 5000)
   try {
     const res = await fetch(QUIDAX_TICKERS_URL, {
-      ...(opts?.noCache ? { cache: "no-store" as const } : { next: { revalidate: 15 } }),
+      ...(opts?.noCache ? { cache: "no-store" as const } : { next: { revalidate: 60 } }),
       headers: { Accept: "application/json" },
       signal: controller.signal,
     })

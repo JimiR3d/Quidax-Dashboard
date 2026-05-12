@@ -59,7 +59,7 @@ export function SpreadPanel({ usdtNgn }: Props) {
 
         <article className="card-elev rounded-xl p-5">
           <h3 className="text-sm font-medium">Why this matters for B2B</h3>
-          <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+          <ul className="mt-3 flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
             <li className="flex gap-2">
               <span className="mt-2 size-1 shrink-0 rounded-full bg-primary" aria-hidden />
               <span>

@@ -64,7 +64,7 @@ export function PitchFooter() {
               <h3 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
                 What I&apos;d bring on day one
               </h3>
-              <ul className="mt-3 space-y-2.5 text-sm">
+              <ul className="mt-3 flex flex-col gap-2.5 text-sm">
                 <li className="flex items-start gap-2">
                   <ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   Production data pipelines (SQL, Python, dbt-style modeling)
