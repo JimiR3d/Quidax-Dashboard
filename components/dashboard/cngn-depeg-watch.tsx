@@ -10,6 +10,8 @@ type Props = {
 
 export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
   const peg = computeCngnPeg(cngnNgn, cngnUsdt)
+  // Single source of truth: every visual cue (pill, dot, deviation colour)
+  // derives from peg.status so the colour can never disagree with the label.
   const statusColor =
     peg.status === "stable" ? "text-positive" : peg.status === "watch" ? "text-warning" : "text-destructive"
   const statusBg =
@@ -67,19 +69,13 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         <article className="card-elev rounded-xl p-5">
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Deviation from peg</p>
           <p
-            className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${
-              Math.abs(peg.deviationBps) < 25
-                ? "text-positive"
-                : Math.abs(peg.deviationBps) < 100
-                  ? "text-warning"
-                  : "text-destructive"
-            }`}
+            className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${statusColor}`}
           >
             {peg.deviationBps >= 0 ? "+" : ""}
             {peg.deviationBps.toFixed(1)} bps
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;100 · Depeg &gt; 100
+            Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;&lt;100 · Depeg &ge; 100
           </p>
         </article>
 

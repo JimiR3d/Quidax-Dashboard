@@ -57,7 +57,7 @@ export function ApiProofStrip({ initial }: Props) {
             11 · API integration · Proof
           </h2>
           <p id="api-proof-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
-            All {tickers.length} NGN pairs · live
+            All {tickers.length} NGN pairs · {snapshot.source === "live" ? "live" : "snapshot"}
           </p>
         </div>
         <div

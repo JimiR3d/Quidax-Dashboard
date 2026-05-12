@@ -126,7 +126,10 @@ function SpreadBar({ spread }: { spread: ReturnType<typeof computeSpread> }) {
   // Render muted markers first so the primary Quidax dot stays visually on top
   // when it overlaps the CBN reference (which happens whenever the live USDT
   // price tracks the official rate exactly).
-  const draw = [...points].sort((a) => (a.tone === "primary" ? 1 : -1))
+  const draw = [...points].sort((a, b) => {
+    const rank = (tone: "primary" | "muted") => (tone === "primary" ? 1 : 0)
+    return rank(a.tone) - rank(b.tone)
+  })
 
   return (
     <div className="mt-4">

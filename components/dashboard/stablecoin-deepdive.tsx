@@ -89,7 +89,11 @@ export function StablecoinDeepDive({
               </span>
             </div>
           </div>
-          <div className="h-72 w-full">
+          <div
+            className="h-72 w-full"
+            role="img"
+            aria-label={`USDT to NGN daily close, last ${data.length} days, ${source} data, with NFEM reference line at ${FX_REFERENCE.cbnOfficial} naira`}
+          >
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
                 <defs>
@@ -151,7 +155,11 @@ export function StablecoinDeepDive({
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          <div className="mt-4 h-32 w-full border-t border-border/60 pt-4">
+          <div
+            className="mt-4 h-32 w-full border-t border-border/60 pt-4"
+            role="img"
+            aria-label={`Deviation in basis points from NFEM official rate. Average ${avgDevBps} bps, maximum absolute ${absMaxDev} bps over the window.`}
+          >
             <div className="mb-1 flex items-baseline justify-between">
               <h4 className="text-xs font-medium text-foreground/80">Deviation from NFEM · basis points</h4>
               <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
@@ -207,7 +215,11 @@ export function StablecoinDeepDive({
               cNGN gives Quidax the only regulated NGN-pegged rail among local exchanges.
             </p>
           </div>
-          <div className="h-56 w-full">
+          <div
+            className="h-56 w-full"
+            role="img"
+            aria-label={`Stablecoin demand mix: ${STABLECOIN_MIX.map((s) => `${s.name} ${s.share} percent`).join(", ")}`}
+          >
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

@@ -197,6 +197,7 @@ export function B2BOpportunity() {
                     onChange={(e) => setKnob(i, { capturePct: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
                     aria-label={`Capture percentage for ${s.segment}`}
+                    aria-valuetext={`${s.capturePct.toFixed(2)} percent`}
                   />
                 </label>
 
@@ -218,6 +219,7 @@ export function B2BOpportunity() {
                     onChange={(e) => setKnob(i, { takeRateBps: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
                     aria-label={`Take rate basis points for ${s.segment}`}
+                    aria-valuetext={`${s.takeRateBps} basis points`}
                   />
                 </label>
               </div>
