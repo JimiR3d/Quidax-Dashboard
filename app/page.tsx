@@ -1,4 +1,4 @@
-import { getMarketSnapshot } from "@/lib/quidax"
+import { getMarketSnapshot, getCandles, candlesToSeries, buildSyntheticSeries } from "@/lib/quidax"
 import { SiteHeader } from "@/components/dashboard/site-header"
 import { Hero } from "@/components/dashboard/hero"
 import { ExecSummary } from "@/components/dashboard/exec-summary"
@@ -13,7 +13,17 @@ import { PitchFooter } from "@/components/dashboard/pitch-footer"
 export const revalidate = 60
 
 export default async function Page() {
-  const snapshot = await getMarketSnapshot()
+  const [snapshot, usdtCandles] = await Promise.all([
+    getMarketSnapshot(),
+    getCandles("usdtngn", 1440, 30),
+  ])
+
+  const usdtTicker = snapshot.tickers.find((t) => t.market === "usdtngn")
+  const usdtSeries =
+    usdtCandles.length > 0
+      ? candlesToSeries(usdtCandles)
+      : buildSyntheticSeries("usdtngn", usdtTicker?.last ?? 1380, 30)
+  const usdtSource: "live" | "synthetic" = usdtCandles.length > 0 ? "live" : "synthetic"
 
   return (
     <main className="min-h-screen bg-background">
@@ -22,7 +32,7 @@ export default async function Page() {
       <ExecSummary />
       <KpiGrid tickers={snapshot.tickers} />
       <MarketTape tickers={snapshot.tickers} />
-      <StablecoinDeepDive />
+      <StablecoinDeepDive usdtCandles={usdtSeries} source={usdtSource} />
       <CompetitiveMatrix />
       <B2BOpportunity />
       <Recommendations />
