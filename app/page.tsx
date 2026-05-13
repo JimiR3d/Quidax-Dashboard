@@ -58,7 +58,7 @@ export default async function Page() {
 
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader snapshotSource={snapshot.source} />
+      <SiteHeader snapshotSource={snapshot.source} fetchedAt={snapshot.fetchedAt} />
       <Hero
         fetchedAt={snapshot.fetchedAt}
         snapshotSource={snapshot.source}

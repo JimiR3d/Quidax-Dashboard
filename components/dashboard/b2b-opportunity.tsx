@@ -73,6 +73,25 @@ export function B2BOpportunity() {
         </p>
       </div>
 
+      {(() => {
+        const oob = enriched.some(
+          (s) => s.capturePct > s.capturePctHigh + 0.001 || s.takeRateBps > 150,
+        )
+        return oob ? (
+          <div
+            role="status"
+            className="mb-4 flex items-start gap-3 rounded-lg border border-warning/40 bg-warning/10 p-3 text-xs text-warning"
+          >
+            <span className="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-warning" aria-hidden />
+            <span>
+              You&apos;ve pushed a slider above the model&apos;s public-proxy upper bound. The chart still
+              re-computes, but the resulting figure is no longer supported by the analyst evidence on the
+              methodology page — treat it as &quot;what would this take?&quot; not &quot;what we expect&quot;.
+            </span>
+          </div>
+        ) : null
+      })()}
+
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-5">
         <div className="card-elev rounded-lg border border-border/60 bg-card p-5 lg:col-span-3">
           <div className="mb-2 flex items-start justify-between gap-3">

@@ -89,10 +89,14 @@ export function PitchFooter() {
               </h3>
               <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
                 Live tickers fetched from{" "}
-                <code className="rounded bg-secondary px-1 py-0.5 font-mono text-[11px] text-foreground">
+                <code className="rounded bg-secondary px-1 py-0.5 font-mono text-xs text-foreground">
                   app.quidax.io/api/v1/markets/tickers
                 </code>{" "}
-                with 60s revalidation. Where the upstream is unavailable, a static snapshot renders so the analysis is always inspectable. Premium series, volume mix, and B2B opportunity sizing are analyst estimates explicitly labeled as such.
+                — server-rendered with 60s revalidation, then polled every 15s on the client via SWR through a
+                rate-limited, Zod-validated, edge-cached proxy at <code className="rounded bg-secondary px-1 py-0.5 font-mono text-xs text-foreground">/api/markets</code>. Upstream failures degrade to a
+                last-known-good snapshot with explicit staleness labelling — never to invented prices. Volume mix,
+                segment TAM, and B2B opportunity sizing are analyst estimates surfaced with provenance on the{" "}
+                <a className="text-foreground underline-offset-2 hover:underline" href="/methodology">methodology page</a>.
               </p>
             </div>
           </div>

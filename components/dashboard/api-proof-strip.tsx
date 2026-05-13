@@ -15,13 +15,17 @@ const fetcher = (url: string) =>
 type Props = { initial: MarketSnapshot }
 
 function sourceChip(source: SnapshotSource, ageMs: number) {
+  // Reader-visible proof that the page is actually live: count up in seconds
+  // since the last successful fetch. Caps at 15s — at that point SWR is
+  // already pulling the next snapshot so the counter rolls back to 0s.
+  const liveSeconds = Math.min(15, Math.max(0, Math.floor(ageMs / 1000)))
   switch (source) {
     case "live":
       return {
         label: "Live · refreshes every 15s",
         classes: "border-positive/30 bg-positive/10 text-positive",
         dot: "bg-positive animate-pulse",
-        ageText: "fetched just now",
+        ageText: `last fetch ${liveSeconds}s ago`,
       }
     case "cached":
       return {
@@ -112,7 +116,7 @@ export function ApiProofStrip({ initial }: Props) {
             id="api-proof-title"
             className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl"
           >
-            All {tickers.length} NGN pairs · {snapshot.source}
+            All {tickers.length} NGN pairs — see them tick
           </p>
         </div>
         <div
