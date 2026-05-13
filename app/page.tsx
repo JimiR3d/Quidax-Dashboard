@@ -14,6 +14,7 @@ import { CorridorView } from "@/components/dashboard/corridor-view"
 import { CustomerProof } from "@/components/dashboard/customer-proof"
 import { Recommendations } from "@/components/dashboard/recommendations"
 import { ApiProofStrip } from "@/components/dashboard/api-proof-strip"
+import { CounterThesis } from "@/components/dashboard/counter-thesis"
 import { PitchFooter } from "@/components/dashboard/pitch-footer"
 import { SectionBoundary } from "@/components/dashboard/section-boundary"
 
@@ -100,6 +101,9 @@ export default async function Page() {
       </SectionBoundary>
       <SectionBoundary label="Live proof strip">
         <ApiProofStrip initial={snapshot} />
+      </SectionBoundary>
+      <SectionBoundary label="Counter-thesis">
+        <CounterThesis />
       </SectionBoundary>
       <PitchFooter />
     </main>

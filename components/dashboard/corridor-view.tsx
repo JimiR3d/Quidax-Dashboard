@@ -1,17 +1,36 @@
 import { fmtUsd } from "@/lib/format"
 
+/**
+ * Corridor reference data with structured provenance.
+ *
+ * Every figure that the eye reads as a single number here is the product of
+ * an analyst proxy — these are not Quidax-attributable volumes. So each row
+ * carries:
+ *   - `confidence` — how much weight a reader should put on the row
+ *   - `verifiedAt` — when these sources were last re-checked
+ *   - `sources[]` — structured, not a free-text blob
+ *   - `notes` — what to remember when reading the numbers
+ */
+
+type Confidence = "high" | "medium" | "low"
+
+type CorridorSource = { label: string; year: number; url?: string }
+
 type Corridor = {
   code: string
   name: string
   direction: "outbound" | "inbound" | "two-way"
-  flowUsd: number // analyst proxy, annual
+  flowUsd: number
   quidaxPairs: string[]
   primaryUseCase: string
   bankWireDays: number
   stablecoinMinutes: number
   bankCostBps: number
   stablecoinCostBps: number
-  sources: string
+  confidence: Confidence
+  verifiedAt: string
+  sources: CorridorSource[]
+  notes: string
 }
 
 const CORRIDORS: Corridor[] = [
@@ -26,7 +45,14 @@ const CORRIDORS: Corridor[] = [
     stablecoinMinutes: 8,
     bankCostBps: 320,
     stablecoinCostBps: 90,
-    sources: "NBS import data 2023; Chainalysis SSA report",
+    confidence: "medium",
+    verifiedAt: "2026-05-10",
+    sources: [
+      { label: "NBS Foreign Trade in Goods Q4", year: 2024 },
+      { label: "Chainalysis SSA Geography of Crypto", year: 2024 },
+    ],
+    notes:
+      "Annual flow is gross merchandise import to China; only a fraction settles via stablecoins today, but it's the proxy for the addressable corridor.",
   },
   {
     code: "NG → AE",
@@ -39,7 +65,14 @@ const CORRIDORS: Corridor[] = [
     stablecoinMinutes: 6,
     bankCostBps: 280,
     stablecoinCostBps: 70,
-    sources: "NBS import data; CBN BoP statistics",
+    confidence: "medium",
+    verifiedAt: "2026-05-10",
+    sources: [
+      { label: "NBS Foreign Trade in Goods Q4", year: 2024 },
+      { label: "CBN Balance of Payments Statistics", year: 2024 },
+    ],
+    notes:
+      "Combines official trade flow with documented BDC outflow to UAE banks. The stablecoin share is reportedly growing as bank correspondent friction increases.",
   },
   {
     code: "NG ↔ KE",
@@ -52,7 +85,14 @@ const CORRIDORS: Corridor[] = [
     stablecoinMinutes: 10,
     bankCostBps: 380,
     stablecoinCostBps: 110,
-    sources: "AfCFTA trade flow estimates; Chainalysis",
+    confidence: "low",
+    verifiedAt: "2026-05-10",
+    sources: [
+      { label: "AfCFTA trade flow estimates", year: 2023 },
+      { label: "Chainalysis SSA Geography of Crypto", year: 2024 },
+    ],
+    notes:
+      "Most fragile estimate on the page — intra-African flows are poorly instrumented in public data. Confidence: low. Treat as directional.",
   },
   {
     code: "DIASPORA → NG",
@@ -60,12 +100,19 @@ const CORRIDORS: Corridor[] = [
     direction: "inbound",
     flowUsd: 20_900_000_000,
     quidaxPairs: ["USDT/NGN", "CNGN/NGN", "USDC/NGN"],
-    primaryUseCase: "Remittances routed via stablecoins (Sendwave / LemFi / Grey style)",
+    primaryUseCase: "Remittances routed via stablecoins (Sendwave / LemFi / Grey-style)",
     bankWireDays: 2,
     stablecoinMinutes: 5,
     bankCostBps: 540,
     stablecoinCostBps: 130,
-    sources: "World Bank Migration & Remittances Brief 2023",
+    confidence: "high",
+    verifiedAt: "2026-05-10",
+    sources: [
+      { label: "World Bank Migration & Remittances Brief", year: 2023 },
+      { label: "CBN Diaspora Remittance Reports", year: 2024 },
+    ],
+    notes:
+      "Of the four, this is the best-documented and the one where stablecoin rails are most measurably eating bank-correspondent share.",
   },
 ]
 
@@ -81,13 +128,21 @@ function directionDot(d: Corridor["direction"]) {
   return "bg-[var(--chart-4)]"
 }
 
+function confidenceChip(c: Confidence) {
+  if (c === "high")
+    return { label: "High confidence", classes: "border-positive/40 bg-positive/10 text-positive" }
+  if (c === "medium")
+    return { label: "Medium confidence", classes: "border-warning/40 bg-warning/10 text-warning" }
+  return { label: "Low confidence", classes: "border-destructive/40 bg-destructive/10 text-destructive" }
+}
+
 export function CorridorView() {
   const total = CORRIDORS.reduce((a, c) => a + c.flowUsd, 0)
 
   return (
     <section id="corridors" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
-        <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
           08 · Corridor map
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
@@ -97,7 +152,8 @@ export function CorridorView() {
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
           The B2B revenue case isn&apos;t abstract — it lives in specific corridors. Below: the four flows where
           stablecoin rails already out-compete correspondent banking on speed and cost, and the Quidax pairs that
-          serve each one.
+          serve each one. Every row carries a confidence rating and structured sources; this is intentionally
+          conservative.
         </p>
       </div>
 
@@ -105,6 +161,7 @@ export function CorridorView() {
         {CORRIDORS.map((c) => {
           const speedup = Math.round((c.bankWireDays * 24 * 60) / c.stablecoinMinutes)
           const savings = c.bankCostBps - c.stablecoinCostBps
+          const conf = confidenceChip(c.confidence)
           return (
             <article
               key={c.code}
@@ -114,20 +171,25 @@ export function CorridorView() {
                 <div>
                   <div className="flex items-center gap-2">
                     <span className={`h-2 w-2 rounded-full ${directionDot(c.direction)}`} aria-hidden="true" />
-                    <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                    <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                       {directionLabel(c.direction)}
                     </span>
                   </div>
                   <h3 className="mt-1 text-base font-semibold tracking-tight">{c.name}</h3>
-                  <p className="mt-0.5 font-mono text-[11px] text-muted-foreground">{c.code}</p>
+                  <p className="mt-0.5 font-mono text-xs text-muted-foreground">{c.code}</p>
                 </div>
                 <div className="text-right">
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                     Annual flow
                   </div>
                   <div className="mt-0.5 font-mono text-lg tabular-nums">
                     {fmtUsd(c.flowUsd, { compact: true })}
                   </div>
+                  <span
+                    className={`mt-1 inline-flex items-center gap-1 rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest ${conf.classes}`}
+                  >
+                    {conf.label}
+                  </span>
                 </div>
               </header>
 
@@ -135,7 +197,7 @@ export function CorridorView() {
 
               <div className="mt-4 grid grid-cols-2 gap-3 rounded-md border border-border/60 bg-background/50 p-3">
                 <div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                     Bank wire
                   </div>
                   <div className="mt-0.5 font-mono text-sm tabular-nums">
@@ -143,7 +205,7 @@ export function CorridorView() {
                   </div>
                 </div>
                 <div>
-                  <div className="font-mono text-[10px] uppercase tracking-widest text-primary">
+                  <div className="font-mono text-xs uppercase tracking-widest text-primary">
                     Stablecoin rail
                   </div>
                   <div className="mt-0.5 font-mono text-sm tabular-nums text-primary">
@@ -163,14 +225,14 @@ export function CorridorView() {
               </div>
 
               <div className="mt-4">
-                <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
                   Quidax pairs serving this corridor
                 </div>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {c.quidaxPairs.map((p) => (
                     <span
                       key={p}
-                      className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] tracking-wide text-primary"
+                      className="rounded-md border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-xs tracking-wide text-primary"
                     >
                       {p}
                     </span>
@@ -178,9 +240,24 @@ export function CorridorView() {
                 </div>
               </div>
 
-              <p className="mt-3 font-mono text-[10px] leading-relaxed text-muted-foreground/70">
-                Source: {c.sources}. Flow figures are analyst proxies, not Quidax-attributable volume.
-              </p>
+              <div className="mt-4 border-t border-border/60 pt-3">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                    Sources
+                  </span>
+                  <span className="font-mono text-[10px] text-muted-foreground/70">
+                    Verified {c.verifiedAt}
+                  </span>
+                </div>
+                <ul className="mt-1.5 flex flex-col gap-0.5">
+                  {c.sources.map((s) => (
+                    <li key={s.label} className="text-xs text-muted-foreground">
+                      {s.label} ({s.year})
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs italic leading-relaxed text-muted-foreground/80">{c.notes}</p>
+              </div>
             </article>
           )
         })}
@@ -190,7 +267,8 @@ export function CorridorView() {
         These four corridors total ~{fmtUsd(total, { compact: true })} in annual flow. Even a 0.5% capture at a
         25 bps take rate produces an{" "}
         <span className="text-foreground">≈ {fmtUsd(total * 0.005 * 0.0025, { compact: true })}/yr</span>{" "}
-        revenue line — which is the bottom of the range in the B2B sizing section above.
+        revenue line — which is the bottom of the range in the B2B sizing section above. Flow figures are
+        analyst proxies, not Quidax-attributable volume.
       </p>
     </section>
   )

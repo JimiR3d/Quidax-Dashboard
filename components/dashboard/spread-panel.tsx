@@ -154,10 +154,40 @@ export function SpreadPanel({ usdtNgn }: Props) {
         </article>
       </div>
 
-      <p className="mt-3 text-[11px] text-muted-foreground">
+      <p className="mt-3 text-xs text-muted-foreground">
         FX references as of {FX_REFERENCE.asOf}. CBN and parallel markets have no free
         machine-readable feed — references are tracked manually and timestamped.
       </p>
+
+      {/* Screen-reader companion. The SpreadBar above is a custom SVG-like
+          element and would otherwise be unreadable to assistive tech. */}
+      <table className="sr-only">
+        <caption>USDT/NGN compared to NFEM official and parallel references</caption>
+        <thead>
+          <tr>
+            <th scope="col">Reference</th>
+            <th scope="col">NGN per USD</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Quidax USDT/NGN</th>
+            <td>{spread.quidaxUsdtNgn.toFixed(2)}</td>
+            <td>{hasLive ? "Live ticker" : "No live ticker, reference fallback"}</td>
+          </tr>
+          <tr>
+            <th scope="row">CBN NFEM official</th>
+            <td>{spread.cbnOfficial.toFixed(2)}</td>
+            <td>Analyst-tracked, as of {FX_REFERENCE.asOf}</td>
+          </tr>
+          <tr>
+            <th scope="row">Parallel market</th>
+            <td>{spread.parallel.toFixed(2)}</td>
+            <td>Analyst-tracked, as of {FX_REFERENCE.asOf}</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
   )
 }
