@@ -9,8 +9,10 @@ export function CustomerProof() {
           The B2B thesis is already shipping
         </h2>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Quidax-as-a-Service is not a roadmap item — it is live revenue. Three named fintechs already settle real
-          flows through Quidax&apos;s API today. The TAM model below treats these as the wedge, not the ceiling.
+          Quidax-as-a-Service is not a roadmap item — three named fintechs publicly disclose that they integrate
+          with Quidax&apos;s API for NGN-stablecoin flow. The TAM model below treats these as the wedge, not the
+          ceiling. Volume per partner is not public; treat the customer cards as integration proof, not revenue
+          attribution.
         </p>
       </header>
 
@@ -24,7 +26,7 @@ export function CustomerProof() {
               <span className="inline-flex size-9 items-center justify-center rounded-lg bg-gradient-to-br from-primary/30 to-accent/30 ring-1 ring-primary/40">
                 <span className="text-sm font-semibold tabular-nums">{String(idx + 1).padStart(2, "0")}</span>
               </span>
-              <span className="text-[10px] uppercase tracking-wider text-muted-foreground">Live customer</span>
+              <span className="text-xs uppercase tracking-wider text-muted-foreground">Named integration</span>
             </div>
             <h3 className="mt-4 text-xl font-semibold tracking-tight">{c.name}</h3>
             <p className="mt-1 text-xs font-medium uppercase tracking-wider text-primary">{c.category}</p>

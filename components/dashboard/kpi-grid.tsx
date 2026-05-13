@@ -1,7 +1,8 @@
 import { Sparkles } from "lucide-react"
-import type { MarketTicker } from "@/lib/quidax"
+import type { MarketSnapshot } from "@/lib/quidax"
 import { B2B_SEGMENTS } from "@/lib/competitive-data"
-import { fmtNgn, fmtUsd } from "@/lib/format"
+import { ngnTurnover } from "@/lib/insights"
+import { fmtNgn, fmtUsd, fmtRelTime } from "@/lib/format"
 
 function KpiCard({
   label,
@@ -17,7 +18,9 @@ function KpiCard({
   return (
     <div
       className={`group relative flex flex-col justify-between overflow-hidden rounded-xl p-5 transition-all duration-300 ${
-        highlight ? "card-elev glow-primary" : "card-elev hover:-translate-y-0.5 hover:border-primary/40"
+        highlight
+          ? "card-elev glow-primary"
+          : "card-elev hover:-translate-y-0.5 hover:border-primary/40"
       }`}
     >
       {highlight && (
@@ -31,7 +34,9 @@ function KpiCard({
         />
       )}
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">{label}</span>
+        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+          {label}
+        </span>
         {highlight && <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />}
       </div>
       <div
@@ -46,26 +51,39 @@ function KpiCard({
   )
 }
 
-export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
-  const ngn = tickers.filter((t) => t.quote === "NGN")
-  const turnover = ngn.reduce((s, t) => s + t.last * t.volume, 0)
-  const STABLE_BASES = ["USDT", "CNGN", "USDC", "DAI", "TUSD"]
-  const stables = ngn.filter((t) => STABLE_BASES.includes(t.base.toUpperCase()))
-  const stableTurn = stables.reduce((s, t) => s + t.last * t.volume, 0)
-  const stableShare = turnover > 0 ? (stableTurn / turnover) * 100 : 0
-  // Only count constituents that actually carry NGN turnover — avoids
-  // claiming pairs that aren't listed on Quidax.
+const STABLE_BASES = new Set(["USDT", "USDC", "DAI", "TUSD", "CNGN"])
+
+export function KpiGrid({ snapshot }: { snapshot: MarketSnapshot }) {
+  const ngn = snapshot.tickers.filter((t) => t.quote === "NGN")
+  // NGN-turnover uses `baseVolume` (Quidax `vol` is base-asset volume).
+  // Anyone summing `last * baseVolume` for non-NGN markets would be doing
+  // mixed-quote arithmetic; `ngnTurnover` guards against that.
+  const totalNgnTurnover = ngn.reduce((s, t) => s + ngnTurnover(t), 0)
+
+  const stableTickers = ngn.filter((t) => STABLE_BASES.has(t.base.toUpperCase()))
+  const stableTurnover = stableTickers.reduce((s, t) => s + ngnTurnover(t), 0)
+  const stableShare = totalNgnTurnover > 0 ? (stableTurnover / totalNgnTurnover) * 100 : 0
   const stableLabel =
-    stables
-      .filter((t) => t.last * t.volume > 0)
+    stableTickers
+      .filter((t) => ngnTurnover(t) > 0)
       .map((t) => t.base.toUpperCase())
       .join(" + ") || "USDT-only proxy"
 
-  // Midpoint of modelled B2B annual revenue.
+  // Midpoint of modelled B2B annual revenue, expressed in USD.
   const midCaptureRev = B2B_SEGMENTS.reduce((acc, s) => {
     const mid = (s.capturePctLow + s.capturePctHigh) / 2 / 100
     return acc + s.tamUsd * mid * (s.takeRateBps / 10000)
   }, 0)
+
+  const isEmpty = snapshot.source === "empty" || ngn.length === 0
+  const sourceFootnote =
+    snapshot.source === "live"
+      ? "Live · refreshed just now"
+      : snapshot.source === "cached"
+        ? `Cached · ${fmtRelTime(snapshot.ageMs)}`
+        : snapshot.source === "lkg"
+          ? `Last-known-good · ${fmtRelTime(snapshot.ageMs)} · upstream unreachable`
+          : "No upstream data; figures unavailable"
 
   return (
     <section id="kpis" className="mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-16">
@@ -80,31 +98,39 @@ export function KpiGrid({ tickers }: { tickers: MarketTicker[] }) {
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard
           label="24h NGN turnover"
-          value={fmtNgn(turnover, { compact: true })}
-          sub={`${ngn.length} active pairs aggregated`}
+          value={isEmpty ? "—" : fmtNgn(totalNgnTurnover, { compact: true })}
+          sub={isEmpty ? "Upstream unavailable" : `${ngn.length} active NGN pairs aggregated`}
         />
         <KpiCard
           label="Stablecoin share of NGN volume"
-          value={`${stableShare.toFixed(1)}%`}
-          sub={stableLabel}
+          value={isEmpty ? "—" : `${stableShare.toFixed(1)}%`}
+          sub={isEmpty ? "Cannot compute" : stableLabel}
         />
         <KpiCard
           label="Active NGN markets"
-          value={String(ngn.length)}
-          sub={stables.some((t) => t.base.toUpperCase() === "CNGN") ? "Includes regulated cNGN" : "Spot pairs"}
+          value={isEmpty ? "—" : String(ngn.length)}
+          sub={
+            isEmpty
+              ? "No tickers loaded"
+              : stableTickers.some((t) => t.base.toUpperCase() === "CNGN")
+                ? "Includes regulated cNGN"
+                : "Spot pairs"
+          }
         />
         <KpiCard
           label="B2B revenue opportunity"
           value={fmtUsd(midCaptureRev, { compact: true })}
-          sub="annual · midpoint estimate"
+          sub="annual · midpoint of analyst model"
           highlight
         />
       </div>
       <p className="mt-3 text-[11px] text-muted-foreground">
         Source:{" "}
-        <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">app.quidax.io/api/v1/markets/tickers</code>{" "}
-        (live or simulated fallback &mdash; see the badge in the header).
-        The B2B figure is an analyst estimate &mdash; assumptions detailed in the B2B Opportunity section below.
+        <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">
+          app.quidax.io/api/v1/markets/tickers
+        </code>{" "}
+        · {sourceFootnote}. The B2B opportunity is an analyst model — see the B2B Opportunity
+        section below for full assumptions and provenance.
       </p>
     </section>
   )
