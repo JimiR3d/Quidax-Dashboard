@@ -15,17 +15,20 @@ const fetcher = (url: string) =>
 type Props = { initial: MarketSnapshot }
 
 function sourceChip(source: SnapshotSource, ageMs: number) {
-  // Reader-visible proof that the page is actually live: count up in seconds
-  // since the last successful fetch. Caps at 15s — at that point SWR is
-  // already pulling the next snapshot so the counter rolls back to 0s.
-  const liveSeconds = Math.min(15, Math.max(0, Math.floor(ageMs / 1000)))
+  // Reader-visible proof the page is alive: tick once per second.
+  // No cap — if the next SWR cycle is slow (network jitter, upstream
+  // 429, browser tab throttled) the counter keeps climbing past 15s
+  // so the reader can see the page is lagging rather than seeing a
+  // frozen "15s ago" forever. Resets to 0 the moment SWR returns fresh data.
+  const liveSeconds = Math.max(0, Math.floor(ageMs / 1000))
+  const liveAge = liveSeconds === 1 ? "1s ago" : `${liveSeconds}s ago`
   switch (source) {
     case "live":
       return {
         label: "Live · refreshes every 15s",
         classes: "border-positive/30 bg-positive/10 text-positive",
         dot: "bg-positive animate-pulse",
-        ageText: `last fetch ${liveSeconds}s ago`,
+        ageText: `last fetch ${liveAge}`,
       }
     case "cached":
       return {

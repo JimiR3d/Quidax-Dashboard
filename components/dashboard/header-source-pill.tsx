@@ -65,12 +65,16 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   }, [])
 
   const ageMs = fetchedAt ? Math.max(0, now - new Date(fetchedAt).getTime()) : null
-  const liveSeconds = ageMs == null ? null : Math.min(15, Math.floor(ageMs / 1000))
+  // No cap — past 15s the counter keeps climbing so the reader sees the
+  // page is lagging rather than seeing a stuck "15s ago".
+  const liveSeconds = ageMs == null ? null : Math.floor(ageMs / 1000)
 
   const b = badge(source)
   const ageText =
     source === "live" && liveSeconds != null
-      ? `${liveSeconds}s ago`
+      ? liveSeconds === 1
+        ? "1s ago"
+        : `${liveSeconds}s ago`
       : ageMs != null
         ? fmtRelTime(ageMs)
         : "—"
