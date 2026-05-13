@@ -10,6 +10,8 @@ type Props = {
 
 export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
   const peg = computeCngnPeg(cngnNgn, cngnUsdt)
+  // Single source of truth: every visual cue (pill, dot, deviation colour)
+  // derives from peg.status so the colour can never disagree with the label.
   const statusColor =
     peg.status === "stable" ? "text-positive" : peg.status === "watch" ? "text-warning" : "text-destructive"
   const statusBg =
@@ -23,8 +25,11 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
 
   const series = candles.slice(-30).map((c) => c.close)
   const path = buildPegPath(series)
-  const min = series.length ? Math.min(...series, 1) : 0.99
-  const max = series.length ? Math.max(...series, 1) : 1.01
+  // Display min/max use the raw observed range. The chart itself uses a
+  // fixed visual band so a perfectly stable peg renders as a flat line
+  // through the center rather than collapsing to the bottom edge.
+  const min = series.length ? Math.min(...series) : 1
+  const max = series.length ? Math.max(...series) : 1
 
   return (
     <section id="cngn" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6" aria-labelledby="cngn-title">
@@ -64,19 +69,13 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         <article className="card-elev rounded-xl p-5">
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Deviation from peg</p>
           <p
-            className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${
-              Math.abs(peg.deviationBps) < 25
-                ? "text-positive"
-                : peg.deviationBps < 0
-                  ? "text-destructive"
-                  : "text-warning"
-            }`}
+            className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${statusColor}`}
           >
             {peg.deviationBps >= 0 ? "+" : ""}
             {peg.deviationBps.toFixed(1)} bps
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;100 · Depeg &gt; 100
+            Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;&lt;100 · Depeg &ge; 100
           </p>
         </article>
 
@@ -117,7 +116,13 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
               </defs>
               <line x1="0" y1="50" x2="600" y2="50" stroke="oklch(0.55 0.03 290 / 0.4)" strokeDasharray="3 3" />
               <path d={path.fill} fill="url(#cngn-fill)" />
-              <path d={path.line} fill="none" stroke="oklch(0.62 0.27 305)" strokeWidth="2" />
+              <path
+                d={path.line}
+                fill="none"
+                stroke="oklch(0.62 0.27 305)"
+                strokeWidth="2"
+                vectorEffect="non-scaling-stroke"
+              />
             </svg>
           ) : (
             <p className="flex h-full items-center justify-center text-xs text-muted-foreground">
@@ -141,9 +146,16 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
 
 function buildPegPath(values: number[]) {
   if (values.length < 2) return null
-  const min = Math.min(...values, 1)
-  const max = Math.max(...values, 1)
-  const range = max - min || 1
+  // Visual band is anchored at 1.0000 with a minimum ±100 bps half-width
+  // (the depeg threshold). This makes a perfectly stable series render as
+  // a flat line through the centre instead of collapsing to the bottom.
+  const observed = Math.max(
+    Math.abs(Math.max(...values) - 1),
+    Math.abs(1 - Math.min(...values)),
+  )
+  const half = Math.max(0.01, observed * 1.5)
+  const min = 1 - half
+  const range = half * 2
   const stepX = 600 / (values.length - 1)
   const points = values.map((v, i) => {
     const x = i * stepX

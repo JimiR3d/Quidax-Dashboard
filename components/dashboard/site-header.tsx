@@ -12,7 +12,7 @@ function BrandMark() {
         aria-hidden="true"
       />
       <span
-        className="relative font-mono text-base font-semibold leading-none text-white"
+        className="relative font-mono text-base font-semibold leading-none text-primary-foreground"
         aria-hidden="true"
       >
         Q

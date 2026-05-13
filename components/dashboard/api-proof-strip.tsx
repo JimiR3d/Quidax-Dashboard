@@ -23,6 +23,10 @@ export function ApiProofStrip({ initial }: Props) {
   const [flash, setFlash] = useState<Record<string, "up" | "down" | undefined>>({})
 
   useEffect(() => {
+    // Reset the "Xs ago" indicator immediately whenever a fresh snapshot
+    // arrives — otherwise the previous interval would show stale values
+    // for ~1s after each SWR refetch.
+    setSecondsAgo(0)
     const i = setInterval(() => {
       setSecondsAgo(Math.max(0, Math.floor((Date.now() - new Date(snapshot.fetchedAt).getTime()) / 1000)))
     }, 1000)
@@ -53,12 +57,27 @@ export function ApiProofStrip({ initial }: Props) {
             11 · API integration · Proof
           </h2>
           <p id="api-proof-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
-            All {tickers.length} NGN pairs · live
+            All {tickers.length} NGN pairs · {snapshot.source === "live" ? "live" : "snapshot"}
           </p>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-positive/30 bg-positive/10 px-3 py-1.5 text-xs">
-          <span className="size-1.5 rounded-full bg-positive animate-pulse" aria-hidden />
-          <span className="font-medium text-positive">Live · refreshes every 15s</span>
+        <div
+          className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs ${
+            snapshot.source === "live"
+              ? "border-positive/30 bg-positive/10"
+              : "border-warning/30 bg-warning/10"
+          }`}
+        >
+          <span
+            className={`size-1.5 rounded-full animate-pulse ${
+              snapshot.source === "live" ? "bg-positive" : "bg-warning"
+            }`}
+            aria-hidden
+          />
+          <span
+            className={`font-medium ${snapshot.source === "live" ? "text-positive" : "text-warning"}`}
+          >
+            {snapshot.source === "live" ? "Live · refreshes every 15s" : "Simulated · upstream unreachable"}
+          </span>
           <span className="tabular-nums text-muted-foreground">· updated {secondsAgo}s ago</span>
         </div>
       </header>

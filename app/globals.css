@@ -204,3 +204,60 @@
   100% { transform: scale(2.4); opacity: 0; }
 }
 .live-ping { animation: livePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+/*
+  Range slider styling.
+  Tailwind's `appearance-none` removes the native thumb in WebKit/Blink
+  (Chrome, Safari, Edge), leaving an unusable flat bar. We rebuild the
+  thumb with vendor pseudo-elements so the B2B opportunity sliders are
+  visible and draggable across all browsers.
+*/
+input[type="range"].appearance-none {
+  background-color: var(--border);
+}
+input[type="range"].appearance-none::-webkit-slider-runnable-track {
+  height: 100%;
+  background: transparent;
+  border-radius: 9999px;
+}
+input[type="range"].appearance-none::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  margin-top: -5px; /* center on 6px track */
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px oklch(0.62 0.27 305 / 0.5), 0 2px 6px oklch(0 0 0 / 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+input[type="range"].appearance-none::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+input[type="range"].appearance-none::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+input[type="range"].appearance-none::-moz-range-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 9999px;
+}
+input[type="range"].appearance-none::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px oklch(0.62 0.27 305 / 0.5), 0 2px 6px oklch(0 0 0 / 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+input[type="range"].appearance-none::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+input[type="range"].appearance-none:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}

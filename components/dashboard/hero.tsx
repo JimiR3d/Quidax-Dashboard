@@ -1,12 +1,16 @@
 import { ArrowDownRight, Sparkles } from "lucide-react"
 
 export function Hero({ fetchedAt }: { fetchedAt: string }) {
+  // Render in Africa/Lagos (WAT) — this dashboard is for a Nigerian audience.
+  // Without an explicit timeZone, Vercel's UTC runtime would print UTC, which
+  // is technically correct but unhelpful for the reader.
   const date = new Date(fetchedAt).toLocaleString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Africa/Lagos",
     timeZoneName: "short",
   })
   return (

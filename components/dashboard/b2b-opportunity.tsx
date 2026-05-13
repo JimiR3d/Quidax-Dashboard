@@ -175,7 +175,7 @@ export function B2BOpportunity() {
                 </div>
               </div>
 
-              <div className="mt-3 space-y-2.5">
+              <div className="mt-3 flex flex-col gap-2.5">
                 <label className="block">
                   <div className="flex items-baseline justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -197,6 +197,7 @@ export function B2BOpportunity() {
                     onChange={(e) => setKnob(i, { capturePct: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
                     aria-label={`Capture percentage for ${s.segment}`}
+                    aria-valuetext={`${s.capturePct.toFixed(2)} percent`}
                   />
                 </label>
 
@@ -218,6 +219,7 @@ export function B2BOpportunity() {
                     onChange={(e) => setKnob(i, { takeRateBps: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
                     aria-label={`Take rate basis points for ${s.segment}`}
+                    aria-valuetext={`${s.takeRateBps} basis points`}
                   />
                 </label>
               </div>

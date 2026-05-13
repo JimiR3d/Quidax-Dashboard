@@ -60,6 +60,11 @@ export function CompetitiveMatrix() {
             Quidax row verified live · others are analyst estimates from public sources
           </p>
           <table className="w-full text-sm">
+            <caption className="sr-only">
+              Competitive positioning matrix for Nigerian and pan-African crypto exchanges across B2B API
+              availability, NGN pair count, NGN focus, Africa country coverage, stablecoin focus, and notable
+              competitive edge.
+            </caption>
             <thead className="border-b border-border/60 bg-secondary/40 text-left font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
               <tr>
                 <th className="px-4 py-3">Player</th>

@@ -33,7 +33,7 @@ export function SpreadPanel({ usdtNgn }: Props) {
         <ReferenceCard
           label="Quidax USDT/NGN"
           value={spread.quidaxUsdtNgn}
-          subtitle="Live · /markets/tickers/usdtngn"
+          subtitle="Quidax · /markets/tickers"
           tone="primary"
         />
         <ReferenceCard
@@ -59,7 +59,7 @@ export function SpreadPanel({ usdtNgn }: Props) {
 
         <article className="card-elev rounded-xl p-5">
           <h3 className="text-sm font-medium">Why this matters for B2B</h3>
-          <ul className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+          <ul className="mt-3 flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
             <li className="flex gap-2">
               <span className="mt-2 size-1 shrink-0 rounded-full bg-primary" aria-hidden />
               <span>
@@ -123,18 +123,25 @@ function SpreadBar({ spread }: { spread: ReturnType<typeof computeSpread> }) {
   const min = Math.min(...points.map((p) => p.value)) - 30
   const max = Math.max(...points.map((p) => p.value)) + 30
   const range = max - min
+  // Render muted markers first so the primary Quidax dot stays visually on top
+  // when it overlaps the CBN reference (which happens whenever the live USDT
+  // price tracks the official rate exactly).
+  const draw = [...points].sort((a, b) => {
+    const rank = (tone: "primary" | "muted") => (tone === "primary" ? 1 : 0)
+    return rank(a.tone) - rank(b.tone)
+  })
 
   return (
     <div className="mt-4">
       <div className="relative h-2 w-full rounded-full bg-muted/30">
         <div className="absolute inset-y-0 left-0 right-0 rounded-full bg-gradient-to-r from-primary/40 via-accent/40 to-primary/40" />
-        {points.map((p) => {
+        {draw.map((p) => {
           const pct = ((p.value - min) / range) * 100
           return (
             <div
               key={p.label}
               className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2"
-              style={{ left: `${pct}%` }}
+              style={{ left: `${pct}%`, zIndex: p.tone === "primary" ? 2 : 1 }}
             >
               <div
                 className={`size-3 rounded-full ring-2 ring-background ${
