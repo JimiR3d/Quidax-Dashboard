@@ -31,6 +31,18 @@ function clientIp(h: Headers): string {
   return h.get("x-real-ip") ?? "anon"
 }
 
+/**
+ * Explicit OPTIONS: we deliberately do NOT advertise any cross-origin allowance.
+ * Browsers calling from a different origin get a 405; rate-limited fetchers
+ * (curl, server-to-server) can still GET — they bypass CORS but are throttled.
+ */
+export async function OPTIONS() {
+  return new NextResponse(null, {
+    status: 405,
+    headers: { Allow: "GET", "Cache-Control": "no-store" },
+  })
+}
+
 export async function GET() {
   const h = await headers()
   const ip = clientIp(h)

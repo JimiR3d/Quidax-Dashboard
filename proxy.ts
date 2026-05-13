@@ -23,7 +23,9 @@ const CSP_DIRECTIVES = [
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' data: https://fonts.gstatic.com",
   "img-src 'self' data: blob:",
-  "connect-src 'self' https://app.quidax.io https://va.vercel-scripts.com",
+  // Browser only talks to our own /api/markets. Quidax is called server-side
+  // by lib/quidax.ts, so it does NOT belong in the browser connect-src.
+  "connect-src 'self' https://va.vercel-scripts.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
