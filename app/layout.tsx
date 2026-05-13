@@ -12,16 +12,57 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 })
 
+const SITE_TITLE = "NGN Liquidity Intelligence — An Independent B2B Thesis on Quidax"
+const SITE_DESCRIPTION =
+  "An independent competitive market analysis of Nigeria's crypto liquidity, stablecoin demand, and the B2B opportunity for Quidax-as-a-Service. Public data only. Not affiliated with Quidax Technologies Limited."
+
 export const metadata: Metadata = {
-  title: "NGN Liquidity Intelligence — A B2B Growth Thesis for Quidax",
-  description:
-    "An independent competitive market analysis of Nigeria's crypto liquidity, stablecoin demand, and the B2B opportunity for Quidax-as-a-Service. Built by Oluwafolajinmi David Aboderin.",
-  generator: "v0.app",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://quidax-dashboard.vercel.app",
+  ),
+  title: {
+    default: SITE_TITLE,
+    template: "%s · NGN Liquidity Intelligence",
+  },
+  description: SITE_DESCRIPTION,
+  keywords: [
+    "Quidax",
+    "Nigeria",
+    "stablecoin",
+    "USDT/NGN",
+    "cNGN",
+    "B2B crypto",
+    "fintech",
+    "remittance corridors",
+    "NFEM",
+    "NGN liquidity",
+  ],
+  authors: [{ name: "Oluwafolajinmi David Aboderin" }],
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    type: "website",
+    locale: "en_NG",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 }
 
 export const viewport: Viewport = {
   themeColor: "#1A0E2E",
+  width: "device-width",
+  initialScale: 1,
 }
+
+const showAnalytics =
+  process.env.VERCEL_ENV === "production" || process.env.VERCEL_ENV === "preview"
 
 export default function RootLayout({
   children,
@@ -29,10 +70,13 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable} bg-background`}>
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable} bg-background`}
+    >
       <body className="font-sans antialiased min-h-screen bg-background text-foreground">
         {children}
-        {process.env.NODE_ENV === "production" && <Analytics />}
+        {showAnalytics && <Analytics />}
       </body>
     </html>
   )
