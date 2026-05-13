@@ -19,7 +19,7 @@ export const revalidate = 3600
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-background">
-      <SiteHeader source="live" staleMs={0} />
+      <SiteHeader snapshotSource="live" />
 
       <section className="mx-auto w-full max-w-2xl px-4 py-16 md:px-6 md:py-24">
         <Link

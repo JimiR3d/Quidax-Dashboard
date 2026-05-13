@@ -1,3 +1,4 @@
+import { Info } from "lucide-react"
 import { RECOMMENDATIONS } from "@/lib/competitive-data"
 
 function PriorityBadge({ p }: { p: "P0" | "P1" | "P2" }) {
@@ -27,7 +28,10 @@ export function Recommendations() {
           From thesis to roadmap
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          These are the moves I would prioritize if I were sitting on the Quidax product or data team tomorrow. Each is tied to a measurable outcome in the model above.
+          These are the moves I would prioritize if I were sitting on the Quidax product or
+          data team tomorrow. Each is tied to a measurable outcome in the model above. The
+          honest caveat: I&apos;m reasoning from what is publicly visible — items the Quidax
+          team may already have in flight internally are flagged.
         </p>
       </div>
 
@@ -47,6 +51,18 @@ export function Recommendations() {
               <PriorityBadge p={r.priority} />
             </div>
             <p className="text-sm leading-relaxed text-muted-foreground">{r.thesis}</p>
+            {r.visibilityCaveat && (
+              <p className="flex items-start gap-2 rounded-md border border-border/50 bg-secondary/20 px-3 py-2 text-xs leading-relaxed text-muted-foreground">
+                <Info
+                  className="mt-0.5 h-3.5 w-3.5 shrink-0 text-warning"
+                  aria-hidden="true"
+                />
+                <span>
+                  <span className="text-foreground/80 font-medium">Visibility caveat:</span>{" "}
+                  {r.visibilityCaveat}
+                </span>
+              </p>
+            )}
             <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
                 Owner

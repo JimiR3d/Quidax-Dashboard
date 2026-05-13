@@ -10,18 +10,39 @@ type Props = {
 
 export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
   const peg = computeCngnPeg(cngnNgn, cngnUsdt)
+  // If we have no live cNGN/NGN ticker we MUST NOT report "stable 0.0 bps" —
+  // that would be a fiction. Render an explicit no-data chip instead.
+  const noLive = !peg.hasLiveSpot
   // Single source of truth: every visual cue (pill, dot, deviation colour)
   // derives from peg.status so the colour can never disagree with the label.
-  const statusColor =
-    peg.status === "stable" ? "text-positive" : peg.status === "watch" ? "text-warning" : "text-destructive"
-  const statusBg =
-    peg.status === "stable"
+  const statusColor = noLive
+    ? "text-muted-foreground"
+    : peg.status === "stable"
+      ? "text-positive"
+      : peg.status === "watch"
+        ? "text-warning"
+        : "text-destructive"
+  const statusBg = noLive
+    ? "bg-muted/40 border-border"
+    : peg.status === "stable"
       ? "bg-positive/10 border-positive/30"
       : peg.status === "watch"
         ? "bg-warning/10 border-warning/30"
         : "bg-destructive/10 border-destructive/30"
-  const statusDot =
-    peg.status === "stable" ? "bg-positive" : peg.status === "watch" ? "bg-warning" : "bg-destructive"
+  const statusDot = noLive
+    ? "bg-muted-foreground"
+    : peg.status === "stable"
+      ? "bg-positive"
+      : peg.status === "watch"
+        ? "bg-warning"
+        : "bg-destructive"
+  const statusLabel = noLive
+    ? "No live spot"
+    : peg.status === "stable"
+      ? "Stable"
+      : peg.status === "watch"
+        ? "Watch"
+        : "Depeg event"
 
   const series = candles.slice(-30).map((c) => c.close)
   const path = buildPegPath(series)
@@ -49,9 +70,7 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         </div>
         <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${statusBg}`}>
           <span className={`size-1.5 rounded-full ${statusDot} animate-pulse`} aria-hidden />
-          <span className={statusColor}>
-            {peg.status === "stable" ? "Stable" : peg.status === "watch" ? "Watch" : "Depeg event"}
-          </span>
+          <span className={statusColor}>{statusLabel}</span>
         </div>
       </header>
 
@@ -59,10 +78,11 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         <article className="card-elev rounded-xl p-5">
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Current cNGN/NGN</p>
           <p className="mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl">
-            {peg.cngnNgn.toFixed(4)}
+            {noLive ? "—" : peg.cngnNgn.toFixed(4)}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Target peg: <span className="tabular-nums text-foreground">1.0000</span>
+            {noLive ? "Awaiting cNGN/NGN ticker" : "Target peg: "}
+            {!noLive && <span className="tabular-nums text-foreground">1.0000</span>}
           </p>
         </article>
 
@@ -71,8 +91,9 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
           <p
             className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${statusColor}`}
           >
-            {peg.deviationBps >= 0 ? "+" : ""}
-            {peg.deviationBps.toFixed(1)} bps
+            {noLive
+              ? "—"
+              : `${peg.deviationBps >= 0 ? "+" : ""}${peg.deviationBps.toFixed(1)} bps`}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
             Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;&lt;100 · Depeg &ge; 100

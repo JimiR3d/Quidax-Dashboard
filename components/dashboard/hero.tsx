@@ -1,18 +1,42 @@
 import { ArrowDownRight, Sparkles } from "lucide-react"
+import type { SnapshotSource } from "@/lib/quidax"
+import { fmtRelTime } from "@/lib/format"
 
-export function Hero({ fetchedAt }: { fetchedAt: string }) {
-  // Render in Africa/Lagos (WAT) — this dashboard is for a Nigerian audience.
-  // Without an explicit timeZone, Vercel's UTC runtime would print UTC, which
-  // is technically correct but unhelpful for the reader.
-  const date = new Date(fetchedAt).toLocaleString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    timeZone: "Africa/Lagos",
-    timeZoneName: "short",
-  })
+type Props = {
+  fetchedAt: string | null
+  snapshotSource: SnapshotSource
+  ageMs: number
+}
+
+/**
+ * Above-the-fold hero. Reads truthfully from the snapshot:
+ *   - If we have a `fetchedAt`, format it in WAT for the Nigerian audience.
+ *   - If we don't (`empty` snapshot), say so plainly; do not pretend.
+ *   - Always pair the timestamp with the snapshot source so a reader can
+ *     immediately tell whether they're looking at live, cached, or LKG data.
+ */
+export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
+  const dateLabel = fetchedAt
+    ? new Date(fetchedAt).toLocaleString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "Africa/Lagos",
+        timeZoneName: "short",
+      })
+    : "No upstream data right now"
+
+  const sourceCopy =
+    snapshotSource === "live"
+      ? "Live · refreshes every 60s server-side"
+      : snapshotSource === "cached"
+        ? `Cached snapshot · ${fmtRelTime(ageMs)}`
+        : snapshotSource === "lkg"
+          ? `Last-known-good · ${fmtRelTime(ageMs)} · upstream unreachable`
+          : "Snapshot unavailable · upstream and cache both empty"
+
   return (
     <section className="relative isolate overflow-hidden border-b border-border/60">
       <div className="absolute inset-0 bg-grid opacity-50" aria-hidden="true" />
@@ -62,17 +86,15 @@ export function Hero({ fetchedAt }: { fetchedAt: string }) {
                 Quidax public markets API
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                app.quidax.io · refreshes every 60s · analyst model overlays
+                app.quidax.io · validated &amp; cached · analyst overlays explicitly labelled
               </p>
             </div>
             <div className="card-elev rounded-lg p-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                Generated
+                Snapshot
               </span>
-              <p className="mt-2 text-sm font-medium text-foreground">{date}</p>
-              <p className="mt-0.5 text-xs text-muted-foreground">
-                Auto-refreshes server-side every minute
-              </p>
+              <p className="mt-2 text-sm font-medium text-foreground">{dateLabel}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{sourceCopy}</p>
             </div>
           </div>
 
