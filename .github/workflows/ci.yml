@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel an in-flight run when a new commit lands on the same ref so a fast
+# follow-up commit doesn't burn minutes finishing a now-stale CI run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck · test · build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Each step runs independently so a failure surfaces the right diagnostic
+      # instead of being masked by a later failure. `if: always()` lets the
+      # build step still run even if tests fail, so a single PR run reports
+      # every problem at once.
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Unit tests
+        if: always()
+        run: pnpm test
+
+      - name: Production build
+        if: always()
+        env:
+          # Suppress Next.js telemetry in CI; quieter logs.
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: pnpm build
