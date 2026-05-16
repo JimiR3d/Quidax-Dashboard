@@ -14,42 +14,38 @@ const fetcher = (url: string) =>
 
 type Props = { initial: MarketSnapshot }
 
-function sourceChip(source: SnapshotSource, ageMs: number) {
-  // Reader-visible proof the page is alive: tick once per second.
-  // No cap — if the next SWR cycle is slow (network jitter, upstream
-  // 429, browser tab throttled) the counter keeps climbing past 15s
-  // so the reader can see the page is lagging rather than seeing a
-  // frozen "15s ago" forever. Resets to 0 the moment SWR returns fresh data.
-  const liveSeconds = Math.max(0, Math.floor(ageMs / 1000))
-  const liveAge = liveSeconds === 1 ? "1s ago" : `${liveSeconds}s ago`
+function sourceChip(source: SnapshotSource, counter: number) {
+  // Counter: 1, 2, 3... up to 15 (refresh ideal) or higher if issues.
+  // Resets to 1 every time SWR fetches new data.
+  const counterText = counter === 1 ? "1s ago" : `${counter}s ago`
   switch (source) {
     case "live":
       return {
-        label: "Live · refreshes every 15s",
+        label: "Live",
         classes: "border-positive/30 bg-positive/10 text-positive",
         dot: "bg-positive animate-pulse",
-        ageText: `last fetch ${liveAge}`,
+        ageText: counterText,
       }
     case "cached":
       return {
-        label: "Cached snapshot",
+        label: "Live",
         classes: "border-positive/30 bg-positive/5 text-positive",
         dot: "bg-positive",
-        ageText: `cache age ${fmtRelTime(ageMs)}`,
+        ageText: counterText,
       }
     case "lkg":
       return {
-        label: "Last-known-good · upstream unreachable",
+        label: "Stale · upstream unreachable",
         classes: "border-warning/40 bg-warning/10 text-warning",
         dot: "bg-warning",
-        ageText: `last success ${fmtRelTime(ageMs)}`,
+        ageText: `${fmtRelTime(counter * 1000)}`,
       }
     case "empty":
       return {
         label: "No live data available",
         classes: "border-destructive/40 bg-destructive/10 text-destructive",
         dot: "bg-destructive",
-        ageText: "no cache · no upstream",
+        ageText: "no data",
       }
   }
 }
@@ -77,12 +73,21 @@ export function ApiProofStrip({ initial }: Props) {
   const lastPriceRef = useRef<Record<string, number>>({})
   const [flash, setFlash] = useState<Record<string, "up" | "down" | undefined>>({})
 
-  // Re-render every second so the "Xs ago" indicator stays accurate without
-  // re-fetching. We don't need actual state — the snapshot itself is unchanged.
+  // Counter: starts at 1, counts up every second, resets when SWR fetches new data
+  const [counter, setCounter] = useState(1)
+
+  // Increment counter every second
   useEffect(() => {
-    const i = setInterval(() => force((n) => n + 1), 1000)
+    const i = setInterval(() => {
+      setCounter((prev) => prev + 1)
+    }, 1000)
     return () => clearInterval(i)
   }, [])
+
+  // Reset counter to 1 when SWR brings fresh data
+  useEffect(() => {
+    setCounter(1)
+  }, [data?.fetchedAt])
 
   useEffect(() => {
     const updates: Record<string, "up" | "down"> = {}
@@ -100,9 +105,7 @@ export function ApiProofStrip({ initial }: Props) {
     }
   }, [tickers])
 
-  const fetchedAtMs = snapshot.fetchedAt ? new Date(snapshot.fetchedAt).getTime() : null
-  const liveAgeMs = fetchedAtMs ? Math.max(0, Date.now() - fetchedAtMs) : snapshot.ageMs
-  const chip = sourceChip(snapshot.source, liveAgeMs)
+  const chip = sourceChip(snapshot.source, counter)
 
   return (
     <section

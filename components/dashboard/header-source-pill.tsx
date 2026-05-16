@@ -17,13 +17,13 @@ function badge(source: SnapshotSource) {
   switch (source) {
     case "live":
       return {
-        label: "Live · Quidax API",
+        label: "Live",
         classes: "border-positive/40 bg-positive/10 text-positive",
         dot: "bg-positive animate-pulse",
       }
     case "cached":
       return {
-        label: "Cached (within 10s)",
+        label: "Live",
         classes: "border-positive/30 bg-positive/5 text-positive",
         dot: "bg-positive",
       }
@@ -43,14 +43,9 @@ function badge(source: SnapshotSource) {
 }
 
 /**
- * The header status pill. Subscribes to `/api/markets` SWR cache and displays
- * the same age + source as the proof strip. Ticks every 1s; the timer starts
- * at 0 and counts up to 15s when SWR refreshes (ideal) or up to 30s if there
- * are issues. Once SWR returns fresh data, the age resets to 0.
- *
- * CRITICAL: Don't use server-rendered initialFetchedAt for the baseline.
- * It's already 10-15s old by the time the browser sees it. Instead, wait
- * for SWR's first fetch (which happens immediately) and use that timestamp.
+ * Header status pill. Shows "Live" + seconds-since-refresh counter.
+ * Counter starts at 1, counts up continuously, resets to 1 every time
+ * SWR fetches fresh data (every 15s ideally, up to 30s if issues).
  */
 export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const { data } = useSWR<MarketSnapshot>("/api/markets", fetcher, {
@@ -61,30 +56,24 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const source = data?.source ?? initialSource
   const fetchedAt = data?.fetchedAt ?? initialFetchedAt
 
-  // Always initialize to Date.now() — don't use server time. SWR will
-  // immediately provide a fresh snapshot, and once it does, fetchedAt
-  // comes from that SWR response (not from the stale server render).
-  const [now, setNow] = useState(() => Date.now())
+  // Counter: starts at 1, counts up every second, resets when data changes
+  const [counter, setCounter] = useState(1)
 
+  // Increment counter every second
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000)
+    const id = setInterval(() => {
+      setCounter((prev) => prev + 1)
+    }, 1000)
     return () => clearInterval(id)
   }, [])
 
-  const ageMs = fetchedAt ? Math.max(0, now - new Date(fetchedAt).getTime()) : null
-  // No cap — past 15s the counter keeps climbing so the reader sees the
-  // page is lagging rather than seeing a stuck "15s ago".
-  const liveSeconds = ageMs == null ? null : Math.floor(ageMs / 1000)
+  // Reset counter to 1 when SWR brings fresh data
+  useEffect(() => {
+    setCounter(1)
+  }, [data?.fetchedAt])
 
   const b = badge(source)
-  const ageText =
-    source === "live" && liveSeconds != null
-      ? liveSeconds === 1
-        ? "1s ago"
-        : `${liveSeconds}s ago`
-      : ageMs != null
-        ? fmtRelTime(ageMs)
-        : "—"
+  const counterText = counter === 1 ? "1s ago" : `${counter}s ago`
 
   return (
     <span
@@ -93,7 +82,7 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
     >
       <span className={`inline-block h-1.5 w-1.5 rounded-full ${b.dot}`} aria-hidden="true" />
       <span>{b.label}</span>
-      <span className="tabular-nums opacity-80">· {ageText}</span>
+      <span className="tabular-nums opacity-80">· {counterText}</span>
     </span>
   )
 }
