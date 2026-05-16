@@ -56,8 +56,8 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const source = data?.source ?? initialSource
   const fetchedAt = data?.fetchedAt ?? initialFetchedAt
 
-  // Counter: starts at 1, counts up every second, resets when data changes
-  const [counter, setCounter] = useState(1)
+  // Counter: starts at 0, counts up every second, resets when data changes
+  const [counter, setCounter] = useState(0)
 
   // Increment counter every second
   useEffect(() => {
@@ -67,13 +67,13 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
     return () => clearInterval(id)
   }, [])
 
-  // Reset counter to 1 when SWR brings fresh data
+  // Reset counter to 0 when SWR brings fresh data
   useEffect(() => {
-    setCounter(1)
+    setCounter(0)
   }, [data?.fetchedAt])
 
   const b = badge(source)
-  const counterText = counter === 1 ? "1s ago" : `${counter}s ago`
+  const counterText = counter === 0 ? "0s ago" : `${counter}s ago`
 
   return (
     <span

@@ -15,9 +15,9 @@ const fetcher = (url: string) =>
 type Props = { initial: MarketSnapshot }
 
 function sourceChip(source: SnapshotSource, counter: number) {
-  // Counter: 1, 2, 3... up to 15 (refresh ideal) or higher if issues.
-  // Resets to 1 every time SWR fetches new data.
-  const counterText = counter === 1 ? "1s ago" : `${counter}s ago`
+  // Counter: 0, 1, 2... up to 15 (refresh ideal) or higher if issues.
+  // Resets to 0 every time SWR fetches new data.
+  const counterText = counter === 0 ? "0s ago" : `${counter}s ago`
   switch (source) {
     case "live":
       return {
@@ -73,8 +73,8 @@ export function ApiProofStrip({ initial }: Props) {
   const lastPriceRef = useRef<Record<string, number>>({})
   const [flash, setFlash] = useState<Record<string, "up" | "down" | undefined>>({})
 
-  // Counter: starts at 1, counts up every second, resets when SWR fetches new data
-  const [counter, setCounter] = useState(1)
+  // Counter: starts at 0, counts up every second, resets when SWR fetches new data
+  const [counter, setCounter] = useState(0)
 
   // Increment counter every second
   useEffect(() => {
@@ -84,9 +84,9 @@ export function ApiProofStrip({ initial }: Props) {
     return () => clearInterval(i)
   }, [])
 
-  // Reset counter to 1 when SWR brings fresh data
+  // Reset counter to 0 when SWR brings fresh data
   useEffect(() => {
-    setCounter(1)
+    setCounter(0)
   }, [data?.fetchedAt])
 
   useEffect(() => {
