@@ -46,7 +46,7 @@ If this dashboard ever becomes a multi-tenant, user-authenticated tool (e.g., pe
 
 **What Exists:**
 - Vercel platform access logs retain request-level logs per Vercel plan (typically 3–24 hours depending on plan)
-  - **Source:** Vercel Documentation, https://vercel.com/docs/observability/logs
+  - **Source:** [Vercel Documentation on Logs](https://vercel.com/docs/observability/logs)
   - These logs include: timestamp, IP, user agent, response status, latency
 - Structured logging in `lib/quidax.ts` and `lib/cache.ts` logs:
   - Upstream schema parse failures (Zod validation rejection)
