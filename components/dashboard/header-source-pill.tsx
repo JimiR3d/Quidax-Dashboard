@@ -43,14 +43,14 @@ function badge(source: SnapshotSource) {
 }
 
 /**
- * The header status pill. Hydrates with the server-rendered snapshot, then
- * subscribes to the same `/api/markets` SWR cache as the proof strip — so
- * both surfaces always agree on age and source. The seconds counter
- * re-renders every second; at 15s SWR has already triggered the
- * next fetch, which resets the clock.
+ * The header status pill. Subscribes to `/api/markets` SWR cache and displays
+ * the same age + source as the proof strip. Ticks every 1s; the timer starts
+ * at 0 and counts up to 15s when SWR refreshes (ideal) or up to 30s if there
+ * are issues. Once SWR returns fresh data, the age resets to 0.
  *
- * IMPORTANT: Initialize `now` as close as possible to `initialFetchedAt`
- * so the age calculation doesn't show a 14s backlog from server-render latency.
+ * CRITICAL: Don't use server-rendered initialFetchedAt for the baseline.
+ * It's already 10-15s old by the time the browser sees it. Instead, wait
+ * for SWR's first fetch (which happens immediately) and use that timestamp.
  */
 export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const { data } = useSWR<MarketSnapshot>("/api/markets", fetcher, {
@@ -61,18 +61,10 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const source = data?.source ?? initialSource
   const fetchedAt = data?.fetchedAt ?? initialFetchedAt
 
-  // Initialize as if the fetch just completed — don't wait for the first
-  // interval tick. If initialFetchedAt is ~now, age starts at 0–1s.
-  // If SWR has already updated and fetchedAt is fresh, SWR's data
-  // overrides and age resets anyway.
-  const [now, setNow] = useState(() => {
-    if (initialFetchedAt) {
-      const fetchMs = new Date(initialFetchedAt).getTime()
-      // Age as of component mount time, not Date.now() 14s later
-      return fetchMs
-    }
-    return Date.now()
-  })
+  // Always initialize to Date.now() — don't use server time. SWR will
+  // immediately provide a fresh snapshot, and once it does, fetchedAt
+  // comes from that SWR response (not from the stale server render).
+  const [now, setNow] = useState(() => Date.now())
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000)
