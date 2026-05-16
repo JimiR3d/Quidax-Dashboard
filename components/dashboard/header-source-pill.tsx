@@ -46,8 +46,11 @@ function badge(source: SnapshotSource) {
  * The header status pill. Hydrates with the server-rendered snapshot, then
  * subscribes to the same `/api/markets` SWR cache as the proof strip — so
  * both surfaces always agree on age and source. The seconds counter
- * re-renders every second up to 15s; at 15s SWR has already triggered the
+ * re-renders every second; at 15s SWR has already triggered the
  * next fetch, which resets the clock.
+ *
+ * IMPORTANT: Initialize `now` as close as possible to `initialFetchedAt`
+ * so the age calculation doesn't show a 14s backlog from server-render latency.
  */
 export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   const { data } = useSWR<MarketSnapshot>("/api/markets", fetcher, {
@@ -57,7 +60,19 @@ export function HeaderSourcePill({ initialSource, initialFetchedAt }: Props) {
   })
   const source = data?.source ?? initialSource
   const fetchedAt = data?.fetchedAt ?? initialFetchedAt
-  const [now, setNow] = useState(() => Date.now())
+
+  // Initialize as if the fetch just completed — don't wait for the first
+  // interval tick. If initialFetchedAt is ~now, age starts at 0–1s.
+  // If SWR has already updated and fetchedAt is fresh, SWR's data
+  // overrides and age resets anyway.
+  const [now, setNow] = useState(() => {
+    if (initialFetchedAt) {
+      const fetchMs = new Date(initialFetchedAt).getTime()
+      // Age as of component mount time, not Date.now() 14s later
+      return fetchMs
+    }
+    return Date.now()
+  })
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 1000)
