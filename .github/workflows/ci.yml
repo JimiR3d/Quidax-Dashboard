@@ -42,6 +42,10 @@ jobs:
       - name: Type-check
         run: pnpm exec tsc --noEmit
 
+      - name: Project invariants (no DB / no localStorage / no legacy middleware / proxy.ts present)
+        if: always()
+        run: node scripts/check-invariants.mjs
+
       - name: Unit tests
         if: always()
         run: pnpm test
@@ -52,3 +56,27 @@ jobs:
           # Suppress Next.js telemetry in CI; quieter logs.
           NEXT_TELEMETRY_DISABLED: "1"
         run: pnpm build
+
+      - name: Health endpoint smoke (build artifact)
+        if: always()
+        run: |
+          # Boot the production server, hit /api/health, assert HTTP 200/503
+          # body shape, then shut down. This guards the synthetic-monitor
+          # contract: if a future change breaks /api/health, CI catches it
+          # before Better Stack wakes anyone up.
+          pnpm exec next start -p 3939 &
+          SERVER_PID=$!
+          # Give Next a moment to boot.
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -sf -o /dev/null http://127.0.0.1:3939/api/health || \
+               curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3939/api/health | grep -q "503"; then
+              break
+            fi
+            sleep 1
+          done
+          BODY=$(curl -s http://127.0.0.1:3939/api/health || true)
+          echo "health body: $BODY"
+          kill $SERVER_PID 2>/dev/null || true
+          # status field must be one of ok/degraded/down.
+          echo "$BODY" | grep -qE '"status":"(ok|degraded|down)"' \
+            || { echo "health endpoint did not return a recognised status"; exit 1; }

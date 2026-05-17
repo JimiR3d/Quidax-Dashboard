@@ -23,6 +23,7 @@
 
 import { z } from "zod"
 import { getCachedOrFetch, retry } from "./cache"
+import { log } from "./logger"
 
 export type MarketTicker = {
   market: string // "btcngn"
@@ -139,7 +140,8 @@ type NormalizationResult = {
 function normalizeTickers(raw: unknown): NormalizationResult {
   const top = TickersPayload.safeParse(raw)
   if (!top.success) {
-    console.error("[quidax] tickers: top-level schema rejected", {
+    log.error("quidax.tickers.schema_rejected", {
+      where: "top-level",
       issues: top.error.issues.slice(0, 3),
     })
     return { tickers: [], dropped: 0 }
@@ -197,7 +199,7 @@ async function fetchTickersRaw(opts: { signal?: AbortSignal }): Promise<unknown>
   })
   if (!res.ok) {
     const text = await res.text().catch(() => "")
-    console.error("[quidax] tickers upstream non-2xx", {
+    log.error("quidax.tickers.upstream_non_2xx", {
       status: res.status,
       body: text.slice(0, 200),
     })
@@ -260,7 +262,9 @@ export async function getMarketSnapshot(_opts?: {
     // result.source === "lkg"
     return { ...snap, source: "lkg", ageMs: result.ageMs }
   } catch (err) {
-    console.error("[quidax] no cache available, returning empty snapshot", err)
+    log.error("quidax.snapshot.empty", {
+      error: err instanceof Error ? err.message : String(err),
+    })
     return {
       source: "empty",
       fetchedAt: null,
@@ -299,7 +303,7 @@ export async function getCandles(
               .then(async (res) => {
                 if (!res.ok) {
                   const text = await res.text().catch(() => "")
-                  console.error("[quidax] k-line upstream non-2xx", {
+                  log.error("quidax.kline.upstream_non_2xx", {
                     market,
                     status: res.status,
                     body: text.slice(0, 200),
@@ -314,7 +318,7 @@ export async function getCandles(
         )
         const parsed = KlinePayload.safeParse(raw)
         if (!parsed.success) {
-          console.error("[quidax] k-line schema rejected", {
+          log.error("quidax.kline.schema_rejected", {
             market,
             issues: parsed.error.issues.slice(0, 3),
           })

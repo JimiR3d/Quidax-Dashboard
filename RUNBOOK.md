@@ -157,20 +157,46 @@ to `lkg` (and eventually `empty` once the LKG ages out).
 
 ---
 
-## 6. Things that would page someone if this had a real userbase
+## 6. Operational instrumentation
 
-(Not wired today — captured here so it doesn't get forgotten.)
+The three things originally captured here as "would page someone if this
+had a real userbase" are now wired in code. They activate when the
+relevant env vars / external services are connected; with nothing
+connected the system falls back to its previous behavior (stdout-only
+logs, no alerts).
 
-- Synthetic check hitting `/api/markets` every 60s, alerting if
-  `source === "empty"` for >5 min or if HTTP status is non-2xx for
-  >2 consecutive checks.
-- A log drain forwarding `console.error` events from
-  `lib/quidax.ts` / `lib/cache.ts` to a queryable sink (Axiom /
-  Logflare / Sentry) instead of relying on Vercel's rolling log
-  buffer.
-- A simple "deploy notification" hook into the team chat so a
-  rollback is visible to everyone without anyone having to ask.
+See [`docs/MONITORING.md`](./docs/MONITORING.md) for the full setup
+guide. Quick reference:
 
-These are deliberately not in scope for the current build (this is a
-pitch/portfolio dashboard, not a product). Add them on the day this
-becomes a service real people depend on.
+- **Synthetic uptime monitor.** `GET /api/health` returns:
+  - `200 { status: "ok" }` when `source` is `live` / `cached`
+  - `200 { status: "degraded" }` when `source` is `lkg`
+  - `503 { status: "down" }` when `source` is `empty`
+
+  Point Better Stack / Checkly / a GitHub Actions cron at it. The
+  endpoint is unrate-limited (separate from `/api/markets`) and ~200B,
+  so polling every 60s is cheap.
+
+- **External log drain.** All server-side events are emitted as
+  single-line JSON via `lib/logger.ts` with stable `msg` names
+  (`markets.served`, `quidax.tickers.upstream_non_2xx`, etc). Connect
+  any drain in **Vercel → Settings → Log Drains** — Better Stack /
+  Axiom / Logflare / Datadog / S3 all auto-parse the JSON. No code
+  change needed when switching drains.
+
+- **Alerting on `source === "empty"`.** When `/api/markets` returns an
+  empty snapshot, we fire-and-forget a POST to `ALERT_WEBHOOK_URL` if
+  it is set. Payload is Slack / Discord / Better Stack / generic-webhook
+  compatible. In-process dedupe collapses repeats to one alert per
+  5-min window per instance.
+
+What's still NOT wired (intentionally):
+
+- E2E tests — explicit out-of-scope decision; the 14 unit tests +
+  typecheck + production build + `/api/health` smoke in CI cover the
+  contracts that matter for a public, no-auth dashboard.
+- Cross-instance LKG sharing — a fresh region boot will see one or two
+  `empty` snapshots before its in-memory cache warms up. Better Stack's
+  multi-region monitor partially compensates. For real product scale,
+  swap `lib/cache.ts` to Upstash Redis (the contract is unchanged).
+
