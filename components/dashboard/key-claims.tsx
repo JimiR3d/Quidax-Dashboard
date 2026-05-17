@@ -15,32 +15,32 @@ import { TrendingUp, ShieldCheck, Network, Banknote, Gauge } from "lucide-react"
 const CLAIMS = [
   {
     icon: Gauge,
-    label: "Spread compression",
-    body: "USDT/NGN now prints inside ~100 bps of NFEM — the FX gap closed in 2024–2025.",
+    label: "The naira-dollar gap closed",
+    body: "Buying USDT on Quidax now costs about the same as the official CBN rate — within 1% — after years of being 20%+ pricier.",
     href: "#fx",
   },
   {
     icon: ShieldCheck,
-    label: "Regulated wedge",
-    body: "Quidax is the only Nigerian exchange listing cNGN, the SEC-recognised naira stablecoin.",
+    label: "Only Quidax lists cNGN",
+    body: "cNGN is the naira stablecoin Nigeria's SEC actually recognises. Quidax is the only local exchange where you can trade it.",
     href: "#cngn",
   },
   {
     icon: TrendingUp,
-    label: "Demand is stable, not speculative",
-    body: "~86% of on-exchange NGN demand sits in stablecoins — Nigeria's new FX layer.",
+    label: "People want stable, not speculative",
+    body: "Roughly 86% of the naira flowing into crypto on exchanges goes into stablecoins — Nigerians are using them as their new dollar account.",
     href: "#stablecoins",
   },
   {
     icon: Network,
-    label: "Defensible moat",
-    body: "Quidax owns the only NGN-native + API-first quadrant. Yellow Card and Busha don't compete on both.",
+    label: "Quidax owns a corner no one else can copy easily",
+    body: "Naira-deep, API-first, SEC-licensed. Yellow Card and Busha each have one or two of those, not all three.",
     href: "#competition",
   },
   {
     icon: Banknote,
-    label: "The number",
-    body: "A modeled $4–14M/yr B2B revenue ramp at mid-case capture across four addressable segments.",
+    label: "The opportunity, in one number",
+    body: "Selling Quidax's rails to other businesses could add roughly $4–14 million a year, across four buyer segments. (My model — assumptions shown below.)",
     href: "#b2b",
   },
 ] as const
@@ -54,10 +54,10 @@ export function KeyClaims() {
       <div className="rounded-2xl border border-border/60 bg-card/30 p-4 md:p-5">
         <div className="flex items-center justify-between gap-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            The whole thesis, in five lines
+            The whole story, in five lines
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            jump to evidence ↓
+            tap one to see the proof ↓
           </span>
         </div>
         <ol className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">

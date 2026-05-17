@@ -50,8 +50,8 @@ export function SiteHeader({ snapshotSource, fetchedAt = null }: Props) {
               NGN Liquidity Intelligence
             </span>
             <span className="text-sm font-medium">
-              A B2B growth thesis for{" "}
-              <span className="text-gradient-primary font-semibold">Quidax</span>
+              An outside view of{" "}
+              <span className="text-gradient-primary font-semibold">Quidax</span>&apos;s next move
             </span>
           </div>
         </div>

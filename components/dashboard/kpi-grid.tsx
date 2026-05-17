@@ -78,59 +78,59 @@ export function KpiGrid({ snapshot }: { snapshot: MarketSnapshot }) {
   const isEmpty = snapshot.source === "empty" || ngn.length === 0
   const sourceFootnote =
     snapshot.source === "live"
-      ? "Live · refreshed just now"
+      ? "Live · just refreshed"
       : snapshot.source === "cached"
-        ? `Cached · ${fmtRelTime(snapshot.ageMs)}`
+        ? `From a recent cache · ${fmtRelTime(snapshot.ageMs)} old`
         : snapshot.source === "lkg"
-          ? `Last-known-good · ${fmtRelTime(snapshot.ageMs)} · upstream unreachable`
-          : "No upstream data; figures unavailable"
+          ? `Last good snapshot · ${fmtRelTime(snapshot.ageMs)} · Quidax not reachable right now`
+          : "No data from Quidax right now; showing dashes instead of guessing"
 
   return (
     <section id="kpis" className="mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-16">
       <div className="mb-8">
         <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-          02 · Live market snapshot
+          02 · What&apos;s happening on Quidax right now
         </h2>
         <p className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">
-          Where the money <span className="text-gradient-primary">actually</span> moves
+          Where the money is <span className="text-gradient-primary">actually</span> moving today
         </p>
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard
-          label="24h NGN turnover"
+          label="Naira traded in last 24 hours"
           value={isEmpty ? "—" : fmtNgn(totalNgnTurnover, { compact: true })}
-          sub={isEmpty ? "Upstream unavailable" : `${ngn.length} active NGN pairs aggregated`}
+          sub={isEmpty ? "Quidax not reachable right now" : `Across ${ngn.length} naira pairs`}
         />
         <KpiCard
-          label="Stablecoin share of NGN volume"
+          label="How much of that was stablecoins"
           value={isEmpty ? "—" : `${stableShare.toFixed(1)}%`}
-          sub={isEmpty ? "Cannot compute" : stableLabel}
+          sub={isEmpty ? "Can't calculate — no data" : stableLabel}
         />
         <KpiCard
-          label="Active NGN markets"
+          label="Naira pairs trading"
           value={isEmpty ? "—" : String(ngn.length)}
           sub={
             isEmpty
-              ? "No tickers loaded"
+              ? "No prices loaded"
               : stableTickers.some((t) => t.base.toUpperCase() === "CNGN")
-                ? "Includes regulated cNGN"
+                ? "Includes the regulated cNGN"
                 : "Spot pairs"
           }
         />
         <KpiCard
-          label="B2B revenue opportunity"
+          label="What B2B could be worth, per year"
           value={fmtUsd(midCaptureRev, { compact: true })}
-          sub="annual · midpoint of analyst model"
+          sub="My model · middle-of-the-road assumptions"
           highlight
         />
       </div>
       <p className="mt-3 text-[11px] text-muted-foreground">
-        Source:{" "}
+        Live numbers from{" "}
         <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">
           app.quidax.io/api/v1/markets/tickers
         </code>{" "}
-        · {sourceFootnote}. The B2B opportunity is an analyst model — see the B2B Opportunity
-        section below for full assumptions and provenance.
+        · {sourceFootnote}. The B2B number is my own model — the full assumptions and
+        sliders are further down the page.
       </p>
     </section>
   )

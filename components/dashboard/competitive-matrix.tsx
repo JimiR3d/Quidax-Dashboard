@@ -94,30 +94,24 @@ export function CompetitiveMatrix() {
     >
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          06 · Competitive positioning
+          06 · Who does what, side by side
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Only Quidax owns the &quot;NGN-native + API-first&quot; quadrant
+          Quidax is alone in the &quot;deep in naira AND has a real API&quot; corner
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          Yellow Card has pivoted to B2B-only across ~20 African countries (down from a
-          previously-cited &quot;35+&quot; — re-verified at audit time) and has light
-          NGN-native depth. Busha owns retail UX in Nigeria but has no publicly documented
-          B2B API. Luno is a trusted retail brand without an API surface. Nobody else
-          competes with Quidax on{" "}
+          Yellow Card has shifted to a B2B-only model across about 20 African countries (down from a previously-cited &quot;35+&quot; &mdash; I re-checked at audit time) and isn&apos;t deep in naira. Busha is great at retail in Nigeria but doesn&apos;t publish a B2B API. Luno is a trusted retail brand without an API. Nobody else competes with Quidax on{" "}
           <span className="text-foreground">
-            deep NGN liquidity exposed as a production-grade, SEC-licensed API with cNGN
-            inside it
+            deep naira liquidity that&apos;s exposed as a real, SEC-licensed API with cNGN inside it
           </span>
-          . That is the moat — and it is currently under-monetized.
+          . That&apos;s the head-start &mdash; and right now it&apos;s under-monetized.
         </p>
       </div>
 
       <div className="overflow-hidden rounded-lg border border-border/60 bg-card">
         <div className="overflow-x-auto">
           <p className="border-b border-border/60 bg-secondary/20 px-4 py-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Quidax row verified live · others manually verified against public sources · each
-            row carries its own confidence rating
+            Quidax row is verified live · others manually checked against public sources · each row carries its own confidence rating
           </p>
           <table className="w-full text-sm">
             <caption className="sr-only">
@@ -193,14 +187,14 @@ export function CompetitiveMatrix() {
       </div>
 
       <p className="mt-3 text-[11px] text-muted-foreground">
-        Confidence: <span className="text-foreground">high</span> = directly verified from
-        the source row;{" "}
-        <span className="text-foreground">med</span> = inferred from credible public sources;{" "}
-        <span className="text-foreground">low</span> = analyst estimate. See the{" "}
+        How sure I am: <span className="text-foreground">high</span> = pulled directly from
+        the row&apos;s source; <span className="text-foreground">medium</span> = inferred
+        from credible public sources; <span className="text-foreground">low</span> = my best
+        estimate. Every source for every row is on the{" "}
         <a href="/methodology" className="underline hover:text-foreground">
           methodology page
-        </a>{" "}
-        for the full citation list per row.
+        </a>
+        .
       </p>
     </section>
   )

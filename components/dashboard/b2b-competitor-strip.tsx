@@ -20,16 +20,13 @@ export function B2BCompetitorStrip() {
           id="b2b-rails-heading"
           className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground"
         >
-          06b · B2B-only rails · non-exchange competitors
+          06b · Other companies a fintech might compare Quidax to
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
-          The other stack a fintech CTO is comparing Quidax against
+          The other shortlist on a fintech CTO&apos;s desk
         </p>
         <p className="mt-1 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-          Conduit, Bitnob, Stables, and Yellow Card OTC operate the alternative B2B stack a
-          buyer would consider for Quidax-as-a-Service. They don&apos;t run an NGN-spot
-          order book, so they&apos;re shown here separately rather than in the retail matrix
-          above. Each row carries its own &quot;verified at&quot; date.
+          When a Nigerian fintech is shopping for crypto rails, they&apos;re not just looking at exchanges. Conduit, Bitnob, Stables, and Yellow Card OTC are the other names on the list. They don&apos;t run a naira order book, so it would be unfair to compare them on naira pairs &mdash; that&apos;s why they get their own card here, with their own &quot;last verified&quot; date.
         </p>
       </div>
 
@@ -66,10 +63,7 @@ export function B2BCompetitorStrip() {
       </div>
 
       <p className="mt-4 max-w-3xl text-[11px] text-muted-foreground">
-        These are real adjacent buyers, not direct retail competitors. They sit closer to
-        Quidax-as-an-API than to the retail order book — which is exactly why the B2B sizing
-        below treats &quot;embedded crypto&quot; and &quot;cross-border settlement&quot; as
-        distinct revenue lines.
+        These are real adjacent buyers, not retail competitors. They sit closer to selling Quidax-as-an-API than to a retail order book &mdash; which is exactly why the B2B sizing below treats &quot;embedded crypto&quot; and &quot;cross-border settlement&quot; as separate revenue lines.
       </p>
     </section>
   )

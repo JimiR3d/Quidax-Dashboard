@@ -12,9 +12,9 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
 })
 
-const SITE_TITLE = "NGN Liquidity Intelligence — An Independent B2B Thesis on Quidax"
+const SITE_TITLE = "NGN Liquidity Intelligence — A B2B Look at Quidax"
 const SITE_DESCRIPTION =
-  "An independent competitive market analysis of Nigeria's crypto liquidity, stablecoin demand, and the B2B opportunity for Quidax-as-a-Service. Public data only. Not affiliated with Quidax Technologies Limited."
+  "An outside-in look at where Nigeria's crypto money actually moves, how Quidax stacks up against Yellow Card, Busha, Luno, and Roqqu, and what selling Quidax-as-a-Service to other businesses could be worth. Public data only. Not affiliated with Quidax Technologies Limited."
 
 export const metadata: Metadata = {
   metadataBase: new URL(
