@@ -22,16 +22,13 @@ export function Recommendations() {
     <section id="thesis" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          10 · Five things I would ship next
+          10 · Five things I&apos;d ship next
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
-          From thesis to roadmap
+          From an outside view to a real to-do list
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          These are the moves I would prioritize if I were sitting on the Quidax product or
-          data team tomorrow. Each is tied to a measurable outcome in the model above. The
-          honest caveat: I&apos;m reasoning from what is publicly visible — items the Quidax
-          team may already have in flight internally are flagged.
+          If I were on the Quidax product or data team tomorrow, these are the moves I&apos;d push for first. Each one ties to a measurable number in the model above. Honest caveat: I&apos;m working from what&apos;s public &mdash; if Quidax already has any of these in flight internally, the card says so.
         </p>
       </div>
 
@@ -58,14 +55,14 @@ export function Recommendations() {
                   aria-hidden="true"
                 />
                 <span>
-                  <span className="text-foreground/80 font-medium">Visibility caveat:</span>{" "}
+                  <span className="text-foreground/80 font-medium">Honest caveat:</span>{" "}
                   {r.visibilityCaveat}
                 </span>
               </p>
             )}
             <div className="mt-auto flex items-center justify-between border-t border-border/60 pt-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Owner
+                Best owner inside Quidax
               </span>
               <span className="text-xs text-foreground/90">{r.ownerHint}</span>
             </div>

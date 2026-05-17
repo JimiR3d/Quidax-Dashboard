@@ -143,17 +143,14 @@ export function CorridorView() {
     <section id="corridors" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-          08 · Corridor map
+          08 · Where the dollars go
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
-          Where the dollars actually flow —{" "}
-          <span className="text-primary">{fmtUsd(total, { compact: true })}</span> across four corridors
+          Four real money routes &mdash;{" "}
+          <span className="text-primary">{fmtUsd(total, { compact: true })}</span> a year between them
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          The B2B revenue case isn&apos;t abstract — it lives in specific corridors. Below: the four flows where
-          stablecoin rails already out-compete correspondent banking on speed and cost, and the Quidax pairs that
-          serve each one. Every row carries a confidence rating and structured sources; this is intentionally
-          conservative.
+          The B2B opportunity isn&apos;t abstract &mdash; it lives in specific routes. Below: four real flows where stablecoins already beat bank wires on speed and cost, and the Quidax pairs that serve each one. Each card has a confidence rating and the sources I used &mdash; on purpose, kept conservative.
         </p>
       </div>
 
@@ -180,7 +177,7 @@ export function CorridorView() {
                 </div>
                 <div className="text-right">
                   <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                    Annual flow
+                    Money moving each year
                   </div>
                   <div className="mt-0.5 font-mono text-lg tabular-nums">
                     {fmtUsd(c.flowUsd, { compact: true })}
@@ -214,11 +211,11 @@ export function CorridorView() {
                 </div>
                 <div className="col-span-2 mt-1 flex items-center justify-between border-t border-border/60 pt-2 text-xs text-muted-foreground">
                   <span>
-                    Speed advantage:{" "}
+                    Faster by:{" "}
                     <span className="font-mono tabular-nums text-foreground">{speedup.toLocaleString()}×</span>
                   </span>
                   <span>
-                    Cost saving:{" "}
+                    Cheaper by:{" "}
                     <span className="font-mono tabular-nums text-foreground">{savings} bps</span>
                   </span>
                 </div>
@@ -226,7 +223,7 @@ export function CorridorView() {
 
               <div className="mt-4">
                 <div className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-                  Quidax pairs serving this corridor
+                  Quidax pairs that serve this route
                 </div>
                 <div className="mt-1.5 flex flex-wrap gap-1.5">
                   {c.quidaxPairs.map((p) => (
@@ -264,11 +261,9 @@ export function CorridorView() {
       </div>
 
       <p className="mt-4 max-w-3xl text-xs text-muted-foreground">
-        These four corridors total ~{fmtUsd(total, { compact: true })} in annual flow. Even a 0.5% capture at a
-        25 bps take rate produces an{" "}
+        These four routes carry roughly {fmtUsd(total, { compact: true })} a year between them. Even if Quidax wins just half a percent of that and charges 25 bps, that&apos;s already{" "}
         <span className="text-foreground">≈ {fmtUsd(total * 0.005 * 0.0025, { compact: true })}/yr</span>{" "}
-        revenue line — which is the bottom of the range in the B2B sizing section above. Flow figures are
-        analyst proxies, not Quidax-attributable volume.
+        &mdash; which is the bottom of the range in the B2B section above. The yearly-flow numbers are estimates from public sources, not Quidax&apos;s actual volume.
       </p>
     </section>
   )

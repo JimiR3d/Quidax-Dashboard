@@ -35,14 +35,14 @@ function sourceChip(source: SnapshotSource, counter: number) {
       }
     case "lkg":
       return {
-        label: "Stale · upstream unreachable",
+        label: "Showing the last good prices · Quidax not reachable",
         classes: "border-warning/40 bg-warning/10 text-warning",
         dot: "bg-warning",
         ageText: `${fmtRelTime(counter * 1000)}`,
       }
     case "empty":
       return {
-        label: "No live data available",
+        label: "No live data right now",
         classes: "border-destructive/40 bg-destructive/10 text-destructive",
         dot: "bg-destructive",
         ageText: "no data",
@@ -116,13 +116,13 @@ export function ApiProofStrip({ initial }: Props) {
       <header className="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            11 · API integration · Proof
+            11 · Proof the API works
           </h2>
           <p
             id="api-proof-title"
             className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl"
           >
-            All {tickers.length} NGN pairs — see them tick
+            All {tickers.length} naira pairs &mdash; watch them tick
           </p>
         </div>
         <div
@@ -143,7 +143,7 @@ export function ApiProofStrip({ initial }: Props) {
         <ul className="flex min-w-max gap-2">
           {tickers.length === 0 ? (
             <li className="px-3 py-2 text-xs text-muted-foreground">
-              No NGN markets available — see the chip above for why.
+              No naira markets right now &mdash; see the chip above for why.
             </li>
           ) : (
             tickers.map((t) => <PairPill key={t.market} t={t} flash={flash[t.market]} />)
@@ -154,10 +154,7 @@ export function ApiProofStrip({ initial }: Props) {
       <p className="mt-3 flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
         <Radio className="h-3 w-3" aria-hidden="true" />
         <span>
-          This strip polls <span className="text-foreground/80">/api/markets</span> every 15 s
-          via SWR. The route validates the upstream payload with Zod, caches it cross-viewer,
-          and degrades to a labelled stale or empty state on failure — it does not invent
-          prices.
+          This strip checks <span className="text-foreground/80">/api/markets</span> every 15 seconds. The route validates Quidax&apos;s response, caches it for everyone, and falls back to a clearly-labelled stale or empty state if Quidax is down &mdash; it never invents prices.
         </span>
       </p>
     </section>

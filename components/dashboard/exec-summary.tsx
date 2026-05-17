@@ -3,27 +3,27 @@ import { Target, TrendingUp, Layers, ShieldCheck } from "lucide-react"
 const POINTS = [
   {
     icon: Target,
-    title: "The thesis",
+    title: "What I think",
     body:
-      "Retail volume is a feature of Nigeria's crypto market — settlement, treasury, and remittance are the business model. Quidax already owns the only NGN-native + API-first quadrant.",
+      "Retail trading is the noisy part of Nigerian crypto. The quiet, growing part — the part that pays bills — is companies using crypto rails to settle, hold, and move money. Quidax is the only Nigerian exchange that's deep in naira AND has a real API, which is exactly what those companies need.",
   },
   {
     icon: TrendingUp,
-    title: "The wedge",
+    title: "Why now",
     body:
-      "USDT/NGN now tracks the NFEM official rate within 100 bps — after years of >20% premium. Stablecoins didn't lose; they became the rail. cNGN listing gives Quidax a regulated wedge no other local player has.",
+      "USDT (the digital dollar) used to cost 20%+ more than the official rate on Quidax. Today the gap is about 1%. That predictability is what makes a fintech CFO comfortable using stablecoins for real settlement. And cNGN — the naira stablecoin Nigeria's SEC actually recognises — is only listed on Quidax. That's a head-start no other local exchange has.",
   },
   {
     icon: Layers,
-    title: "The model",
+    title: "Where the revenue comes from",
     body:
-      "Four B2B segments — cross-border settlement, remittance, fintech treasury, and embedded crypto — combine into a defensible 24-month revenue ramp at mid-case capture.",
+      "Four kinds of customers, all paying for the same rails: cross-border settlement (importers, exporters), remittance apps, fintechs that need to park dollars, and apps that want to embed crypto without building it. The math is on this page — you can move my sliders.",
   },
   {
     icon: ShieldCheck,
-    title: "The moat",
+    title: "Why Yellow Card and Busha can't copy this in a quarter",
     body:
-      "SEC licensing, cNGN integration, and a public Liquidity SLA convert today's compliance cost into a regulated-infrastructure premium that Yellow Card and Busha cannot match locally.",
+      "The SEC licence, the cNGN listing, and a public uptime promise on the API. Each one takes time to get. Together they turn what looks like a compliance cost into something companies will pay extra for: a regulated, predictable rail.",
   },
 ]
 
@@ -33,10 +33,10 @@ export function ExecSummary() {
       <div className="rounded-2xl card-elev p-6 md:p-8">
         <div className="flex flex-col gap-1">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            01 · Executive summary
+            01 · The short version
           </span>
           <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
-            Four moves, one moat, one number.
+            Four moves, one head-start, one number worth chasing.
           </h3>
         </div>
 

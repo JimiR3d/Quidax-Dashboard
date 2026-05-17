@@ -41,16 +41,13 @@ export default function MethodologyPage() {
 
         <header className="mt-6">
           <span className="font-mono text-xs uppercase tracking-widest text-primary">
-            Methodology · provenance register
+            Methodology · where every number comes from
           </span>
           <h1 className="mt-3 text-balance text-4xl font-semibold tracking-tight md:text-5xl">
-            How every number on this page was computed
+            How every number on this page was worked out
           </h1>
           <p className="mt-4 text-pretty text-base leading-relaxed text-muted-foreground">
-            Every figure on the dashboard is either (a) read live from a public API and
-            labelled as such, or (b) an analyst estimate with the methodology and source
-            list below. If a reader cannot trace a figure to its source from this page in
-            under 30 seconds, this page has failed and I want to know.
+            Every figure on the dashboard is one of two things: (a) read live from a public API and labelled as such, or (b) my own estimate, with the calculation and source list below. If you can&apos;t trace any number on the page back to its source from here in under 30 seconds, this page has failed and I want to know.
           </p>
         </header>
 

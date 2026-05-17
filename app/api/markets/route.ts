@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { headers } from "next/headers"
 import { getMarketSnapshot } from "@/lib/quidax"
 import { rateLimit } from "@/lib/cache"
+import { log, maybeAlertOnEmptySnapshot } from "@/lib/logger"
 
 /**
  * /api/markets — public, read-only snapshot endpoint consumed by the
@@ -62,6 +63,22 @@ export async function GET() {
   }
 
   const snapshot = await getMarketSnapshot()
+
+  // Alert on truly empty snapshots (no upstream + no LKG). Fire-and-forget;
+  // dedupe is handled inside the logger so a sustained outage emits one
+  // alert per 5min window per instance, not one per request.
+  maybeAlertOnEmptySnapshot(snapshot.source)
+
+  // Structured request log. Vercel's log drain (or Better Stack / Axiom /
+  // Logflare attached to the project) ingests this as a single JSON record.
+  log.info("markets.served", {
+    route: "/api/markets",
+    snapshotSource: snapshot.source,
+    ageMs: snapshot.ageMs,
+    tickerCount: snapshot.tickers.length,
+    dropped: snapshot.dropped,
+  })
+
   return NextResponse.json(snapshot, {
     headers: {
       // Edge CDN: serve for 10s, then revalidate while serving stale for 30s.

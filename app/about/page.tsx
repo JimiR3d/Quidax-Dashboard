@@ -37,11 +37,7 @@ export default function AboutPage() {
             Oluwafolajinmi David Aboderin
           </h1>
           <p className="mt-3 text-pretty text-base leading-relaxed text-muted-foreground">
-            Data and backend engineer. Computer Science from Covenant. Prior
-            work at Qucoon on Basel regulatory reporting and financial data
-            pipelines for a Nigerian Tier-1 bank stack. Available for
-            full-time, contract, or internship work on data, product, or
-            strategy teams in African fintech.
+            Data and backend engineer. Computer Science from Covenant University. Previously at Qucoon, working on Basel regulatory reporting and financial data pipelines for a Nigerian Tier-1 bank stack. Available for full-time, contract, or internship roles on data, product, or strategy teams in African fintech.
           </p>
         </header>
 
@@ -49,12 +45,7 @@ export default function AboutPage() {
           <section>
             <h2 className="text-lg font-semibold">Why I built this</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              I wanted an honest test of whether I can do the kind of analyst,
-              data, and product-thinking work an exchange-as-a-service business
-              actually needs — and a forcing function to learn the regulatory
-              and competitive surface in detail. The dashboard is the artefact;
-              the methodology page is the homework I had to do to ship it
-              without overclaiming.
+              I wanted an honest test of whether I can do the kind of analyst, data, and product-thinking work an exchange-as-a-service business actually needs &mdash; and a forcing function to learn the regulatory and competitive ground in detail. The dashboard is the result. The methodology page is the homework I had to do to ship it without overclaiming.
             </p>
           </section>
 
@@ -92,11 +83,7 @@ export default function AboutPage() {
           <section>
             <h2 className="text-lg font-semibold">Independence statement</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              This dashboard uses only publicly accessible market data and
-              publicly verifiable competitor information. It is independent
-              and not affiliated with Quidax Technologies Limited or any other
-              exchange. Information is presented for analytical purposes and
-              is not investment advice.
+              This dashboard uses only publicly available market data and publicly verifiable competitor information. It&apos;s independent and not affiliated with Quidax Technologies Limited or any other exchange. The information here is for analysis. It is not investment advice.
             </p>
           </section>
         </div>

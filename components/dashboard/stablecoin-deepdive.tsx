@@ -50,10 +50,10 @@ export function StablecoinDeepDive({
 
   const sourceChip =
     source === "live"
-      ? { label: "live · Quidax K-line", classes: "border-positive/30 bg-positive/10 text-positive" }
+      ? { label: "live · from Quidax", classes: "border-positive/30 bg-positive/10 text-positive" }
       : source === "synthetic"
         ? {
-            label: "synthetic fallback",
+            label: "estimated fallback",
             classes: "border-warning/40 bg-warning/10 text-warning",
           }
         : { label: "no data", classes: "border-destructive/40 bg-destructive/10 text-destructive" }
@@ -62,19 +62,16 @@ export function StablecoinDeepDive({
     <section id="stablecoins" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          05 · Stablecoin deep-dive
+          05 · A closer look at stablecoins
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl text-balance">
-          Stablecoins are Nigeria&apos;s new FX layer
+          Stablecoins have become Nigeria&apos;s digital dollar
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground text-pretty">
-          The naira&apos;s FX gap has compressed from{" "}
-          <span className="text-foreground">&gt;30% in 2023</span> to{" "}
-          <span className="text-foreground">~1% today</span>. Stablecoins didn&apos;t lose — they
-          became the rail. Of the dollar-substitution demand Nigerians route on-exchange,
-          roughly <span className="text-foreground">86% sits in USDT, cNGN, and USDC</span>; BTC
-          is increasingly held as savings, not traded. That is a B2B settlements story, not a
-          trading one.
+          The gap between the naira and the dollar used to be{" "}
+          <span className="text-foreground">over 30% in 2023</span> &mdash; today it&apos;s{" "}
+          <span className="text-foreground">about 1%</span>. Stablecoins didn&apos;t lose; they became the rail people use to hold dollars. Of the dollar-substitute demand Nigerians route through exchanges, roughly{" "}
+          <span className="text-foreground">86% sits in USDT, cNGN, and USDC</span>. Bitcoin is treated more like savings now, less like trading. That&apos;s a settlements story, not a speculation story.
         </p>
       </div>
 
@@ -82,17 +79,17 @@ export function StablecoinDeepDive({
         <div className="lg:col-span-2 rounded-xl card-elev p-5">
           <div className="mb-4 flex items-start justify-between gap-4">
             <div>
-              <h3 className="text-sm font-medium">USDT/NGN vs NFEM official · last 30 days</h3>
+              <h3 className="text-sm font-medium">USDT/NGN vs the official CBN rate &mdash; last 30 days</h3>
               <p className="mt-1 max-w-md text-xs text-muted-foreground text-pretty">
-                <span className="text-foreground/90">USDT/NGN line:</span>{" "}
+                <span className="text-foreground/90">The blue line:</span>{" "}
                 {source === "live"
-                  ? "real daily closes from Quidax K-line API"
+                  ? "real daily closing prices from Quidax"
                   : source === "synthetic"
-                    ? "synthetic fallback — labelled, not predictive"
+                    ? "an estimated fill-in — clearly labelled, not a prediction"
                     : "no data available for this window"}.{" "}
-                <span className="text-foreground/90">NFEM reference:</span> flat at{" "}
+                <span className="text-foreground/90">The dashed line:</span> the official CBN rate, flat at{" "}
                 <span className="tabular-nums">{fmtNgn(FX_REFERENCE.cbnOfficial)}</span>{" "}
-                (analyst-tracked).
+                (tracked manually).
               </p>
             </div>
             <div className="flex flex-col items-end gap-1">
@@ -102,7 +99,7 @@ export function StablecoinDeepDive({
                 {sourceChip.label}
               </span>
               <span className="font-mono text-[11px] text-foreground/80">
-                avg dev{" "}
+                avg gap{" "}
                 <span className={avgDevBps >= 0 ? "text-warning" : "text-positive"}>
                   {avgDevBps >= 0 ? "+" : ""}
                   {avgDevBps} bps
@@ -117,7 +114,7 @@ export function StablecoinDeepDive({
           >
             {data.length === 0 ? (
               <div className="flex h-full items-center justify-center rounded-md border border-dashed border-border/60 text-xs text-muted-foreground">
-                No candle data available — Quidax K-line endpoint unreachable
+                No daily price history right now &mdash; Quidax&apos;s K-line endpoint isn&apos;t reachable
               </div>
             ) : (
               <ResponsiveContainer width="100%" height="100%">
@@ -190,10 +187,10 @@ export function StablecoinDeepDive({
             >
               <div className="mb-1 flex items-baseline justify-between">
                 <h4 className="text-xs font-medium text-foreground/80">
-                  Deviation from NFEM · basis points
+                  How far Quidax was from the official rate, day by day
                 </h4>
                 <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
-                  |max| {absMaxDev} bps
+                  biggest gap {absMaxDev} bps
                 </span>
               </div>
               <ResponsiveContainer width="100%" height="100%">
@@ -243,11 +240,9 @@ export function StablecoinDeepDive({
 
         <div className="rounded-xl card-elev p-5">
           <div className="mb-2">
-            <h3 className="text-sm font-medium">Dollar-substitution demand mix</h3>
+            <h3 className="text-sm font-medium">What people use crypto FOR (not 24-hour trading)</h3>
             <p className="mt-1 text-xs text-muted-foreground text-pretty">
-              Share of NGN crypto demand by purpose, not 24h trading volume. Stablecoins +
-              quasi-savings dominate; cNGN gives Quidax the only regulated NGN-pegged rail
-              among local exchanges.
+              This is what Nigerians use crypto-on-naira for &mdash; saving, settling, paying &mdash; not how much trading happens in a day. Stablecoins and savings dominate. cNGN is the only regulated naira-pegged option, and it&apos;s only on Quidax.
             </p>
           </div>
           <div
@@ -303,9 +298,7 @@ export function StablecoinDeepDive({
             ))}
           </ul>
           <p className="mt-3 border-t border-border/60 pt-2 text-[10px] leading-relaxed text-muted-foreground">
-            Analyst allocation — explicitly NOT a 24h turnover ratio. Calibrated against
-            Chainalysis SSA reports and on-exchange behaviour. The KPI &quot;stablecoin share
-            of NGN volume&quot; above is the live turnover number; these are different things.
+            My estimated split &mdash; on purpose, NOT a 24-hour trading ratio. I calibrated it against Chainalysis SSA reports and how people actually use these exchanges. The &quot;stablecoin share of NGN volume&quot; KPI above is the live trading number; these are two different things.
           </p>
         </div>
       </div>

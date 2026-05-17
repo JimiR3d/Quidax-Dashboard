@@ -37,12 +37,12 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         ? "bg-warning"
         : "bg-destructive"
   const statusLabel = noLive
-    ? "No live spot"
+    ? "No live price"
     : peg.status === "stable"
-      ? "Stable"
+      ? "Holding the peg"
       : peg.status === "watch"
-        ? "Watch"
-        : "Depeg event"
+        ? "Slipping a bit — watching"
+        : "Off the peg"
 
   const series = candles.slice(-30).map((c) => c.close)
   const path = buildPegPath(series)
@@ -57,15 +57,13 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            04 · Live insight · Exclusive
+            04 · Live · Only on Quidax
           </h2>
           <p id="cngn-title" className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance">
-            cNGN Peg Watch
+            Is cNGN holding its 1-naira peg?
           </p>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-            Quidax is the only local exchange listing cNGN &mdash; Nigeria&apos;s regulated naira stablecoin. This
-            panel computes live peg deviation directly from the cNGN/NGN order book. Quidax could expose this
-            monitoring view to enterprise treasury clients as a paid B2B feed.
+            Quidax is the only local exchange that lists cNGN &mdash; the naira-pegged stablecoin Nigeria&apos;s SEC actually recognises. One cNGN should always equal one naira. This panel checks that promise live, straight from the order book. A bank or fintech treasurer would pay for this view.
           </p>
         </div>
         <div className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${statusBg}`}>
@@ -76,18 +74,18 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <article className="card-elev rounded-xl p-5">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Current cNGN/NGN</p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">cNGN price right now</p>
           <p className="mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl">
             {noLive ? "—" : peg.cngnNgn.toFixed(4)}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            {noLive ? "Awaiting cNGN/NGN ticker" : "Target peg: "}
+            {noLive ? "Waiting for cNGN/NGN price" : "Should be: "}
             {!noLive && <span className="tabular-nums text-foreground">1.0000</span>}
           </p>
         </article>
 
         <article className="card-elev rounded-xl p-5">
-          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Deviation from peg</p>
+          <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">How far off the peg</p>
           <p
             className={`mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl ${statusColor}`}
           >
@@ -96,28 +94,28 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
               : `${peg.deviationBps >= 0 ? "+" : ""}${peg.deviationBps.toFixed(1)} bps`}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Thresholds: <span className="text-foreground">Stable &lt; 25</span> · Watch 25&ndash;&lt;100 · Depeg &ge; 100
+            Bands: <span className="text-foreground">Holding &lt; 25</span> · Watching 25&ndash;&lt;100 · Off the peg &ge; 100 · (1% = 100 bps)
           </p>
         </article>
 
         <article className="card-elev rounded-xl p-5">
           <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-            Cross-check: USDT/NGN from cNGN
+            Sanity check: dollar price implied by cNGN
           </p>
           <p className="mt-2 font-mono text-3xl font-medium tabular-nums tracking-tight md:text-4xl">
             {peg.impliedUsdtNgnFromCngn ? fmtNgn(peg.impliedUsdtNgnFromCngn) : "—"}
           </p>
           <p className="mt-2 text-xs text-muted-foreground">
-            Derived from cNGN/USDT cross. Should track the direct USDT/NGN book.
+            Calculated through cNGN/USDT. Should match the direct USDT/NGN price above.
           </p>
         </article>
       </div>
 
       <div className="mt-4 card-elev rounded-xl p-5">
         <div className="flex items-baseline justify-between">
-          <h3 className="text-sm font-medium">30-day cNGN/NGN &mdash; peg integrity</h3>
+          <h3 className="text-sm font-medium">Last 30 days &mdash; how well cNGN held its peg</h3>
           <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground tabular-nums">
-            {series.length} datapoints · /markets/cngnngn/k
+            {series.length} days · /markets/cngnngn/k
           </span>
         </div>
         <div className="mt-4 h-32 w-full">
@@ -153,12 +151,12 @@ export function CngnDepegWatch({ cngnNgn, cngnUsdt, candles }: Props) {
         </div>
         <div className="mt-3 flex flex-wrap items-center gap-x-6 gap-y-1 text-xs text-muted-foreground">
           <span>
-            Min: <span className="tabular-nums text-foreground">{min.toFixed(4)}</span>
+            Lowest: <span className="tabular-nums text-foreground">{min.toFixed(4)}</span>
           </span>
           <span>
-            Max: <span className="tabular-nums text-foreground">{max.toFixed(4)}</span>
+            Highest: <span className="tabular-nums text-foreground">{max.toFixed(4)}</span>
           </span>
-          <span>Dotted line = 1.0000 target peg</span>
+          <span>Dotted line is the 1.0000 peg</span>
         </div>
       </div>
     </section>

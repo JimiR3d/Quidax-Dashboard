@@ -59,17 +59,14 @@ export function B2BOpportunity() {
     <section id="b2b" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          07 · B2B opportunity sizing — interactive
+          07 · The B2B opportunity &mdash; with sliders you can move
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
           A modeled path to{" "}
-          <span className="text-primary tabular-nums">{fmtUsd(total, { compact: true })}</span> in annual B2B
-          revenue
+          <span className="text-primary tabular-nums">{fmtUsd(total, { compact: true })}</span> in B2B revenue per year
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          Drag the sliders to change your own assumptions. The chart and aggregate re-compute live. The defaults
-          are my mid-case capture rates and take rates per segment; the model bound shown next to each slider is
-          the bracket from public proxies.
+          Don&apos;t take my word for it &mdash; drag the sliders and see your own number. The defaults are my middle-of-the-road assumptions for how much of each market Quidax could win and what it could charge. The brackets next to each slider are the realistic range from public sources.
         </p>
       </div>
 
@@ -84,9 +81,7 @@ export function B2BOpportunity() {
           >
             <span className="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-warning" aria-hidden />
             <span>
-              You&apos;ve pushed a slider above the model&apos;s public-proxy upper bound. The chart still
-              re-computes, but the resulting figure is no longer supported by the analyst evidence on the
-              methodology page — treat it as &quot;what would this take?&quot; not &quot;what we expect&quot;.
+              You&apos;ve pushed a slider above the realistic upper bound. The chart still updates, but the number is no longer backed by the public sources on the methodology page &mdash; treat it as &quot;what would this take?&quot; not &quot;what I expect&quot;.
             </span>
           </div>
         ) : null
@@ -96,9 +91,9 @@ export function B2BOpportunity() {
         <div className="card-elev rounded-lg border border-border/60 bg-card p-5 lg:col-span-3">
           <div className="mb-2 flex items-start justify-between gap-3">
             <div>
-              <h3 className="text-sm font-medium">Modeled annual revenue by segment</h3>
+              <h3 className="text-sm font-medium">Yearly revenue, by buyer segment</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Live from your slider values. Reset to return to the model defaults.
+                Updates live as you drag. Hit reset to go back to my defaults.
               </p>
             </div>
             <button
@@ -107,7 +102,7 @@ export function B2BOpportunity() {
               disabled={!touched}
               className="rounded-md border border-border/60 bg-background px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:opacity-40"
             >
-              Reset to model
+              Back to my defaults
             </button>
           </div>
 
@@ -152,19 +147,19 @@ export function B2BOpportunity() {
           <div className="mt-3 grid grid-cols-3 gap-3 border-t border-border/60 pt-3">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Model low
+                Conservative
               </div>
               <div className="mt-0.5 font-mono text-lg tabular-nums">{fmtUsd(totalLow, { compact: true })}</div>
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Your model</div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Your number</div>
               <div className="mt-0.5 font-mono text-lg tabular-nums text-primary">
                 {fmtUsd(total, { compact: true })}
               </div>
             </div>
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Model high
+                Optimistic
               </div>
               <div className="mt-0.5 font-mono text-lg tabular-nums">
                 {fmtUsd(totalHigh, { compact: true })}
@@ -198,12 +193,12 @@ export function B2BOpportunity() {
                 <label className="block">
                   <div className="flex items-baseline justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Capture %
+                      Share Quidax wins
                     </span>
                     <span className="font-mono text-xs tabular-nums text-foreground">
                       {s.capturePct.toFixed(2)}%
                       <span className="ml-1 text-muted-foreground/70">
-                        (model {s.capturePctLow}–{s.capturePctHigh})
+                        (realistic {s.capturePctLow}–{s.capturePctHigh})
                       </span>
                     </span>
                   </div>
@@ -223,7 +218,7 @@ export function B2BOpportunity() {
                 <label className="block">
                   <div className="flex items-baseline justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Take rate
+                      Quidax&apos;s cut
                     </span>
                     <span className="font-mono text-xs tabular-nums text-foreground">
                       {s.takeRateBps} bps
@@ -244,7 +239,7 @@ export function B2BOpportunity() {
               </div>
 
               <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2 text-xs">
-                <span className="font-mono text-muted-foreground">Modeled revenue</span>
+                <span className="font-mono text-muted-foreground">Revenue from this segment</span>
                 <span className="font-mono tabular-nums text-primary">
                   {fmtUsd(s.rev, { compact: true })}/yr
                 </span>

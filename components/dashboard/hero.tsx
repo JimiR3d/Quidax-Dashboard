@@ -30,12 +30,12 @@ export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
 
   const sourceCopy =
     snapshotSource === "live"
-      ? "Live · refreshes every 60s server-side"
+      ? "Live · refreshing every 60 seconds on the server"
       : snapshotSource === "cached"
-        ? `Cached snapshot · ${fmtRelTime(ageMs)}`
+        ? `From a recent server cache · last refreshed ${fmtRelTime(ageMs)}`
         : snapshotSource === "lkg"
-          ? `Last-known-good · ${fmtRelTime(ageMs)} · upstream unreachable`
-          : "Snapshot unavailable · upstream and cache both empty"
+          ? `Last good snapshot · ${fmtRelTime(ageMs)} · Quidax not reachable right now`
+          : "Snapshot not available · Quidax and our cache are both empty"
 
   return (
     <section className="relative isolate overflow-hidden border-b border-border/60">
@@ -54,16 +54,16 @@ export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
         <div className="flex flex-col gap-2">
           <span className="inline-flex w-fit items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
             <Sparkles className="h-3 w-3" aria-hidden="true" />
-            Independent analysis · prepared for the Quidax team
+            An outside look · written for the Quidax team
           </span>
           <h1 className="mt-6 max-w-4xl text-pretty text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl lg:text-7xl">
-            Nigeria&apos;s next billion dollars of crypto flow is{" "}
-            <span className="text-gradient-primary">B2B</span>,
-            <br className="hidden md:block" /> not retail.
+            Nigeria&apos;s next billion dollars in crypto won&apos;t come from{" "}
+            <span className="text-gradient-primary">retail traders</span>.
+            <br className="hidden md:block" /> It will come from other businesses.
           </h1>
           <p className="mt-7 max-w-3xl text-balance text-base leading-relaxed text-muted-foreground md:text-lg">
-            This dashboard quantifies the NGN-stablecoin liquidity gap, benchmarks Quidax against Yellow Card, Busha, Luno, and Roqqu, and sizes four B2B segments where{" "}
-            <span className="text-foreground">Quidax-as-a-Service</span> can compound revenue with structurally lower CAC than the retail order book.
+            This dashboard does three things, in plain words. It measures how big the gap is between the naira and the dollar on Quidax right now. It puts Quidax next to Yellow Card, Busha, Luno, and Roqqu so you can see who actually does what. And it sizes four ways{" "}
+            <span className="text-foreground">Quidax can sell its rails to other companies</span> — fintechs, banks, remittance apps — at a lower customer-acquisition cost than chasing more retail traders.
           </p>
 
           <div className="mt-12 grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -75,18 +75,18 @@ export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
                 Oluwafolajinmi David Aboderin
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                Data &amp; backend · Covenant CS · ex-Qucoon
+                Data &amp; backend engineer · Computer Science, Covenant · previously at Qucoon
               </p>
             </div>
             <div className="card-elev rounded-lg p-4">
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                Data source
+                Where the numbers come from
               </span>
               <p className="mt-2 text-sm font-medium text-foreground">
-                Quidax public markets API
+                Quidax&apos;s own public markets API
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
-                app.quidax.io · validated &amp; cached · analyst overlays explicitly labelled
+                app.quidax.io · checked, cached, and clearly labelled when an estimate is mine
               </p>
             </div>
             <div className="card-elev rounded-lg p-4">
@@ -102,7 +102,7 @@ export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
             href="#kpis"
             className="mt-12 inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-card/50 px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground"
           >
-            Scroll to the data
+            Show me the numbers
             <ArrowDownRight className="h-4 w-4" aria-hidden="true" />
           </a>
         </div>
