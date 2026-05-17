@@ -565,3 +565,38 @@ vercel
 - All changes are committed and pushed to the working branch
 - No private keys or secrets anywhere in the codebase
 
+---
+
+## Appendix: Branch `project-orientation` Additions (May 2026)
+
+After the original audit branch was merged to `main`, two follow-up commits landed on `project-orientation` and were merged back to `main`:
+
+### 1. Structured Logging + Synthetic Uptime Monitor (`97a4d31`)
+
+**Why:** Console-style logging made it impossible to correlate upstream failures across requests; there was no automated way to detect Quidax API outages.
+
+**New files:**
+- `lib/logger.ts` (212 lines) — JSON-line structured logger with levels (`debug`/`info`/`warn`/`error`), request-scoped context, redaction of obvious secrets, and a no-op shim for tests. Used by `lib/cache.ts`, `lib/quidax.ts`, and route handlers.
+- `scripts/check-invariants.mjs` (203 lines) — synthetic monitor that hits the deployed `/api/markets` endpoint, asserts shape + freshness invariants (price > 0, spread sane, `lastUpdated` within window), and exits non-zero on regression. Wired into a GitHub Actions cron job (every 15 min) documented in `docs/MONITORING.md`.
+- `docs/MONITORING.md` (266 lines) — runbook for the monitor: what it checks, how to read alerts, how to silence false positives, escalation path.
+- `tests/logger.test.ts` (104 lines) — verifies redaction, level filtering, JSON output shape.
+- `tests/health.test.ts` (45 lines) — verifies the `/api/markets` invariant assertions used by the monitor.
+
+**Test count:** went from 14 → 23 passing.
+
+### 2. Entity Encoding Standardization (`3056ab8`)
+
+**Why:** Mixed use of raw apostrophes/quotes in JSX was throwing intermittent React lint warnings and breaking copy on certain locales.
+
+**Change:** All user-facing strings in `components/dashboard/*.tsx` now use `&apos;` / `&quot;` / `&amp;` consistently, or are wrapped in JSX expressions (`{"..."}`). No behavior change — purely textual hygiene.
+
+**Files touched:** `customer-proof.tsx`, `exec-summary.tsx`, `hero.tsx`, `key-claims.tsx`, `kpi-grid.tsx`, `pitch-footer.tsx`, `recommendations.tsx`, `site-header.tsx`, `spread-panel.tsx`, `stablecoin-deepdive.tsx`.
+
+### Branch lineage as of this merge
+
+```
+main ──── (audit merged) ──── 97a4d31 (logger+monitor) ──── 3056ab8 (entity encoding) ◄── HEAD
+```
+
+After this merge, `main` is the single source of truth. All older `v0/...` branches are historical AI-session snapshots and can be ignored or deleted.
+
