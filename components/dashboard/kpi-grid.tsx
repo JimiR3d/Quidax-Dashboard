@@ -78,12 +78,12 @@ export function KpiGrid({ snapshot }: { snapshot: MarketSnapshot }) {
   const isEmpty = snapshot.source === "empty" || ngn.length === 0
   const sourceFootnote =
     snapshot.source === "live"
-      ? "Live · refreshed just now"
+      ? "Live · just refreshed"
       : snapshot.source === "cached"
-        ? `Cached · ${fmtRelTime(snapshot.ageMs)}`
+        ? `Recent · ${fmtRelTime(snapshot.ageMs)}`
         : snapshot.source === "lkg"
-          ? `Last-known-good · ${fmtRelTime(snapshot.ageMs)} · upstream unreachable`
-          : "No upstream data; figures unavailable"
+          ? `Older · ${fmtRelTime(snapshot.ageMs)} · live source not responding`
+          : "No data; figures unavailable"
 
   return (
     <section id="kpis" className="mx-auto w-full max-w-7xl px-4 py-14 md:px-6 md:py-16">
@@ -97,30 +97,30 @@ export function KpiGrid({ snapshot }: { snapshot: MarketSnapshot }) {
       </div>
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <KpiCard
-          label="24h NGN turnover"
+          label="24-hour naira trading volume"
           value={isEmpty ? "—" : fmtNgn(totalNgnTurnover, { compact: true })}
-          sub={isEmpty ? "Upstream unavailable" : `${ngn.length} active NGN pairs aggregated`}
+          sub={isEmpty ? "Live source not available" : `${ngn.length} active naira pairs added together`}
         />
         <KpiCard
-          label="Stablecoin share of NGN volume"
+          label="Stablecoin share of naira trades"
           value={isEmpty ? "—" : `${stableShare.toFixed(1)}%`}
-          sub={isEmpty ? "Cannot compute" : stableLabel}
+          sub={isEmpty ? "Cannot calculate" : stableLabel}
         />
         <KpiCard
-          label="Active NGN markets"
+          label="Active naira markets"
           value={isEmpty ? "—" : String(ngn.length)}
           sub={
             isEmpty
-              ? "No tickers loaded"
+              ? "No data loaded"
               : stableTickers.some((t) => t.base.toUpperCase() === "CNGN")
                 ? "Includes regulated cNGN"
-                : "Spot pairs"
+                : "Spot trading pairs"
           }
         />
         <KpiCard
-          label="B2B revenue opportunity"
+          label="Business-customer revenue opportunity"
           value={fmtUsd(midCaptureRev, { compact: true })}
-          sub="annual · midpoint of analyst model"
+          sub="per year · middle estimate"
           highlight
         />
       </div>
@@ -129,8 +129,8 @@ export function KpiGrid({ snapshot }: { snapshot: MarketSnapshot }) {
         <code className="rounded bg-muted/40 px-1.5 py-0.5 text-foreground">
           app.quidax.io/api/v1/markets/tickers
         </code>{" "}
-        · {sourceFootnote}. The B2B opportunity is an analyst model — see the B2B Opportunity
-        section below for full assumptions and provenance.
+        · {sourceFootnote}. The revenue opportunity number is an estimate — see the
+        Business-Customer Opportunity section below for the full math.
       </p>
     </section>
   )

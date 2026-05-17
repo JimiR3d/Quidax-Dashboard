@@ -15,32 +15,32 @@ import { TrendingUp, ShieldCheck, Network, Banknote, Gauge } from "lucide-react"
 const CLAIMS = [
   {
     icon: Gauge,
-    label: "Spread compression",
-    body: "USDT/NGN now prints inside ~100 bps of NFEM — the FX gap closed in 2024–2025.",
+    label: "The gap is closing",
+    body: "Quidax's USDT–to–naira price now sits within ~1% of the official dollar rate — after years of being far above it.",
     href: "#fx",
   },
   {
     icon: ShieldCheck,
-    label: "Regulated wedge",
-    body: "Quidax is the only Nigerian exchange listing cNGN, the SEC-recognised naira stablecoin.",
+    label: "Regulated edge",
+    body: "Quidax is the only Nigerian exchange that lists cNGN, the SEC-recognised naira stablecoin.",
     href: "#cngn",
   },
   {
     icon: TrendingUp,
-    label: "Demand is stable, not speculative",
-    body: "~86% of on-exchange NGN demand sits in stablecoins — Nigeria's new FX layer.",
+    label: "People save, not gamble",
+    body: "About 86% of naira trading on the exchange goes through stablecoins — Nigerians use them as a steady FX layer, not for speculation.",
     href: "#stablecoins",
   },
   {
     icon: Network,
-    label: "Defensible moat",
-    body: "Quidax owns the only NGN-native + API-first quadrant. Yellow Card and Busha don't compete on both.",
+    label: "Defensible position",
+    body: "Quidax is the only player with deep naira liquidity AND a developer API. Yellow Card and Busha don't do both.",
     href: "#competition",
   },
   {
     icon: Banknote,
     label: "The number",
-    body: "A modeled $4–14M/yr B2B revenue ramp at mid-case capture across four addressable segments.",
+    body: "A modeled $4–14M per year in business-customer revenue at mid-case across four areas.",
     href: "#b2b",
   },
 ] as const
@@ -54,10 +54,10 @@ export function KeyClaims() {
       <div className="rounded-2xl border border-border/60 bg-card/30 p-4 md:p-5">
         <div className="flex items-center justify-between gap-3">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            The whole thesis, in five lines
+            The whole story, in five lines
           </span>
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-            jump to evidence ↓
+            see the proof ↓
           </span>
         </div>
         <ol className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">

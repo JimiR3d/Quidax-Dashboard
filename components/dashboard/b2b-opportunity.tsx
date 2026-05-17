@@ -59,17 +59,17 @@ export function B2BOpportunity() {
     <section id="b2b" className="mx-auto w-full max-w-7xl px-4 py-12 md:px-6">
       <div className="mb-6 flex flex-col gap-1">
         <h2 className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-          07 · B2B opportunity sizing — interactive
+          07 · Business-customer opportunity — try it yourself
         </h2>
         <p className="text-2xl font-semibold tracking-tight md:text-3xl">
-          A modeled path to{" "}
-          <span className="text-primary tabular-nums">{fmtUsd(total, { compact: true })}</span> in annual B2B
-          revenue
+          A path to{" "}
+          <span className="text-primary tabular-nums">{fmtUsd(total, { compact: true })}</span>{" "}
+          in business-customer revenue per year
         </p>
         <p className="mt-1 max-w-3xl text-sm text-muted-foreground">
-          Drag the sliders to change your own assumptions. The chart and aggregate re-compute live. The defaults
-          are my mid-case capture rates and take rates per segment; the model bound shown next to each slider is
-          the bracket from public proxies.
+          Drag the sliders to set your own assumptions. The chart and total update live. The
+          starting values are the middle estimate for each business area. The range next to
+          each slider is what public proxies suggest is realistic.
         </p>
       </div>
 
@@ -84,9 +84,10 @@ export function B2BOpportunity() {
           >
             <span className="mt-0.5 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-warning" aria-hidden />
             <span>
-              You&apos;ve pushed a slider above the model&apos;s public-proxy upper bound. The chart still
-              re-computes, but the resulting figure is no longer supported by the analyst evidence on the
-              methodology page — treat it as &quot;what would this take?&quot; not &quot;what we expect&quot;.
+              You&apos;ve pushed a slider past what public sources support. The chart still
+              updates, but the resulting number is no longer backed by the evidence on the
+              methodology page — treat it as &quot;what would this take?&quot;, not
+              &quot;what we expect&quot;.
             </span>
           </div>
         ) : null
@@ -96,9 +97,9 @@ export function B2BOpportunity() {
         <div className="card-elev rounded-lg border border-border/60 bg-card p-5 lg:col-span-3">
           <div className="mb-2 flex items-start justify-between gap-3">
             <div>
-              <h3 className="text-sm font-medium">Modeled annual revenue by segment</h3>
+              <h3 className="text-sm font-medium">Yearly revenue per business area</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                Live from your slider values. Reset to return to the model defaults.
+                Live from your slider values. Reset to go back to the starting numbers.
               </p>
             </div>
             <button
@@ -107,11 +108,11 @@ export function B2BOpportunity() {
               disabled={!touched}
               className="rounded-md border border-border/60 bg-background px-2.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground transition-colors hover:border-primary/40 hover:text-foreground disabled:opacity-40"
             >
-              Reset to model
+              Reset
             </button>
           </div>
 
-          <div className="h-80 w-full" aria-label="Modeled annual B2B revenue per segment" role="img">
+          <div className="h-80 w-full" aria-label="Modeled yearly business revenue per area" role="img">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={chartData}
@@ -141,7 +142,7 @@ export function B2BOpportunity() {
                     borderRadius: 8,
                     fontSize: 12,
                   }}
-                  formatter={(value: number) => [fmtUsd(value), "Annual revenue"]}
+                  formatter={(value: number) => [fmtUsd(value), "Yearly revenue"]}
                   labelStyle={{ color: "var(--foreground)" }}
                 />
                 <Bar dataKey="revenue" fill="var(--primary)" radius={[0, 4, 4, 0]} />
@@ -152,19 +153,19 @@ export function B2BOpportunity() {
           <div className="mt-3 grid grid-cols-3 gap-3 border-t border-border/60 pt-3">
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Model low
+                Low estimate
               </div>
               <div className="mt-0.5 font-mono text-lg tabular-nums">{fmtUsd(totalLow, { compact: true })}</div>
             </div>
             <div>
-              <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Your model</div>
+              <div className="font-mono text-[10px] uppercase tracking-widest text-primary">Your number</div>
               <div className="mt-0.5 font-mono text-lg tabular-nums text-primary">
                 {fmtUsd(total, { compact: true })}
               </div>
             </div>
             <div>
               <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                Model high
+                High estimate
               </div>
               <div className="mt-0.5 font-mono text-lg tabular-nums">
                 {fmtUsd(totalHigh, { compact: true })}
@@ -186,7 +187,7 @@ export function B2BOpportunity() {
                 </div>
                 <div className="text-right">
                   <div className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                    TAM
+                    Total market
                   </div>
                   <div className="mt-0.5 font-mono text-sm tabular-nums">
                     {fmtUsd(s.tamUsd, { compact: true })}
@@ -198,12 +199,12 @@ export function B2BOpportunity() {
                 <label className="block">
                   <div className="flex items-baseline justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Capture %
+                      Quidax&apos;s share
                     </span>
                     <span className="font-mono text-xs tabular-nums text-foreground">
                       {s.capturePct.toFixed(2)}%
                       <span className="ml-1 text-muted-foreground/70">
-                        (model {s.capturePctLow}–{s.capturePctHigh})
+                        (range {s.capturePctLow}–{s.capturePctHigh})
                       </span>
                     </span>
                   </div>
@@ -215,7 +216,7 @@ export function B2BOpportunity() {
                     value={s.capturePct}
                     onChange={(e) => setKnob(i, { capturePct: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
-                    aria-label={`Capture percentage for ${s.segment}`}
+                    aria-label={`Quidax share for ${s.segment}`}
                     aria-valuetext={`${s.capturePct.toFixed(2)} percent`}
                   />
                 </label>
@@ -223,7 +224,7 @@ export function B2BOpportunity() {
                 <label className="block">
                   <div className="flex items-baseline justify-between">
                     <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-                      Take rate
+                      Fee Quidax keeps
                     </span>
                     <span className="font-mono text-xs tabular-nums text-foreground">
                       {s.takeRateBps} bps
@@ -237,14 +238,14 @@ export function B2BOpportunity() {
                     value={s.takeRateBps}
                     onChange={(e) => setKnob(i, { takeRateBps: Number(e.target.value) })}
                     className="mt-1.5 h-1.5 w-full cursor-pointer appearance-none rounded-full bg-border accent-[var(--primary)]"
-                    aria-label={`Take rate basis points for ${s.segment}`}
+                    aria-label={`Fee for ${s.segment} in basis points`}
                     aria-valuetext={`${s.takeRateBps} basis points`}
                   />
                 </label>
               </div>
 
               <div className="mt-3 flex items-center justify-between border-t border-border/60 pt-2 text-xs">
-                <span className="font-mono text-muted-foreground">Modeled revenue</span>
+                <span className="font-mono text-muted-foreground">Yearly revenue</span>
                 <span className="font-mono tabular-nums text-primary">
                   {fmtUsd(s.rev, { compact: true })}/yr
                 </span>

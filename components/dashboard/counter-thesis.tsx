@@ -12,24 +12,24 @@ import { AlertTriangle } from "lucide-react"
 
 const FALSIFIERS = [
   {
-    headline: "If retail volume keeps compounding double-digits, the B2B wedge is a sideshow.",
-    body: "The thesis assumes retail growth is plateauing relative to B2B. If Nigerian retail crypto volume re-accelerates — for example, on a fresh devaluation cycle that drives savings dollarization — then API revenue is rounding error and the right strategy is to defend the consumer book.",
-    watch: "USDT/NGN turnover and 24h change in the live KPI grid above.",
+    headline: "If regular-user trading keeps growing fast, the business-customer angle is a side-show.",
+    body: "This whole story assumes regular-user growth is slowing relative to business demand. If retail crypto trading in Nigeria takes off again — say, on another big naira drop that sends people running to dollars — then API revenue is small change, and the right move is to defend the regular-user side instead.",
+    watch: "USDT/NGN volume and 24-hour change in the live KPI grid above.",
   },
   {
-    headline: "If cNGN never gets institutional adoption, the regulatory wedge collapses.",
-    body: "Quidax's structural advantage over Yellow Card hinges on the SEC license + cNGN listing becoming actually useful. If cNGN volume stays trivial through 2026 — i.e. the asset exists on paper but no bank, fintech, or treasury routes through it — the regulatory premium is unpriced and Yellow Card's larger footprint wins.",
-    watch: "cNGN/NGN spot and cNGN deep-dive volume series.",
+    headline: "If cNGN never gets used by serious institutions, the regulated edge falls apart.",
+    body: "Quidax's edge over Yellow Card depends on the SEC license + cNGN listing actually being useful. If cNGN volume stays tiny through 2026 — meaning the asset exists but no bank, fintech, or treasury actually routes money through it — the regulatory edge is worth nothing, and Yellow Card's larger footprint wins.",
+    watch: "cNGN/NGN price and the cNGN volume chart in the deep-dive section.",
   },
   {
-    headline: "If a bank-backed competitor ships a real stablecoin rail, the corridor case erodes fast.",
-    body: "The corridor revenue case rests on stablecoin rails being meaningfully cheaper and faster than the banking system. If a tier-1 Nigerian bank launches a low-spread, T+0 corridor product (NIBSS-NIP-style for FX), the cost-saving column in the corridor cards shrinks to single-digit bps and the speed advantage disappears.",
-    watch: "Bank wire vs stablecoin rail bps in the corridor cards.",
+    headline: "If a bank ships a real stablecoin rail, the cross-border story collapses fast.",
+    body: "The cross-border revenue case rests on stablecoin rails being clearly cheaper and faster than the banking system. If a tier-1 Nigerian bank launches a cheap, instant cross-border product (think NIBSS-style for FX), the cost saving in the corridor cards shrinks to almost nothing and the speed advantage disappears.",
+    watch: "Bank wire vs stablecoin cost savings in the corridor cards.",
   },
   {
-    headline: "If take-rates compress to single-digit bps, the per-segment revenue math breaks.",
-    body: "The mid-case slider assumes 20–60 bps blended take rates. If competitive pressure or regulator-mandated price caps push take-rates below 10 bps across all four segments, you'd need >2× capture to hold the same revenue line — and capture is the harder lever to move.",
-    watch: "Take-rate sliders in the B2B opportunity model.",
+    headline: "If fees get squeezed too low, the per-area revenue math breaks.",
+    body: "The middle-case sliders assume Quidax keeps 20–60 basis points (0.2–0.6%) on each transaction. If competition or regulator-mandated price caps push fees below 10 bps across all four areas, you'd need more than double the market share to hit the same revenue — and market share is the harder lever to move.",
+    watch: "The fee sliders in the business-customer opportunity section.",
   },
 ]
 
@@ -49,18 +49,18 @@ export function CounterThesis() {
         </span>
         <div>
           <p className="font-mono text-xs uppercase tracking-widest text-warning">
-            12 · How the thesis fails
+            12 · How this could be wrong
           </p>
           <h2
             id="counter-thesis-title"
             className="mt-1 text-2xl font-semibold tracking-tight md:text-3xl text-balance"
           >
-            Four conditions under which I&apos;d retract this analysis
+            Four things that would make me retract this whole analysis
           </h2>
           <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground">
-            A B2B thesis is only useful if it can be falsified. These are the four observable signals that
-            would tell me the case in the rest of the page is wrong. Each one is paired with the live
-            surface on this dashboard that would betray it first — so you can literally watch for it.
+            An idea is only useful if it can be proven wrong. These are the four signals that would tell me
+            the rest of the page is off. Each one is paired with the live part of this dashboard that would
+            show it first — so you can literally watch for it.
           </p>
         </div>
       </header>

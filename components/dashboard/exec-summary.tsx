@@ -3,27 +3,27 @@ import { Target, TrendingUp, Layers, ShieldCheck } from "lucide-react"
 const POINTS = [
   {
     icon: Target,
-    title: "The thesis",
+    title: "The big idea",
     body:
-      "Retail volume is a feature of Nigeria's crypto market — settlement, treasury, and remittance are the business model. Quidax already owns the only NGN-native + API-first quadrant.",
+      "Regular users trading is one slice of Nigeria's crypto market. The real business is helping companies move money — for payments, treasury, and remittances. Quidax is the only local exchange built for this.",
   },
   {
     icon: TrendingUp,
-    title: "The wedge",
+    title: "The opening",
     body:
-      "USDT/NGN now tracks the NFEM official rate within 100 bps — after years of >20% premium. Stablecoins didn't lose; they became the rail. cNGN listing gives Quidax a regulated wedge no other local player has.",
+      "USDT (a digital dollar) used to trade more than 20% above Nigeria's official dollar rate on Quidax. Today the gap is under 1%. That means stablecoins now work as a real money rail — and Quidax is the only Nigerian exchange listing cNGN, the regulated naira stablecoin.",
   },
   {
     icon: Layers,
     title: "The model",
     body:
-      "Four B2B segments — cross-border settlement, remittance, fintech treasury, and embedded crypto — combine into a defensible 24-month revenue ramp at mid-case capture.",
+      "Four business areas — moving money across borders, remittances home, fintech treasury, and embedded crypto features — together create a 24-month revenue path at a sensible share of the market.",
   },
   {
     icon: ShieldCheck,
-    title: "The moat",
+    title: "The protection",
     body:
-      "SEC licensing, cNGN integration, and a public Liquidity SLA convert today's compliance cost into a regulated-infrastructure premium that Yellow Card and Busha cannot match locally.",
+      "Quidax's SEC license, cNGN listing, and a public promise on liquidity turn today's compliance work into a real edge that Yellow Card and Busha can't easily match in Nigeria.",
   },
 ]
 
@@ -33,10 +33,10 @@ export function ExecSummary() {
       <div className="rounded-2xl card-elev p-6 md:p-8">
         <div className="flex flex-col gap-1">
           <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            01 · Executive summary
+            01 · The summary
           </span>
           <h3 className="text-xl font-semibold tracking-tight md:text-2xl">
-            Four moves, one moat, one number.
+            Four moves, one advantage, one number.
           </h3>
         </div>
 

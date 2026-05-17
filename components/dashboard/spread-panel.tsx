@@ -42,18 +42,18 @@ export function SpreadPanel({ usdtNgn }: Props) {
       <header className="mb-6 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="font-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            03 · Live insight · FX
+            03 · Live insight · Naira–dollar rate
           </h2>
           <p
             id="spread-title"
             className="mt-2 text-2xl font-semibold tracking-tight md:text-3xl text-balance"
           >
-            USDT/NGN vs NFEM official vs parallel
+            How Quidax&apos;s dollar price compares to the official rate and the street rate
           </p>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground text-pretty">
-            The single most actionable number for any Nigerian B2B treasurer: where does
-            Quidax&apos;s stablecoin book price USD/NGN relative to CBN&apos;s NFEM official
-            and the parallel street rate?
+            The most useful number for any Nigerian company moving money: where does
+            Quidax&apos;s dollar–to–naira price land compared to the Central Bank&apos;s
+            official rate and the street market rate?
           </p>
         </div>
         {stalenessChip && (
@@ -67,56 +67,57 @@ export function SpreadPanel({ usdtNgn }: Props) {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <ReferenceCard
-          label="CBN NFEM official"
+          label="Official rate (Central Bank NFEM)"
           value={spread.cbnOfficial}
-          subtitle="Analyst-tracked · weighted NFEM"
+          subtitle="Tracked by hand · weighted official rate"
           tone="muted"
         />
         <ReferenceCard
-          label="Quidax USDT/NGN"
+          label="Quidax USDT/NGN (live)"
           value={spread.quidaxUsdtNgn}
-          subtitle={hasLive ? "Live · /markets/tickers" : "No live ticker — reference fallback"}
+          subtitle={hasLive ? "Live · from Quidax markets API" : "No live price — using a reference"}
           tone="primary"
         />
         <ReferenceCard
-          label="Parallel / P2P"
+          label="Street rate (parallel market)"
           value={spread.parallel}
-          subtitle="Analyst-tracked · BDC street avg"
+          subtitle="Tracked by hand · BDC street average"
           tone="muted"
         />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-[2fr_1fr]">
         <article className="card-elev rounded-xl p-5">
-          <h3 className="text-sm font-medium">Spread map</h3>
+          <h3 className="text-sm font-medium">How the three rates line up</h3>
           <SpreadBar spread={spread} />
           <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-            Quidax USDT/NGN prints at{" "}
+            Quidax&apos;s dollar price prints at{" "}
             <span className="text-foreground tabular-nums">{spread.vsCbnPct.toFixed(2)}%</span>{" "}
-            of NFEM official and{" "}
+            of the official rate and{" "}
             <span className="text-foreground tabular-nums">
               {spread.vsParallelPct.toFixed(2)}%
             </span>{" "}
-            of parallel.
+            of the street rate.
             {showBps && (
               <>
                 {" "}
-                That&apos;s a{" "}
+                That&apos;s{" "}
                 <span className="text-foreground tabular-nums">
                   {fmtBps(spread.vsCbnBps)}
                 </span>{" "}
-                deviation from official, against a parallel-vs-official gap of{" "}
+                away from official, against a street-vs-official gap of{" "}
                 <span className="text-foreground tabular-nums">{fmtBps(spread.fxGapBps)}</span>.
+                <span className="ml-1 text-muted-foreground/80">(bps = basis points; 100 bps = 1%.)</span>
               </>
             )}{" "}
-            Post-unification, the three lines are converging &mdash; which is precisely the
-            precondition that makes stablecoin rails commercially viable for B2B settlement:
-            predictable pricing, not arbitrage.
+            After Nigeria unified its FX rates, the three lines are converging — which is exactly the
+            condition that makes stablecoin rails work for businesses moving money: predictable pricing,
+            not arbitrage.
           </p>
         </article>
 
         <article className="card-elev rounded-xl p-5">
-          <h3 className="text-sm font-medium">Why this matters for B2B</h3>
+          <h3 className="text-sm font-medium">Why this matters for businesses</h3>
           <ul className="mt-3 flex flex-col gap-3 text-sm leading-relaxed text-muted-foreground">
             <li className="flex gap-2">
               <span
@@ -124,8 +125,8 @@ export function SpreadPanel({ usdtNgn }: Props) {
                 aria-hidden
               />
               <span>
-                <span className="text-foreground">Treasury hedging:</span> fintechs need a
-                single reliable benchmark for booking USD-denominated payables in NGN.
+                <span className="text-foreground">Treasury planning:</span> fintechs need
+                one reliable benchmark to price dollar bills they have to pay in naira.
               </span>
             </li>
             <li className="flex gap-2">
@@ -134,9 +135,9 @@ export function SpreadPanel({ usdtNgn }: Props) {
                 aria-hidden
               />
               <span>
-                <span className="text-foreground">Remittance pricing:</span> the FX gap is
-                the merchant&apos;s pricing wedge &mdash; a published, signed Quidax rate
-                would beat parallel-market opacity.
+                <span className="text-foreground">Remittance pricing:</span> the gap is
+                where remittance companies make their margin — a published, signed Quidax
+                rate would beat the opacity of street rates.
               </span>
             </li>
             <li className="flex gap-2">
@@ -145,9 +146,9 @@ export function SpreadPanel({ usdtNgn }: Props) {
                 aria-hidden
               />
               <span>
-                <span className="text-foreground">Settlement risk:</span> spread compression
-                in 2025 has meaningfully improved unit economics for cross-border B2B
-                settlement using stablecoins.
+                <span className="text-foreground">Settlement risk:</span> the gap closing
+                in 2025 has made the math actually work for cross-border business
+                payments using stablecoins.
               </span>
             </li>
           </ul>
@@ -155,8 +156,8 @@ export function SpreadPanel({ usdtNgn }: Props) {
       </div>
 
       <p className="mt-3 text-xs text-muted-foreground">
-        FX references as of {FX_REFERENCE.asOf}. CBN and parallel markets have no free
-        machine-readable feed — references are tracked manually and timestamped.
+        Reference rates as of {FX_REFERENCE.asOf}. The Central Bank and street rates have
+        no free machine-readable feed — they are tracked manually and timestamped.
       </p>
 
       {/* Screen-reader companion. The SpreadBar above is a custom SVG-like
