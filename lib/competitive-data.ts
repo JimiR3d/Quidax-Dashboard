@@ -133,7 +133,7 @@ export const COMPETITORS: Competitor[] = [
     name: "Roqqu",
     positioning: "Retail exchange + virtual cards",
     b2bApi: "no",
-    verifiedNgnMarkets: "100+", // verified via search: Roqqu natively supports NGN deposits/swaps for over 100+ listed assets
+    verifiedNgnMarkets: 10, // verified manually against roqqu.com markets page
     ngnFocus: "core",
     africaCountries: 5, // Nigeria + Kenya (via verified Flitaa acquisition July 2025), Ghana, Uganda, Tanzania
     stablecoinFocus: "medium",
