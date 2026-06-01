@@ -35,7 +35,7 @@ export const COMPETITORS: Competitor[] = [
     name: "Quidax",
     positioning: "NGN-native exchange + API for African fintechs",
     b2bApi: "yes",
-    verifiedNgnMarkets: 9, // Verified live from /api/v1/markets/tickers (9 active NGN pairs, 49 total active pairs across all markets)
+    verifiedNgnMarkets: 16, // Verified live from /api/v1/markets/tickers (16 active NGN pairs)
     ngnFocus: "core",
     africaCountries: 4,
     stablecoinFocus: "high",
@@ -106,19 +106,23 @@ export const COMPETITORS: Competitor[] = [
     name: "Luno",
     positioning: "Retail exchange (Singapore-owned, Pan-African + global)",
     b2bApi: "no",
-    verifiedNgnMarkets: 4, // verified manually against luno.com Nigeria listings
+    verifiedNgnMarkets: 14, // verified manually against luno.com API tickers
     ngnFocus: "secondary",
     africaCountries: 3, // Nigeria, South Africa, Kenya (re-entered 2025; dropped Zambia/Uganda)
     stablecoinFocus: "low",
-    secLicensed: "applying", // Applied to ARIP in June 2024, but has not received Approval-in-Principle yet
+    secLicensed: "unknown", // Public status is unclear. Reports from early 2024 indicated application to SEC, but no ARIP confirmation
     notableEdge:
-      "Trusted retail brand expanding into staking and tokenized US stocks. Operates in 3 African markets (Nigeria, South Africa, Kenya); no NGN-native B2B API. Regulated and active in Nigeria, but does not hold a provisional SEC VASP licence equivalent to Busha or Quidax.",
+      "Trusted retail brand expanding into staking and tokenized US stocks. Operates in 3 African markets (Nigeria, South Africa, Kenya); no NGN-native B2B API. Regulated and active in Nigeria, but exact SEC VASP status is unknown.",
     provenance: {
       sources: [
         {
           label: "luno.com/en/countries (African countries served)",
           url: "https://www.luno.com/en/countries",
           note: "Luno serves 3 African markets: Nigeria, South Africa, and Kenya (re-entered 2025). Regulated and active, but not in the August 2024 ARIP cohort.",
+        },
+        {
+          label: "SEC Nigeria — ARIP Cohort",
+          note: "Luno's exact SEC Nigeria status is unknown. Reports from early 2024 indicated they were in discussions, but they were not publicly named in the August 2024 ARIP cohort of approved VASPs.",
         },
       ],
       verifiedAt: "2026-06-01",
@@ -129,7 +133,7 @@ export const COMPETITORS: Competitor[] = [
     name: "Roqqu",
     positioning: "Retail exchange + virtual cards",
     b2bApi: "no",
-    verifiedNgnMarkets: 10, // verified manually against roqqu.com markets page
+    verifiedNgnMarkets: "100+", // verified via search: Roqqu natively supports NGN deposits/swaps for over 100+ listed assets
     ngnFocus: "core",
     africaCountries: 5, // Nigeria + Kenya (via verified Flitaa acquisition July 2025), Ghana, Uganda, Tanzania
     stablecoinFocus: "medium",
