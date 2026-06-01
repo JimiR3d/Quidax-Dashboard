@@ -1,0 +1,36 @@
+name: branch-guard
+
+on:
+  push:
+    branches: [main]
+
+# This is a soft guard for the "do not push directly to main" rule. Branch
+# protection rules in GitHub are the real enforcement; this workflow exists
+# so that if protection is misconfigured, an audit trail still appears in
+# the Actions tab.
+#
+# It runs on every push to main and:
+#   - Logs a warning if the push did NOT come from a merged PR.
+#   - Does NOT fail the build (we don't want to break already-merged code).
+#     Instead it leaves an annotation that a human can find.
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect direct push
+        run: |
+          MSG=$(git log -1 --pretty=%B)
+          # Merge commits from the GitHub UI start with "Merge pull request".
+          # Squash-merges include "(#123)" in the title. Both are fine.
+          if echo "$MSG" | grep -qE "^(Merge pull request|.*\(#[0-9]+\))"; then
+            echo "::notice::Push to main came from a PR merge. OK."
+          else
+            echo "::warning::Direct push to main detected. The repo's branch protection rules should prevent this — please verify in Settings → Branches."
+            echo "Commit message:"
+            echo "$MSG"
+          fi

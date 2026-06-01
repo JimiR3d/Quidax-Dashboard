@@ -1,0 +1,314 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+  Theme: Quidax brand palette (verified against quidax.com)
+  Primary purple is a vivid violet (~#7C3AED / OKLCH hue 305, high chroma).
+  5-color analogous system:
+    - Background    deep purple-black
+    - Foreground    near-white with warm tint
+    - Primary       vivid Quidax purple
+    - Accent        magenta-violet
+    - Positive      emerald (functional)
+*/
+
+:root {
+  --background: oklch(0.135 0.035 305);
+  --foreground: oklch(0.98 0.008 305);
+
+  --card: oklch(0.20 0.045 305);
+  --card-foreground: oklch(0.98 0.008 305);
+
+  --popover: oklch(0.20 0.045 305);
+  --popover-foreground: oklch(0.98 0.008 305);
+
+  /* Quidax brand purple — vivid, matches the CTA color on quidax.com */
+  --primary: oklch(0.62 0.27 305);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.26 0.055 305);
+  --secondary-foreground: oklch(0.98 0.008 305);
+
+  --muted: oklch(0.24 0.04 305);
+  --muted-foreground: oklch(0.74 0.025 305);
+
+  /* Magenta-violet accent for gradients */
+  --accent: oklch(0.70 0.24 320);
+  --accent-foreground: oklch(0.13 0.035 305);
+
+  --destructive: oklch(0.68 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --positive: oklch(0.74 0.17 155);
+  --positive-foreground: oklch(0.13 0.035 305);
+
+  --warning: oklch(0.82 0.16 75);
+  --warning-foreground: oklch(0.13 0.035 305);
+
+  --border: oklch(0.34 0.055 305);
+  --input: oklch(0.34 0.055 305);
+  --ring: oklch(0.62 0.27 305);
+
+  --chart-1: oklch(0.62 0.27 305);  /* primary purple */
+  --chart-2: oklch(0.74 0.17 155);  /* emerald */
+  --chart-3: oklch(0.82 0.16 75);   /* amber */
+  --chart-4: oklch(0.70 0.24 320);  /* magenta-violet */
+  --chart-5: oklch(0.68 0.22 25);   /* coral */
+
+  --radius: 0.75rem;
+
+  --sidebar: oklch(0.17 0.04 305);
+  --sidebar-foreground: oklch(0.98 0.008 305);
+  --sidebar-primary: oklch(0.62 0.27 305);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.26 0.055 305);
+  --sidebar-accent-foreground: oklch(0.98 0.008 305);
+  --sidebar-border: oklch(0.34 0.055 305);
+  --sidebar-ring: oklch(0.62 0.27 305);
+}
+
+.dark {
+  --background: oklch(0.135 0.035 305);
+  --foreground: oklch(0.98 0.008 305);
+  --card: oklch(0.20 0.045 305);
+  --card-foreground: oklch(0.98 0.008 305);
+  --popover: oklch(0.20 0.045 305);
+  --popover-foreground: oklch(0.98 0.008 305);
+  --primary: oklch(0.62 0.27 305);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.26 0.055 305);
+  --secondary-foreground: oklch(0.98 0.008 305);
+  --muted: oklch(0.24 0.04 305);
+  --muted-foreground: oklch(0.74 0.025 305);
+  --accent: oklch(0.70 0.24 320);
+  --accent-foreground: oklch(0.13 0.035 305);
+  --destructive: oklch(0.68 0.22 25);
+  --border: oklch(0.34 0.055 305);
+  --input: oklch(0.34 0.055 305);
+  --ring: oklch(0.62 0.27 305);
+}
+
+@theme inline {
+  --font-sans: 'Geist', 'Geist Fallback';
+  --font-mono: 'Geist Mono', 'Geist Mono Fallback';
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-positive: var(--positive);
+  --color-positive-foreground: var(--positive-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: clip;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(ellipse 90% 70% at 15% -10%, oklch(0.62 0.27 305 / 0.20), transparent 55%),
+      radial-gradient(ellipse 60% 50% at 100% 20%, oklch(0.70 0.24 320 / 0.13), transparent 60%),
+      radial-gradient(ellipse 80% 60% at 50% 110%, oklch(0.62 0.27 305 / 0.10), transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+/* Decorative utilities */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, oklch(0.34 0.055 305 / 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.34 0.055 305 / 0.4) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 0%, black 30%, transparent 80%);
+}
+
+.bg-noise {
+  background-image: radial-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+
+.card-elev {
+  background:
+    linear-gradient(180deg, oklch(0.22 0.05 305 / 0.7), oklch(0.17 0.04 305 / 0.7));
+  border: 1px solid oklch(0.34 0.055 305 / 0.75);
+  box-shadow:
+    inset 0 1px 0 oklch(1 0 0 / 0.04),
+    0 1px 0 oklch(0 0 0 / 0.4);
+  backdrop-filter: blur(8px);
+}
+
+.glow-primary {
+  box-shadow:
+    0 0 0 1px oklch(0.62 0.27 305 / 0.45),
+    0 8px 50px -10px oklch(0.62 0.27 305 / 0.65);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, oklch(0.95 0.04 305), oklch(0.75 0.22 320));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-primary {
+  background: linear-gradient(90deg, oklch(0.78 0.22 305), oklch(0.80 0.20 320));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+.pulse-glow { animation: pulseGlow 2.4s ease-in-out infinite; }
+
+@keyframes livePing {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.live-ping { animation: livePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite; }
+
+@keyframes marqueeReverse {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee-reverse { animation: marqueeReverse 30s linear infinite; }
+
+/*
+  Range slider styling.
+  Tailwind's `appearance-none` removes the native thumb in WebKit/Blink
+  (Chrome, Safari, Edge), leaving an unusable flat bar. We rebuild the
+  thumb with vendor pseudo-elements so the B2B opportunity sliders are
+  visible and draggable across all browsers.
+*/
+input[type="range"].appearance-none {
+  background-color: var(--border);
+}
+input[type="range"].appearance-none::-webkit-slider-runnable-track {
+  height: 100%;
+  background: transparent;
+  border-radius: 9999px;
+}
+input[type="range"].appearance-none::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 16px;
+  width: 16px;
+  margin-top: -5px; /* center on 6px track */
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px oklch(0.62 0.27 305 / 0.5), 0 2px 6px oklch(0 0 0 / 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+input[type="range"].appearance-none::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+input[type="range"].appearance-none::-webkit-slider-thumb:active {
+  transform: scale(0.95);
+}
+input[type="range"].appearance-none::-moz-range-track {
+  height: 6px;
+  background: var(--border);
+  border-radius: 9999px;
+}
+input[type="range"].appearance-none::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 9999px;
+  background: var(--primary);
+  border: 2px solid var(--background);
+  box-shadow: 0 0 0 1px oklch(0.62 0.27 305 / 0.5), 0 2px 6px oklch(0 0 0 / 0.45);
+  cursor: pointer;
+  transition: transform 120ms ease;
+}
+input[type="range"].appearance-none::-moz-range-thumb:hover {
+  transform: scale(1.1);
+}
+input[type="range"].appearance-none:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+
+/*
+  Custom scrollbar — purple brand theme.
+  6px thin, violet gradient thumb, dark track.
+  Applied globally via html and all scrollable containers.
+*/
+
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: oklch(0.15 0.03 305 / 0.5);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, oklch(0.62 0.27 305), oklch(0.50 0.24 305));
+  border-radius: 9999px;
+  border: 1px solid oklch(0.15 0.03 305 / 0.3);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, oklch(0.68 0.27 305), oklch(0.55 0.24 305));
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.55 0.25 305) oklch(0.15 0.03 305 / 0.5);
+}

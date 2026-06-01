@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel an in-flight run when a new commit lands on the same ref so a fast
+# follow-up commit doesn't burn minutes finishing a now-stale CI run.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: typecheck · test · build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # Each step runs independently so a failure surfaces the right diagnostic
+      # instead of being masked by a later failure. `if: always()` lets the
+      # build step still run even if tests fail, so a single PR run reports
+      # every problem at once.
+      - name: Type-check
+        run: pnpm exec tsc --noEmit
+
+      - name: Project invariants (no DB / no localStorage / no legacy middleware / proxy.ts present)
+        if: always()
+        run: node scripts/check-invariants.mjs
+
+      - name: Unit tests
+        if: always()
+        run: pnpm test
+
+      - name: Production build
+        if: always()
+        env:
+          # Suppress Next.js telemetry in CI; quieter logs.
+          NEXT_TELEMETRY_DISABLED: "1"
+        run: pnpm build
+
+      - name: Health endpoint smoke (build artifact)
+        if: always()
+        run: |
+          # Boot the production server, hit /api/health, assert HTTP 200/503
+          # body shape, then shut down. This guards the synthetic-monitor
+          # contract: if a future change breaks /api/health, CI catches it
+          # before Better Stack wakes anyone up.
+          pnpm exec next start -p 3939 &
+          SERVER_PID=$!
+          # Give Next a moment to boot.
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            if curl -sf -o /dev/null http://127.0.0.1:3939/api/health || \
+               curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:3939/api/health | grep -q "503"; then
+              break
+            fi
+            sleep 1
+          done
+          BODY=$(curl -s http://127.0.0.1:3939/api/health || true)
+          echo "health body: $BODY"
+          kill $SERVER_PID 2>/dev/null || true
+          # status field must be one of ok/degraded/down.
+          echo "$BODY" | grep -qE '"status":"(ok|degraded|down)"' \
+            || { echo "health endpoint did not return a recognised status"; exit 1; }
