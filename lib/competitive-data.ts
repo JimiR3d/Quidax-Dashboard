@@ -35,7 +35,7 @@ export const COMPETITORS: Competitor[] = [
     name: "Quidax",
     positioning: "NGN-native exchange + API for African fintechs",
     b2bApi: "yes",
-    verifiedNgnMarkets: 16, // Verified live from /api/v1/markets/tickers (16 active NGN pairs)
+    verifiedNgnMarkets: 9, // Verified live from /api/v1/markets/tickers (9 active NGN pairs, 49 total active pairs across all markets)
     ngnFocus: "core",
     africaCountries: 4,
     stablecoinFocus: "high",
