@@ -1,9 +1,7 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import Target from "lucide-react/dist/esm/icons/target"
-import Zap from "lucide-react/dist/esm/icons/zap"
-import BarChart3 from "lucide-react/dist/esm/icons/bar-chart-3"
+
 import {
   Bar,
   BarChart,

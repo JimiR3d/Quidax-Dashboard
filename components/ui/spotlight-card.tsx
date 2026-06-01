@@ -98,7 +98,7 @@ const GlowCard: React.FC<GlowCardProps> = ({
   };
 
   const getInlineStyles = () => {
-    const baseStyles = {
+    const baseStyles: React.CSSProperties & Record<string, any> = {
       '--base': base,
       '--spread': spread,
       '--radius': '16',
