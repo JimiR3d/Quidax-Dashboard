@@ -69,7 +69,7 @@ export default function AboutPage() {
                 LinkedIn
               </a>
               <a
-                href="https://github.com/JimiR3d"
+                href="https://github.com/JimiR3d/Quidax-Dashboard"
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 rounded-md border border-border bg-secondary/40 px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-secondary"

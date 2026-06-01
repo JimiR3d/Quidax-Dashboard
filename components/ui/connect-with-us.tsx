@@ -20,7 +20,7 @@ const SOCIAL_LINKS: SocialLink[] = [
   {
     icon: <Github className="h-4 w-4" />,
     label: "GitHub",
-    href: "https://github.com/JimiR3d",
+    href: "https://github.com/JimiR3d/Quidax-Dashboard",
   },
   {
     icon: <Mail className="h-4 w-4" />,
