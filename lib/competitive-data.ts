@@ -41,7 +41,7 @@ export const COMPETITORS: Competitor[] = [
     stablecoinFocus: "high",
     secLicensed: "yes",
     notableEdge:
-      "Listed cNGN on March 12, 2025 (per Quidax corporate blog), five weeks after Busha's February 3 debut (per TechCabal); deepest USDT/NGN order book among Nigerian players",
+      "Listed cNGN on March 12, 2025 (per Quidax corporate blog), five weeks after Busha's February 3 debut (per TechCabal); enterprise-grade USDT/NGN liquidity",
     provenance: {
       sources: [
         { label: "Quidax — Markets API (live ticker count)", url: "https://app.quidax.io/api/v1/markets" },

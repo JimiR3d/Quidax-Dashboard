@@ -23,7 +23,7 @@ const POINTS = [
     icon: ShieldCheck,
     title: "Why the head start matters",
     body:
-      "The SEC ARIP licence, early cNGN listing (March 12, 2025), and deepest USDT/NGN order book. Busha is catching up with its own B2B stack and listed cNGN first (February 3, 2025), but Quidax's naira liquidity depth and existing B2B customer base (HeliCode, Lisk, Gigxpad) are hard to replicate overnight. 🛡️",
+      "The SEC ARIP licence, early cNGN listing (March 12, 2025), and enterprise-grade USDT/NGN liquidity. Busha is catching up with its own B2B stack and listed cNGN first (February 3, 2025), but Quidax's naira liquidity depth and existing B2B customer base (HeliCode, Lisk, Gigxpad) are hard to replicate overnight. 🛡️",
   },
 ]
 

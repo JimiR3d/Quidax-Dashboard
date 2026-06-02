@@ -106,7 +106,7 @@ export function CompetitiveMatrix() {
           <span className="text-foreground">
             Quidax vs. Busha for the naira B2B API crown
           </span>
-          . Quidax's edge: deepest USDT/NGN order book and earliest cNGN listing. That advantage is real but not permanent. 💡
+          . Quidax's edge: enterprise-grade USDT/NGN liquidity and an early cNGN listing. That advantage is real but not permanent. 💡
         </p>
       </div>
 
