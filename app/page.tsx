@@ -16,7 +16,7 @@ export default async function Page() {
   }))
 
   return (
-    <div className="relative w-full font-sans overflow-x-hidden">
+    <div className="relative w-full font-sans overflow-x-clip">
       {/* Main Content Area - high z-index and border radius to slide over the footer */}
       <main className="relative z-10 w-full min-h-[120vh] bg-transparent border-b border-white/10 shadow-xl rounded-b-3xl">
         <SiteHeader snapshotSource={snapshot.source} fetchedAt={snapshot.fetchedAt} />
