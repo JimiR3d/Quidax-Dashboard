@@ -81,8 +81,9 @@ export async function GET() {
 
   return NextResponse.json(snapshot, {
     headers: {
-      // Edge CDN: serve for 10s, then revalidate while serving stale for 30s.
-      "Cache-Control": "public, s-maxage=10, stale-while-revalidate=30",
+      // No Edge CDN cache so the frontend SWR polling counter gets the freshest 
+      // timestamp and resets perfectly every 15s. The in-memory cache handles upstream load.
+      "Cache-Control": "no-store",
       "X-RateLimit-Remaining": String(rl.remaining),
       "X-Snapshot-Source": snapshot.source,
       ...(snapshot.fetchedAt ? { "X-Snapshot-FetchedAt": snapshot.fetchedAt } : {}),
