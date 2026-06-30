@@ -15,6 +15,7 @@ node_modules/
 .DS_Store
 .vercel/
 _internal/
+tsconfig.tsbuildinfo
 
 # AI Generated Execution Playbooks & Scripts
 Quidax_Execution_Playbook_Jimi*
