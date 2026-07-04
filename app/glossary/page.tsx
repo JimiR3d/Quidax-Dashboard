@@ -57,7 +57,7 @@ export default function GlossaryPage() {
           </Term>
 
           <Term title='What is an "NGN pair"?'>
-            A "pair" is when you're trading two things. "USDT/NGN" means "swap USDT (US dollars) for NGN (Nigerian Naira)". When you see "All 9 NGN pairs", it means the exchange lets you trade 9 different cryptocurrencies that all end in NGN.
+            A "pair" is when you're trading two things. "USDT/NGN" means "swap USDT (US dollars) for NGN (Nigerian Naira)". When you see "All NGN pairs", it means the exchange lets you trade several different cryptocurrencies that all end in NGN — the exact count comes from the live API.
           </Term>
         </Section>
 

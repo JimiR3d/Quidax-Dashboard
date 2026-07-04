@@ -88,7 +88,12 @@ function ConfidencePill({ c }: { c: "Verified" | "Estimated / Proxy" | "Derived 
   )
 }
 
-export function CompetitiveMatrix() {
+export function CompetitiveMatrix({ liveQuidaxNgnCount }: { liveQuidaxNgnCount?: number } = {}) {
+  const rows = COMPETITORS.map((c) =>
+    c.name === "Quidax" && liveQuidaxNgnCount != null
+      ? { ...c, verifiedNgnMarkets: liveQuidaxNgnCount }
+      : c,
+  )
   return (
     <section
       id="competition"
@@ -135,7 +140,7 @@ export function CompetitiveMatrix() {
               </tr>
             </thead>
             <tbody>
-              {COMPETITORS.map((c) => {
+              {rows.map((c) => {
                 const isQuidax = c.name === "Quidax"
                 return (
                   <tr

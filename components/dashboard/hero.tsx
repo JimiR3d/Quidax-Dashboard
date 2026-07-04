@@ -35,7 +35,7 @@ export function Hero({ fetchedAt, snapshotSource, ageMs }: Props) {
 
   const sourceCopy =
     snapshotSource === "live"
-      ? "Live · refreshing every 60 seconds on the server"
+      ? "Live · server snapshot, taken at page load"
       : snapshotSource === "cached"
         ? `From a recent server cache · last refreshed ${fmtRelTime(ageMs)}`
         : snapshotSource === "lkg"

@@ -45,7 +45,7 @@ export default async function MarketPage() {
           What Quidax's order book says right now 📊
         </h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Every number below comes from Quidax's public API, refreshed every 60 seconds. The spread panel shows how close the USDT/NGN price is to the official CBN rate.
+          Every number below comes from Quidax's public API, refreshed every 15 seconds. The spread panel shows how close the USDT/NGN price is to the official CBN rate.
         </p>
       </section>
 

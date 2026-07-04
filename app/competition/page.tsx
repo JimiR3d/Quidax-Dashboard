@@ -2,6 +2,7 @@ import { SiteHeader } from "@/components/dashboard/site-header"
 import { CompetitiveMatrix } from "@/components/dashboard/competitive-matrix"
 import { B2BCompetitorStrip } from "@/components/dashboard/b2b-competitor-strip"
 import { ChapterNav } from "@/components/dashboard/chapter-nav"
+import { getMarketSnapshot } from "@/lib/quidax"
 
 export const metadata = {
   title: "Who Does What — NGN Liquidity Intelligence",
@@ -11,7 +12,12 @@ export const metadata = {
 
 export const revalidate = 3600
 
-export default function CompetitionPage() {
+export default async function CompetitionPage() {
+  const snapshot = await getMarketSnapshot().catch(() => null)
+  const liveNgnCount = snapshot
+    ? snapshot.tickers.filter((t) => t.quote === "NGN").length
+    : undefined
+
   return (
     <main className="min-h-screen bg-transparent">
       <SiteHeader snapshotSource="live" />
@@ -28,7 +34,7 @@ export default function CompetitionPage() {
         </p>
       </section>
 
-      <CompetitiveMatrix />
+      <CompetitiveMatrix liveQuidaxNgnCount={liveNgnCount} />
       <B2BCompetitorStrip />
       <ChapterNav current="/competition" />
     </main>
