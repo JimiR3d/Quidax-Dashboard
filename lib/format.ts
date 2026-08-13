@@ -17,7 +17,7 @@ function groupUs(n: number, decimals: number): string {
   }).format(n)
 }
 
-export function fmtNgn(n: number, opts?: { compact?: boolean }): string {
+export function fmtNgn(n: number, opts?: { compact?: boolean; decimals?: number }): string {
   if (!Number.isFinite(n)) return "—"
   if (opts?.compact) {
     if (Math.abs(n) >= 1_000_000_000) return `₦${(n / 1_000_000_000).toFixed(2)}B`
@@ -25,7 +25,7 @@ export function fmtNgn(n: number, opts?: { compact?: boolean }): string {
     if (Math.abs(n) >= 1_000) return `₦${(n / 1_000).toFixed(1)}K`
     return `₦${n.toFixed(0)}`
   }
-  const decimals = Math.abs(n) >= 1000 ? 0 : 2
+  const decimals = opts?.decimals ?? (Math.abs(n) >= 10_000 ? 0 : 2)
   return `₦${groupUs(n, decimals)}`
 }
 
